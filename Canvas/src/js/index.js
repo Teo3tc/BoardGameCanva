@@ -320,42 +320,124 @@ const drawMoveTop = () => {
     ctx.fillRect(celulePlayer[0].width, save, 50, moveLeftAfterObstacle);
     ctx.closePath();
 };
-/*const drawMoveRight = () => {
-  let moveRight = celulePlayer[0].width;
+const drawMoveRight = () => {
+    let moveLeft = [];
+    let width = celulePlayer[0].width + 50;
+    let height = celulePlayer[0].height;
+    let move = 'MOVE NORMAL';
+    let saveObstacle = [];
+    moveLeftAfterObstacle = 150
+    for (let index = 0; index < 3; index++) {
+        moveLeft.push({
+            width,
+            height
+        })
+        width = width + 50
+        celuleObstacle.forEach(obstacle => {
+            if (obstacle.width == moveLeft[index].width && obstacle.height == moveLeft[index].height) {
+                saveObstacle.push(obstacle.width)
+            }
+        });
 
-  for (let index = 0; index < 3; index++) {
-    moveRight = moveRight + 50;
-    if (moveRight >= canvaWidth) {
-      moveRight = canvaWidth;
     }
-  }
-  console.log(moveRight);
+    for (let y = 0; y < saveObstacle.length; y++) {
+        if (moveLeft[0].width == saveObstacle[0]) {
+            move = 'CANT MOVE';
+            moveLeftAfterObstacle = 0
+        } else if (moveLeft[0].width != saveObstacle[0]) {
+            if (moveLeft[1].width == saveObstacle[1] || moveLeft[1].width == saveObstacle[0]) {
+                move = 'MOVE 1';
+                moveLeftAfterObstacle = 50
+            } else if (moveLeft[1].width != saveObstacle[y]) {
+                if (moveLeft[2].width == saveObstacle[y]) {
+                    move = 'MOVE 2';
+                    moveLeftAfterObstacle = 100
+                } else if (
+                    moveLeft[2].width != saveObstacle[y] &&
+                    moveLeft[1].width != saveObstacle[y]
+                ) {
+                    move = 'MOVE 3';
+                    moveLeftAfterObstacle = 150
+                }
+            }
+        }
+    }
 
-  const saveRightSize = () => {
-    if (moveRight == canvaWidth) {
-      return celulePlayer[0].width - moveRight + 50;
-    } else {
-      return celulePlayer[0].width - moveRight + 50;
-    }
-  };
-  const positionRight = () => {
-    if (moveRight <= 950) {
-      return (moveRight = moveRight + 50);
-    } else {
-      return moveRight;
-    }
-  };
-  ctx.beginPath();
-  ctx.fillStyle = 'rgb(250, 250, 0)';
-  ctx.fillRect(
-    positionRight(),
-    celulePlayer[0].height,
-    saveRightSize(),
-    50
-  );
-  ctx.closePath();
-};*/
 
+    console.log(move);
+    console.log(width);
+    console.log(moveLeftAfterObstacle);
+    console.log(moveLeft);
+
+    console.log(saveObstacle);
+    let save = celulePlayer[0].width + 50
+    console.log(save);
+
+
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(250, 250, 0,0.5)';
+    ctx.fillRect(save, celulePlayer[0].height, moveLeftAfterObstacle, 50);
+    ctx.closePath();
+};
+const drawMovebottom = () => {
+    let moveLeft = [];
+    let width = celulePlayer[0].width;
+    let height = celulePlayer[0].height + 50;
+    let move = 'MOVE NORMAL';
+    let saveObstacle = [];
+    moveLeftAfterObstacle = 150
+    for (let index = 0; index < 3; index++) {
+        moveLeft.push({
+            width,
+            height
+        })
+        height = height + 50
+        celuleObstacle.forEach(obstacle => {
+            if (obstacle.height == moveLeft[index].height && obstacle.width == moveLeft[index].width) {
+                saveObstacle.push(obstacle.height)
+            }
+        });
+
+    }
+    for (let y = 0; y < saveObstacle.length; y++) {
+        if (moveLeft[0].height == saveObstacle[0]) {
+            move = 'CANT MOVE';
+            moveLeftAfterObstacle = 0
+        } else if (moveLeft[0].height != saveObstacle[0]) {
+            if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0]) {
+                move = 'MOVE 1';
+                moveLeftAfterObstacle = 50
+            } else if (moveLeft[1].height != saveObstacle[y]) {
+                if (moveLeft[2].height == saveObstacle[y]) {
+                    move = 'MOVE 2';
+                    moveLeftAfterObstacle = 100
+                } else if (
+                    moveLeft[2].height != saveObstacle[y] &&
+                    moveLeft[1].height != saveObstacle[y]
+                ) {
+                    move = 'MOVE 3';
+                    moveLeftAfterObstacle = 150
+                }
+            }
+        }
+    }
+
+
+    console.log(move);
+    console.log(height);
+    console.log(moveLeftAfterObstacle);
+    console.log(moveLeft);
+
+    console.log(saveObstacle);
+    let save = celulePlayer[0].height + 50;
+    console.log(save);
+
+
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(250, 250, 0,0.5)';
+    ctx.fillRect(celulePlayer[0].width, save, 50, moveLeftAfterObstacle);
+    ctx.closePath();
+};
 makeHeightGridData();
 makeWidthGridData();
 makeCeluleWidthHeightGrid();
@@ -368,4 +450,6 @@ makeCeluleSafeAfterArme();
 drawPlayer(1);
 drawMoveleft();
 drawMoveTop()
+drawMoveRight()
+drawMovebottom()
 /*drawMoveRight() */
