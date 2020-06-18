@@ -425,7 +425,7 @@ makeDataOfObstacle(40)
 makeCeluleSafeAfterObstacle();
 makeDataOfArme(4)
 makeCeluleSafeAfterArme();
-makeDataPlayer(2)
+makeDataPlayer(1)
 MakeDataMoveleft()
 MakeDataMoveTop()
 MakeDataMoveRight()
@@ -460,29 +460,26 @@ document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 console.log(celulePlayer);
 
-celulePlayer[0].value = true
-celulePlayer[1].value = false
 
-console.log(celulePlayer);
 
 function keyDownHandler(e) {
 
     if (e.key == "Right" || e.key == "ArrowRight") {
-        celulePlayer.forEach(celule => {
-            if (celule.value == true) {
-                if (moveRightAfterObstacle != 0) {
-                    celule.width == canvaWidth - 50 ? celule.width = canvaWidth - 50 : celule.width += 50
-                    celule.width == canvaWidth - 50 ? moveRightAfterObstacle = canvaWidth - 50 : moveRightAfterObstacle -= 50
 
-                    moveTopAfterObstacle = 0
-                    moveLeftAfterObstacle = 0
-                    moveBottomAfterObstacle = 0
-                    console.log(nbrMove);
-                    console.log(moveRightAfterObstacle);
+        if (moveRightAfterObstacle != 0) {
+            celulePlayer[0].width == canvaWidth - 50 ? celulePlayer[0].width = canvaWidth - 50 : celulePlayer[0].width += 50
+            celulePlayer[0].width == canvaWidth - 50 ? moveRightAfterObstacle = canvaWidth - 50 : moveRightAfterObstacle -= 50
 
-                }
-            }
-        });
+
+
+            moveTopAfterObstacle = 0
+            moveLeftAfterObstacle = 0
+            moveBottomAfterObstacle = 0
+            console.log(nbrMove);
+            console.log(moveRightAfterObstacle);
+
+        }
+
 
 
     } else if (e.key == "Left" || e.key == "ArrowLeft") {
