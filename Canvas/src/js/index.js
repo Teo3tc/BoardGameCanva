@@ -1,22 +1,28 @@
-import MakeWorld from './MakeWorld'
+import MakeWorld from './MakeWorld';
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const canvaWidth = canvas.width;
 const canvaHeight = canvas.height;
 let armeColor = ['#8F6787', '#27242C', '#A3AD0B', '#21DE7C'];
 
-
-
-
-
-
 const celuleWidth = MakeWorld.makeGridData(canvaWidth);
 const celuleHeight = MakeWorld.makeGridData(canvaHeight);
-const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(celuleHeight, celuleWidth, canvaWidth, canvaHeight);
+const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(
+  celuleHeight,
+  celuleWidth,
+  canvaWidth,
+  canvaHeight
+);
 const celuleObstacle = MakeWorld.makeDataOfObstacle(20, celuleWidthHeight);
-const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(celuleWidthHeight, celuleObstacle)
+const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
+  celuleWidthHeight,
+  celuleObstacle
+);
 const celuleArme = MakeWorld.makeDataOfObstacle(4, celuleWidthHeight);
-const celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(celuleWidthHeight, celuleArme)
+const celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(
+  celuleWidthHeight,
+  celuleArme
+);
 
 const celulePlayer = MakeWorld.makeDataPlayer(celuleWidthHeightUpdate2, 2);
 
@@ -42,70 +48,80 @@ console.log(celuleWidthHeightUpdate2);
 console.log(' CELULE PLAYER');
 console.log(celulePlayer);
 class Player {
-    constructor(width, height, up, down, left, right) {
-        this.width = width;
-        this.height = height;
-        this.move = {
-            up: up,
-            down: down,
-            left: left,
-            right: right
-        };
-
-    }
+  constructor(width, height, up, down, left, right) {
+    this.width = width;
+    this.height = height;
+    this.move = {
+      up: up,
+      down: down,
+      left: left,
+      right: right,
+    };
+  }
 }
 class Draw {
-    static drawGrid(celule) {
-        celule.forEach((gridDraw) => {
-            ctx.beginPath();
-            ctx.strokeRect(gridDraw.width, gridDraw.height, 50, 50);
-            ctx.closePath();
-        });
-    }
-    static drawObstacle(celules) {
-        celules.forEach(celule => {
-            ctx.beginPath();
-            ctx.rect(celule.width, celule.height, 50, 50);
-            ctx.fillStyle = '#FF0000';
-            ctx.fill();
-            ctx.closePath();
-        });
-    }
-    static drawArms(celules) {
-        let index = 0
-        celules.forEach(celule => {
-            ctx.beginPath();
-            ctx.rect(celule.width, celule.height, 50, 50);
-            ctx.fillStyle = armeColor[index];
-            ctx.fill();
-            ctx.closePath();
-            index += 1
-        });
-    }
-    static drawPlayer(player) {
-        ctx.beginPath();
-        ctx.rect(player.width, player.height, 50, 50);
-        ctx.fillStyle = '#F9C5C6';
-        ctx.fill();
-        ctx.closePath();
-    }
+  static drawGrid(celule) {
+    celule.forEach((gridDraw) => {
+      ctx.beginPath();
+      ctx.strokeRect(gridDraw.width, gridDraw.height, 50, 50);
+      ctx.closePath();
+    });
+  }
+  static drawObstacle(celules) {
+    celules.forEach((celule) => {
+      ctx.beginPath();
+      ctx.rect(celule.width, celule.height, 50, 50);
+      ctx.fillStyle = '#FF0000';
+      ctx.fill();
+      ctx.closePath();
+    });
+  }
+  static drawArms(celules) {
+    let index = 0;
+    celules.forEach((celule) => {
+      ctx.beginPath();
+      ctx.rect(celule.width, celule.height, 50, 50);
+      ctx.fillStyle = armeColor[index];
+      ctx.fill();
+      ctx.closePath();
+      index += 1;
+    });
+  }
+  static drawPlayer(player) {
+    ctx.beginPath();
+    ctx.rect(player.width, player.height, 50, 50);
+    ctx.fillStyle = '#F9C5C6';
+    ctx.fill();
+    ctx.closePath();
+  }
 }
 
-const player1 = new Player(celulePlayer[0].width, celulePlayer[0].height, 0, 0, 0, 0)
-const player2 = new Player(celulePlayer[1].width, celulePlayer[1].height, 0, 0, 0, 0)
+const player1 = new Player(
+  celulePlayer[0].width,
+  celulePlayer[0].height,
+  0,
+  0,
+  0,
+  0
+);
+const player2 = new Player(
+  celulePlayer[1].width,
+  celulePlayer[1].height,
+  0,
+  0,
+  0,
+  0
+);
 
+const drawGrid = Draw.drawGrid(celuleWidthHeightUpdate2);
+const drawObactacle = Draw.drawObstacle(celuleObstacle);
+const drawArms = Draw.drawArms(celuleArme);
+const drawPlayer1 = Draw.drawPlayer(player1);
+const drawPlayer2 = Draw.drawPlayer(player2);
 
-const drawGrid = Draw.drawGrid(celuleWidthHeightUpdate2)
-const drawObactacle = Draw.drawObstacle(celuleObstacle)
-const drawArms = Draw.drawArms(celuleArme)
-const drawPlayer1 = Draw.drawPlayer(player1)
-const drawPlayer2 = Draw.drawPlayer(player2)
-
-drawGrid
-drawObactacle
-drawArms
-
-
+drawGrid;
+drawObactacle;
+drawArms;
 
 console.log(' LOG PLAYER 1');
 console.log(player1);
@@ -355,7 +371,7 @@ makeDataOfObstacle(40)
 makeCeluleSafeAfterObstacle();
 makeDataOfArme(4)
 makeCeluleSafeAfterArme();
-makeDataPlayer(2)
+makeDataPlayer(1)
 MakeDataMoveleft()
 MakeDataMoveTop()
 MakeDataMoveRight()
@@ -390,10 +406,7 @@ document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 console.log(celulePlayer);
 
-celulePlayer[0].value = true
-celulePlayer[1].value = false
 
-console.log(celulePlayer);
 
 function keyDownHandler(e) {
 
