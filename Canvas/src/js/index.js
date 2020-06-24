@@ -207,6 +207,7 @@ function keyUpHandler(e) {
 const fullPlayer = [player1, player2];
 
 function draw() {
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     Draw.drawGrid(celuleWidthHeightUpdate2);
     Draw.drawObstacle(celuleObstacle);
