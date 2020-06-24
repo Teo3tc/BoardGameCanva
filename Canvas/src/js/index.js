@@ -226,6 +226,26 @@ function draw() {
         player1.move.left = 0;
         player1.move.down = 0;
         rightPressed = false;
+
+        celuleArme.forEach((arms, index) => {
+            if (player1.width == arms.width && player1.height == arms.height && player1.gun == true) {
+                console.log('changeArme');
+
+            }
+            if (player1.width == arms.width && player1.height == arms.height && player1.gun == false) {
+                console.log('you have Armes');
+                player1.arme = arms
+                console.log(player1.arme);
+                celuleArme.splice(index, 1)
+                console.log(index);
+                player1.gun = true
+                console.log(player1.gun);
+
+
+            }
+
+        });
+
         if (player1.move.right == 0) {
             player1.play = false;
             player2.play = true;
@@ -381,106 +401,3 @@ console.log("-------  Array player   ------");
 console.log(fullPlayer);
 
 setInterval(draw, 10);
-/*
-
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
-console.log(celulePlayer);
-
-
-
-function keyDownHandler(e) {
-
-    if (e.key == "Right" || e.key == "ArrowRight") {
-        for (let index = 0; index < player.length; index++) {
-            if (player[0].value = true) {
-                if (player[0].move.right != 0) {
-                    player[0].width == canvaWidth - 50 ? player[0].width = canvaWidth - 50 : player[0].width += 50
-                    player[0].width == canvaWidth - 50 ? player[0].move.right = canvaWidth - 50 : player[0].move.right -= 50
-
-                    moveTopAfterObstacle = 0
-                    moveLeftAfterObstacle = 0
-                    moveBottomAfterObstacle = 0
-                    //console.log(nbrMove);
-                    console.log(player[0].move.right);
-                } else {
-                    player[0].value = false
-                }
-            } else {
-                if (player[1].move.right != 0) {
-                    player[1].width == canvaWidth - 50 ? player[1].width = canvaWidth - 50 : player[1].width += 50
-                    player[1].width == canvaWidth - 50 ? player[1].move.right = canvaWidth - 50 : player[1].move.right -= 50
-
-                    moveTopAfterObstacle = 0
-                    moveLeftAfterObstacle = 0
-                    moveBottomAfterObstacle = 0
-                    //console.log(nbrMove);
-                    console.log(player[1].move.right);
-
-                }
-            }
-        };
-        /* player.forEach(celule => {
-             if (celule.id == 0) {
-
-                 if (celule.move.right != 0) {
-                     celule.width == canvaWidth - 50 ? celule.width = canvaWidth - 50 : celule.width += 50
-                     celule.width == canvaWidth - 50 ? celule.move.right = canvaWidth - 50 : celule.move.right -= 50
-
-                     moveTopAfterObstacle = 0
-                     moveLeftAfterObstacle = 0
-                     moveBottomAfterObstacle = 0
-                     //console.log(nbrMove);
-                     console.log(celule.move.right);
-                 } else if (celule.move.right == 0) {
-                     celule.value = false
-                 }
-
-             }
-
-
-
-    } else if (e.key == "Left" || e.key == "ArrowLeft") {
-        if (moveLeftAfterObstacle != 0) {
-
-            celulePlayer[0].width == 0 ? celulePlayer[0].width = 0 : celulePlayer[0].width -= 50
-            celulePlayer[0].width == 0 ? moveLeftAfterObstacle = 0 : moveLeftAfterObstacle -= 50
-
-            moveTopAfterObstacle = 0
-            moveRightAfterObstacle = 0
-            moveBottomAfterObstacle = 0
-
-        }
-
-    } else if (e.key == "Up" || e.key == "ArrowUp") {
-        if (moveTopAfterObstacle != 0) {
-
-            celulePlayer[0].height == 0 ? celulePlayer[0].height = 0 : celulePlayer[0].height -= 50
-            celulePlayer[0].height == 0 ? moveTopAfterObstacle = 0 : moveTopAfterObstacle -= 50
-            //moveTopAfterObstacle -= 50
-            moveBottomAfterObstacle = 0
-            moveRightAfterObstacle = 0
-            moveLeftAfterObstacle = 0
-
-        }
-
-    } else if (e.key == "Down" || e.key == "ArrowDown") {
-        if (moveBottomAfterObstacle != 0) {
-            celulePlayer[0].height == canvaHeight - 50 ? celulePlayer[0].height = canvaHeight - 50 : celulePlayer[0].height += 50
-            celulePlayer[0].height == canvaHeight - 50 ? moveBottomAfterObstacle = 0 : moveBottomAfterObstacle -= 50
-            moveTopAfterObstacle = 0
-            moveRightAfterObstacle = 0
-            moveLeftAfterObstacle = 0
-
-        }
-    }
-
-}
-
-function keyUpHandler(e) {
-    if (e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = false;
-    } else if (e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = false;
-    }
-}*/
