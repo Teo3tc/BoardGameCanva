@@ -1,7 +1,7 @@
 class Move {
 
 
-    static MakeDataMoveleft(player, celuleObstacle) {
+    static makeDataMoveleft(player, celuleObstacle) {
         let moveLeft = [];
         let width = player.width - 50;
         let height = player.height;
@@ -44,7 +44,7 @@ class Move {
         }
         player.move.left = moveLeftAfterObstacle;
     };
-    static MakeDataMoveTop(player, celuleObstacle) {
+    static makeDataMoveTop(player, celuleObstacle) {
         let moveLeft = [];
         let width = player.width;
         let height = player.height - 50;
@@ -82,7 +82,7 @@ class Move {
         }
         player.move.top = moveTopAfterObstacle
     };
-    static MakeDataMoveBottom(player, celuleObstacle) {
+    static makeDataMoveBottom(player, celuleObstacle) {
         let moveLeft = [];
         let width = player.width;
         let height = player.height + 50;
@@ -121,7 +121,7 @@ class Move {
         }
         player.move.down = moveBottomAfterObstacle
     };
-    static MakeDataMoveRight = ((player, celuleObstacle) => {
+    static makeDataMoveRight(player, celuleObstacle) {
         let moveLeft = [];
         let width = player.width + 50;
         let height = player.height;
@@ -159,7 +159,13 @@ class Move {
             }
         }
         player.move.right = moveRightAfterObstacle
-    });
+    };
+    static makeDataMovePlayer(player, celuleObstacle) {
+        this.makeDataMoveleft(player, celuleObstacle)
+        this.makeDataMoveTop(player, celuleObstacle)
+        this.makeDataMoveBottom(player, celuleObstacle)
+        this.makeDataMoveRight(player, celuleObstacle)
+    }
 }
 
 export default Move

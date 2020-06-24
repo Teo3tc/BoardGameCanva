@@ -1,9 +1,9 @@
 class Player {
-    constructor(width, height, up, down, left, right, color, play) {
+    constructor(width, height, top, down, left, right, color, play) {
         this.width = width;
         this.height = height;
         this.move = {
-            up: up,
+            top: top,
             down: down,
             left: left,
             right: right,

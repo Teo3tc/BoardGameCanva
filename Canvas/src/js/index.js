@@ -1,11 +1,11 @@
-import MakeWorld from './MakeWorld';
-import Player from './player'
-import Move from './move'
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+import MakeWorld from "./MakeWorld";
+import Player from "./player";
+import Move from "./move";
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 const canvaWidth = canvas.width;
 const canvaHeight = canvas.height;
-let armeColor = ['#8F6787', '#27242C', '#A3AD0B', '#21DE7C'];
+let armeColor = ["#8F6787", "#27242C", "#A3AD0B", "#21DE7C"];
 
 const celuleWidth = MakeWorld.makeGridData(canvaWidth);
 const celuleHeight = MakeWorld.makeGridData(canvaHeight);
@@ -28,26 +28,26 @@ const celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(
 
 const celulePlayer = MakeWorld.makeDataPlayer(celuleWidthHeightUpdate2, 2);
 
-console.log('width TABLEAU');
+console.log("width TABLEAU");
 console.log(celuleWidth);
-console.log('Height TABLEAU');
+console.log("Height TABLEAU");
 console.log(celuleHeight);
 
-console.log('width & height TABLEAU OBJECT');
+console.log("width & height TABLEAU OBJECT");
 console.log(celuleWidthHeight);
-console.log(' Update width & height TABLEAU OBJECT');
+console.log(" Update width & height TABLEAU OBJECT");
 console.log(celuleWidthHeightUpdate);
 
-console.log('celule Obestacle');
+console.log("celule Obestacle");
 console.log(celuleObstacle);
 
-console.log('celule Arme');
+console.log("celule Arme");
 console.log(celuleArme);
 
-console.log(' Update width & height TABLEAU OBJECT');
+console.log(" Update width & height TABLEAU OBJECT");
 console.log(celuleWidthHeightUpdate2);
 
-console.log(' CELULE PLAYER');
+console.log(" CELULE PLAYER");
 console.log(celulePlayer);
 
 class Draw {
@@ -62,7 +62,7 @@ class Draw {
         celules.forEach((celule) => {
             ctx.beginPath();
             ctx.rect(celule.width, celule.height, 50, 50);
-            ctx.fillStyle = '#FF0000';
+            ctx.fillStyle = "#FF0000";
             ctx.fill();
             ctx.closePath();
         });
@@ -81,21 +81,30 @@ class Draw {
     static drawPlayer(player) {
         ctx.beginPath();
         ctx.rect(player.width, player.height, 50, 50);
-        ctx.fillStyle = '#F9C5C6';
+        ctx.fillStyle = "#F9C5C6";
         ctx.fill();
         ctx.closePath();
     }
     static drawMoveLeft(player) {
         ctx.beginPath();
         ctx.fillStyle = player.move.color;
-        ctx.fillRect(player.width - player.move.left, player.height, player.move.left, 50);
+        ctx.fillRect(
+            player.width - player.move.left,
+            player.height,
+            player.move.left,
+            50
+        );
         ctx.closePath();
-
     }
     static drawMoveTop(player) {
         ctx.beginPath();
         ctx.fillStyle = player.move.color;
-        ctx.fillRect(player.width, player.height - player.move.top, 50, player.move.top);
+        ctx.fillRect(
+            player.width,
+            player.height - player.move.top,
+            50,
+            player.move.top
+        );
         ctx.closePath();
     }
     static drawMoveBottom = (player) => {
@@ -103,15 +112,13 @@ class Draw {
         ctx.fillStyle = player.move.color;
         ctx.fillRect(player.width, player.height + 50, 50, player.move.down);
         ctx.closePath();
-
-    }
+    };
     static drawMoveRight = (player) => {
         ctx.beginPath();
         ctx.fillStyle = player.move.color;
         ctx.fillRect(player.width + 50, player.height, player.move.right, 50);
         ctx.closePath();
-
-    }
+    };
 }
 
 const player1 = new Player(
@@ -121,7 +128,7 @@ const player1 = new Player(
     0,
     0,
     0,
-    'rgba(125, 206, 160,0.5)',
+    "rgba(125, 206, 160,0.5)",
     true
 );
 const player2 = new Player(
@@ -135,52 +142,37 @@ const player2 = new Player(
     false
 );
 
-
-console.log('LOG PLAYER 1');
+console.log("LOG PLAYER 1");
 console.log(player1);
 
-console.log('LOG PLAYER 2');
+console.log("LOG PLAYER 2");
 console.log(player2.move);
 
 
-const makeDataMovePlayer1 = () => {
-    Move.MakeDataMoveleft(player1, celuleObstacle)
-    Move.MakeDataMoveTop(player1, celuleObstacle)
-    Move.MakeDataMoveBottom(player1, celuleObstacle)
-    Move.MakeDataMoveRight(player1, celuleObstacle)
 
-}
-const makeDataMovePlayer2 = () => {
-    Move.MakeDataMoveleft(player2, celuleObstacle)
-    Move.MakeDataMoveTop(player2, celuleObstacle)
-    Move.MakeDataMoveBottom(player2, celuleObstacle)
-    Move.MakeDataMoveRight(player2, celuleObstacle)
-
-}
-makeDataMovePlayer1()
-makeDataMovePlayer2()
+Move.makeDataMovePlayer(player1, celuleObstacle);
 const drawMovement = () => {
+    Draw.drawMoveLeft(player1);
+    Draw.drawMoveLeft(player2);
 
-    Draw.drawMoveLeft(player1)
-    Draw.drawMoveLeft(player2)
+    Draw.drawMoveTop(player1);
+    Draw.drawMoveTop(player2);
 
-    Draw.drawMoveTop(player1)
-    Draw.drawMoveTop(player2)
+    Draw.drawMoveBottom(player1);
+    Draw.drawMoveBottom(player2);
 
-    Draw.drawMoveBottom(player1)
-    Draw.drawMoveBottom(player2)
-
-    Draw.drawMoveRight(player1)
-    Draw.drawMoveRight(player2)
-}
-
+    Draw.drawMoveRight(player1);
+    Draw.drawMoveRight(player2);
+};
 
 console.log(player1);
 console.log(player2);
 
-
 var rightPressed = false;
 var leftPressed = false;
+var topPressed = false;
+var downPressed = false;
+var enterPressed = false;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -189,6 +181,12 @@ function keyDownHandler(e) {
         rightPressed = true;
     } else if (e.keyCode == 37) {
         leftPressed = true;
+    } else if (e.keyCode == 38) {
+        topPressed = true;
+    } else if (e.keyCode == 40) {
+        downPressed = true;
+    } else if (e.keyCode == 13) {
+        enterPressed = true;
     }
 }
 
@@ -197,10 +195,16 @@ function keyUpHandler(e) {
         rightPressed = false;
     } else if (e.keyCode == 37) {
         leftPressed = false;
+    } else if (e.keyCode == 38) {
+        topPressed = false;
+    } else if (e.keyCode == 40) {
+        downPressed = false;
+    } else if (e.keyCode == 13) {
+        enterPressed = false;
     }
 }
 
-const fullPlayer = [player1, player2]
+const fullPlayer = [player1, player2];
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -210,41 +214,168 @@ function draw() {
     Draw.drawPlayer(player1);
     Draw.drawPlayer(player2);
 
-
-    drawMovement()
+    drawMovement();
+    // move right
     if (player1.play && rightPressed && player1.move.right != 0) {
-        player1.width == canvaWidth - 50 ? player1.width = canvaWidth - 50 : player1.width += 50
-        player1.move.right -= 50
-        player1.move.top = 0
-        player1.move.left = 0
-        player1.move.down = 0
-        rightPressed = false
+        player1.width == canvaWidth - 50 ?
+            (player1.width = canvaWidth - 50) :
+            (player1.width += 50);
+        player1.move.right -= 50;
+        player1.move.top = 0;
+        player1.move.left = 0;
+        player1.move.down = 0;
+        rightPressed = false;
         if (player1.move.right == 0) {
-            player1.play = false
-            player2.play = true
-            makeDataMovePlayer1()
+            player1.play = false;
+            player2.play = true;
+            Move.makeDataMovePlayer(player2, celuleObstacle);
         }
     }
     if (player2.play && rightPressed && player2.move.right != 0) {
-        player2.width == canvaWidth - 50 ? player2.width = canvaWidth - 50 : player2.width += 50
-        player2.move.right -= 50
-        player2.move.top = 0
-        player2.move.left = 0
-        player2.move.down = 0
-        rightPressed = false
+        player2.width == canvaWidth - 50 ?
+            (player2.width = canvaWidth - 50) :
+            (player2.width += 50);
+        player2.move.right -= 50;
+        player2.move.top = 0;
+        player2.move.left = 0;
+        player2.move.down = 0;
+        rightPressed = false;
 
         if (player2.move.right == 0) {
-            player2.play = false
-            player1.play = true
-            makeDataMovePlayer2()
+            player2.play = false;
+            player1.play = true;
+            Move.makeDataMovePlayer(player1, celuleObstacle);
+        }
+    } // move left
+    if (player1.play && leftPressed && player1.move.left != 0) {
+        player1.width == 0 ?
+            (player1.width = 0) :
+            (player1.width -= 50);
+        player1.move.left -= 50;
+        player1.move.top = 0;
+        player1.move.right = 0;
+        player1.move.down = 0;
+        leftPressed = false;
+        if (player1.move.left == 0) {
+            player1.play = false;
+            player2.play = true;
+            Move.makeDataMovePlayer(player2, celuleObstacle);
+        }
+    }
+    if (player2.play && leftPressed && player2.move.left != 0) {
+        player2.width == 0 ?
+            (player2.width = 0) :
+            (player2.width -= 50);
+        player2.move.left -= 50;
+        player2.move.top = 0;
+        player2.move.right = 0;
+        player2.move.down = 0;
+        leftPressed = false;
+
+        if (player2.move.left == 0) {
+            leftPressed = false;
+
+            player2.play = false;
+            player1.play = true;
+            Move.makeDataMovePlayer(player1, celuleObstacle);
+        }
+    } // move top
+    if (player1.play && topPressed && player1.move.top != 0) {
+        player1.height == 0 ?
+            (player1.height = 0) :
+            (player1.height -= 50);
+        player1.move.top -= 50;
+        player1.move.down = 0;
+        player1.move.right = 0;
+        player1.move.left = 0;
+        topPressed = false;
+        console.log(player1.height);
+
+        if (player1.move.top == 0) {
+            player1.play = false;
+            player2.play = true;
+            Move.makeDataMovePlayer(player2, celuleObstacle);
+        }
+    }
+    if (player2.play && topPressed && player2.move.top != 0) {
+        player2.height == 0 ?
+            (player2.height = 0) :
+            (player2.height -= 50);
+        player2.move.top -= 50;
+        player2.move.down = 0;
+        player2.move.right = 0;
+        player2.move.left = 0;
+        topPressed = false;
+
+        if (player2.move.top == 0) {
+
+            player2.play = false;
+            player1.play = true;
+            Move.makeDataMovePlayer(player1, celuleObstacle);
+        }
+    }
+    // move down
+    if (player1.play && downPressed && player1.move.down != 0) {
+        player1.height == canvaHeight - 50 ?
+            (player1.height = canvaHeight - 50) :
+            (player1.height += 50);
+        player1.move.down -= 50;
+        player1.move.top = 0;
+        player1.move.left = 0;
+        player1.move.right = 0;
+        downPressed = false;
+        if (player1.move.down == 0) {
+            player1.play = false;
+            player2.play = true;
+            Move.makeDataMovePlayer(player2, celuleObstacle);
+        }
+    }
+    if (player2.play && downPressed && player2.move.down != 0) {
+        player2.height == canvaHeight - 50 ?
+            (player2.height = canvaHeight - 50) :
+            (player2.height += 50);
+        player2.move.down -= 50;
+        player2.move.top = 0;
+        player2.move.left = 0;
+        player2.move.right = 0;
+        downPressed = false;
+
+        if (player2.move.down == 0) {
+            player2.play = false;
+            player1.play = true;
+            Move.makeDataMovePlayer(player1, celuleObstacle);
+        }
+    }
+    // stop turn 
+    if (player1.play && enterPressed) {
+        player1.move.down = 0;
+        player1.move.top = 0;
+        player1.move.left = 0;
+        player1.move.right = 0;
+        if (player1.move.down == 0) {
+            player1.play = false;
+            player2.play = true;
+            Move.makeDataMovePlayer(player2, celuleObstacle);
+            enterPressed = false;
 
         }
     }
+    if (player2.play && enterPressed) {
+        player2.move.down = 0;
+        player2.move.top = 0;
+        player2.move.left = 0;
+        player2.move.right = 0;
+        if (player2.move.down == 0) {
+            player2.play = false;
+            player1.play = true;
+            Move.makeDataMovePlayer(player1, celuleObstacle);
+            enterPressed = false;
 
-
+        }
+    }
 }
 
-console.log('-------  Array player   ------');
+console.log("-------  Array player   ------");
 
 console.log(fullPlayer);
 
