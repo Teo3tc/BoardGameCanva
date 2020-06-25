@@ -278,200 +278,211 @@ function draw() {
     Draw.drawPlayer(player2);
 
     drawMovement();
-    take(player1, fullArmes)
+    if (player1.play) {
+        take(player1, fullArmes)
+        // move right
+        if (rightPressed && player1.move.right != 0) {
+            player1.width == canvaWidth - 50 ?
+                (player1.width = canvaWidth - 50) :
+                (player1.width += 50);
+            player1.move.right -= 50;
+            player1.move.top = 0;
+            player1.move.left = 0;
+            player1.move.down = 0;
 
-    // move right
-    if (player1.play && rightPressed && player1.move.right != 0) {
-        player1.width == canvaWidth - 50 ?
-            (player1.width = canvaWidth - 50) :
-            (player1.width += 50);
-        player1.move.right -= 50;
-        player1.move.top = 0;
-        player1.move.left = 0;
-        player1.move.down = 0;
-
-        rightPressed = false;
+            rightPressed = false;
 
 
-        if (player1.move.right == 0) {
-            player1.play = false;
-            player2.play = true;
-            donTakeArmes(player1)
-            Move.makeDataMovePlayer(player2, celuleObstacle);
+            if (player1.move.right == 0) {
+                player1.play = false;
+                player2.play = true;
+                donTakeArmes(player1)
+                Move.makeDataMovePlayer(player2, celuleObstacle);
+            }
         }
-    }
-    if (player2.play && rightPressed && player2.move.right != 0) {
-        player2.width == canvaWidth - 50 ?
-            (player2.width = canvaWidth - 50) :
-            (player2.width += 50);
-        player2.move.right -= 50;
-        player2.move.top = 0;
-        player2.move.left = 0;
-        player2.move.down = 0;
-        take(player2, fullArmes)
-
-        rightPressed = false;
-
-        if (player2.move.right == 0) {
-            player2.play = false;
-            player1.play = true;
-            donTakeArmes(player2)
-            Move.makeDataMovePlayer(player1, celuleObstacle);
-        }
-    } // move left
-    if (player1.play && leftPressed && player1.move.left != 0) {
-        player1.width == 0 ?
-            (player1.width = 0) :
-            (player1.width -= 50);
-        player1.move.left -= 50;
-        player1.move.top = 0;
-        player1.move.right = 0;
-        player1.move.down = 0;
-        donTakeArmes(player1)
-
-        leftPressed = false;
-
-        if (player1.move.left == 0) {
-            player1.play = false;
-            player2.play = true;
-            donTakeArmes(player2)
-
-            Move.makeDataMovePlayer(player2, celuleObstacle);
-        }
-    }
-    if (player2.play && leftPressed && player2.move.left != 0) {
-        player2.width == 0 ?
-            (player2.width = 0) :
-            (player2.width -= 50);
-        player2.move.left -= 50;
-        player2.move.top = 0;
-        player2.move.right = 0;
-        player2.move.down = 0;
-        take(player2, fullArmes)
-
-        leftPressed = false;
-
-        if (player2.move.left == 0) {
-            player2.play = false;
-            player1.play = true;
-            donTakeArmes(player2)
-
-            Move.makeDataMovePlayer(player1, celuleObstacle);
-        }
-    } // move top
-    if (player1.play && topPressed && player1.move.top != 0) {
-        player1.height == 0 ?
-            (player1.height = 0) :
-            (player1.height -= 50);
-        player1.move.top -= 50;
-        player1.move.down = 0;
-        player1.move.right = 0;
-        player1.move.left = 0;
-
-        topPressed = false;
-
-        if (player1.move.top == 0) {
-            player1.play = false;
-            player2.play = true;
+        if (player1.play && leftPressed && player1.move.left != 0) {
+            player1.width == 0 ?
+                (player1.width = 0) :
+                (player1.width -= 50);
+            player1.move.left -= 50;
+            player1.move.top = 0;
+            player1.move.right = 0;
+            player1.move.down = 0;
             donTakeArmes(player1)
 
-            Move.makeDataMovePlayer(player2, celuleObstacle);
+            leftPressed = false;
+
+            if (player1.move.left == 0) {
+                player1.play = false;
+                player2.play = true;
+                donTakeArmes(player2)
+
+                Move.makeDataMovePlayer(player2, celuleObstacle);
+            }
+        }
+        if (player1.play && topPressed && player1.move.top != 0) {
+            player1.height == 0 ?
+                (player1.height = 0) :
+                (player1.height -= 50);
+            player1.move.top -= 50;
+            player1.move.down = 0;
+            player1.move.right = 0;
+            player1.move.left = 0;
+
+            topPressed = false;
+
+            if (player1.move.top == 0) {
+                player1.play = false;
+                player2.play = true;
+                donTakeArmes(player1)
+
+                Move.makeDataMovePlayer(player2, celuleObstacle);
+            }
+        }
+        if (player1.play && downPressed && player1.move.down != 0) {
+            player1.height == canvaHeight - 50 ?
+                (player1.height = canvaHeight - 50) :
+                (player1.height += 50);
+            player1.move.down -= 50;
+            player1.move.top = 0;
+            player1.move.left = 0;
+            player1.move.right = 0;
+
+            downPressed = false;
+
+            if (player1.move.down == 0) {
+                player1.play = false;
+                player2.play = true;
+                donTakeArmes(player1)
+
+                Move.makeDataMovePlayer(player2, celuleObstacle);
+            }
+        }
+        if (player1.play && enterPressed) {
+            player1.move.down = 0;
+            player1.move.top = 0;
+            player1.move.left = 0;
+            player1.move.right = 0;
+
+            if (player1.move.down == 0) {
+                player1.play = false;
+                player2.play = true;
+                specilaStopTurn(player1, fullArmes)
+                Move.makeDataMovePlayer(player2, celuleObstacle);
+                enterPressed = false;
+
+            }
         }
     }
-    if (player2.play && topPressed && player2.move.top != 0) {
-        player2.height == 0 ?
-            (player2.height = 0) :
-            (player2.height -= 50);
-        player2.move.top -= 50;
-        player2.move.down = 0;
-        player2.move.right = 0;
-        player2.move.left = 0;
+    if (player2.play) {
         take(player2, fullArmes)
 
-        topPressed = false
+        if (player2.play && rightPressed && player2.move.right != 0) {
+            player2.width == canvaWidth - 50 ?
+                (player2.width = canvaWidth - 50) :
+                (player2.width += 50);
+            player2.move.right -= 50;
+            player2.move.top = 0;
+            player2.move.left = 0;
+            player2.move.down = 0;
 
-        if (player2.move.top == 0) {
 
-            player2.play = false;
-            player1.play = true;
-            player2.gun == 2 ? player2.gun = 1 : player2.gun = 0
-            donTakeArmes(player2)
+            rightPressed = false;
 
-            Move.makeDataMovePlayer(player1, celuleObstacle);
+            if (player2.move.right == 0) {
+                player2.play = false;
+                player1.play = true;
+                donTakeArmes(player2)
+                Move.makeDataMovePlayer(player1, celuleObstacle);
+            }
+        } // move left
+
+        if (player2.play && leftPressed && player2.move.left != 0) {
+            player2.width == 0 ?
+                (player2.width = 0) :
+                (player2.width -= 50);
+            player2.move.left -= 50;
+            player2.move.top = 0;
+            player2.move.right = 0;
+            player2.move.down = 0;
+
+
+            leftPressed = false;
+
+            if (player2.move.left == 0) {
+                player2.play = false;
+                player1.play = true;
+                donTakeArmes(player2)
+
+                Move.makeDataMovePlayer(player1, celuleObstacle);
+            }
+        } // move top
+
+        if (player2.play && topPressed && player2.move.top != 0) {
+            player2.height == 0 ?
+                (player2.height = 0) :
+                (player2.height -= 50);
+            player2.move.top -= 50;
+            player2.move.down = 0;
+            player2.move.right = 0;
+            player2.move.left = 0;
+
+
+            topPressed = false
+
+            if (player2.move.top == 0) {
+
+                player2.play = false;
+                player1.play = true;
+                player2.gun == 2 ? player2.gun = 1 : player2.gun = 0
+                donTakeArmes(player2)
+
+                Move.makeDataMovePlayer(player1, celuleObstacle);
+            }
         }
-    }
-    // move down
-    if (player1.play && downPressed && player1.move.down != 0) {
-        player1.height == canvaHeight - 50 ?
-            (player1.height = canvaHeight - 50) :
-            (player1.height += 50);
-        player1.move.down -= 50;
-        player1.move.top = 0;
-        player1.move.left = 0;
-        player1.move.right = 0;
+        // move down
 
-        downPressed = false;
+        if (player2.play && downPressed && player2.move.down != 0) {
+            player2.height == canvaHeight - 50 ?
+                (player2.height = canvaHeight - 50) :
+                (player2.height += 50);
+            player2.move.down -= 50;
+            player2.move.top = 0;
+            player2.move.left = 0;
+            player2.move.right = 0;
 
-        if (player1.move.down == 0) {
-            player1.play = false;
-            player2.play = true;
-            donTakeArmes(player1)
 
-            Move.makeDataMovePlayer(player2, celuleObstacle);
+            downPressed = false;
+
+            if (player2.move.down == 0) {
+                player2.play = false;
+                player1.play = true;
+                donTakeArmes(player2)
+
+                Move.makeDataMovePlayer(player1, celuleObstacle);
+            }
         }
-    }
-    if (player2.play && downPressed && player2.move.down != 0) {
-        player2.height == canvaHeight - 50 ?
-            (player2.height = canvaHeight - 50) :
-            (player2.height += 50);
-        player2.move.down -= 50;
-        player2.move.top = 0;
-        player2.move.left = 0;
-        player2.move.right = 0;
-        take(player2, fullArmes)
+        // stop turn 
 
-        downPressed = false;
+        if (player2.play && enterPressed) {
+            player2.move.down = 0;
+            player2.move.top = 0;
+            player2.move.left = 0;
+            player2.move.right = 0;
+            if (player2.move.down == 0) {
+                player2.play = false;
+                player1.play = true;
+                specilaStopTurn(player2, fullArmes)
 
-        if (player2.move.down == 0) {
-            player2.play = false;
-            player1.play = true;
-            donTakeArmes(player2)
+                Move.makeDataMovePlayer(player1, celuleObstacle);
+                enterPressed = false;
 
-            Move.makeDataMovePlayer(player1, celuleObstacle);
+            }
         }
+        // Take armes
     }
-    // stop turn 
-    if (player1.play && enterPressed) {
-        player1.move.down = 0;
-        player1.move.top = 0;
-        player1.move.left = 0;
-        player1.move.right = 0;
 
-        if (player1.move.down == 0) {
-            player1.play = false;
-            player2.play = true;
-            specilaStopTurn(player1, fullArmes)
-            Move.makeDataMovePlayer(player2, celuleObstacle);
-            enterPressed = false;
 
-        }
-    }
-    if (player2.play && enterPressed) {
-        player2.move.down = 0;
-        player2.move.top = 0;
-        player2.move.left = 0;
-        player2.move.right = 0;
-        if (player2.move.down == 0) {
-            player2.play = false;
-            player1.play = true;
-            specilaStopTurn(player2, fullArmes)
-
-            Move.makeDataMovePlayer(player1, celuleObstacle);
-            enterPressed = false;
-
-        }
-    }
-    // Take armes
 
 }
 
