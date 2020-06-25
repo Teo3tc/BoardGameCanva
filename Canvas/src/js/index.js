@@ -1,6 +1,7 @@
 import MakeWorld from "./MakeWorld";
 import Player from "./player";
 import Move from "./move";
+import Armes from "./arme"
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const canvaWidth = canvas.width;
@@ -15,7 +16,7 @@ const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(
     canvaWidth,
     canvaHeight
 );
-const celuleObstacle = MakeWorld.makeDataOfObstacle(50, celuleWidthHeight);
+const celuleObstacle = MakeWorld.makeDataOfObstacle(10, celuleWidthHeight);
 const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleObstacle
@@ -67,16 +68,16 @@ class Draw {
             ctx.closePath();
         });
     }
-    static drawArms(celules) {
-        let index = 0;
-        celules.forEach((celule) => {
+    static drawArms(armes) {
+        armes.forEach(arme => {
+
             ctx.beginPath();
-            ctx.rect(celule.width, celule.height, 50, 50);
-            ctx.fillStyle = armeColor[index];
+            ctx.rect(arme.name.width, arme.name.height, 50, 50);
+            ctx.fillStyle = arme.name.color;
             ctx.fill();
             ctx.closePath();
-            index += 1;
         });
+
     }
     static drawPlayer(player) {
         ctx.beginPath();
@@ -142,6 +143,18 @@ const player2 = new Player(
     false
 );
 
+const fullArmes = [{
+    name: new Armes('arme1', celuleArme[0].width, celuleArme[0].height, "#8F6787", 50)
+}, {
+    name: new Armes('arme2', celuleArme[1].width, celuleArme[1].height, "#27242C", 100)
+}, {
+    name: new Armes('arme3', celuleArme[2].width, celuleArme[2].height, "#A3AD0B", 20)
+}, {
+    name: new Armes('arme4', celuleArme[3].width, celuleArme[3].height, "#21DE7C", 70)
+}]
+console.log('LOG ARRAY ARMES');
+console.log(fullArmes);
+
 console.log("LOG PLAYER 1");
 console.log(player1);
 
@@ -164,9 +177,6 @@ const drawMovement = () => {
     Draw.drawMoveRight(player1);
     Draw.drawMoveRight(player2);
 };
-
-console.log(player1);
-console.log(player2);
 
 var rightPressed = false;
 var leftPressed = false;
@@ -206,16 +216,44 @@ function keyUpHandler(e) {
 
 const fullPlayer = [player1, player2];
 
+function take() {
+    fullArmes.forEach((arms, index) => {
+        if (player1.width == arms.name.width && player1.height == arms.name.height) {
+            if (player1.gun == 0 && player1.arme == undefined) {
+
+                console.log('you have Armes');
+                player1.arme = arms
+                console.log(player1.arme);
+                fullArmes.splice(index, 1)
+                console.log(index);
+                player1.gun = 1
+                console.log(player1.gun);
+                rightPressed = false;
+            } else if (player1.gun == 1) {
+                console.log('CHANGE');
+                player1.arme.name.width = arms.name.width
+                player1.arme.name.height = arms.name.height
+                fullArmes.push(player1.arme)
+                player1.arme = arms
+            }
+        }
+    });
+
+}
+
 function draw() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     Draw.drawGrid(celuleWidthHeightUpdate2);
     Draw.drawObstacle(celuleObstacle);
-    Draw.drawArms(celuleArme);
+    Draw.drawArms(fullArmes)
     Draw.drawPlayer(player1);
     Draw.drawPlayer(player2);
 
     drawMovement();
+
+
+
     // move right
     if (player1.play && rightPressed && player1.move.right != 0) {
         player1.width == canvaWidth - 50 ?
@@ -227,24 +265,10 @@ function draw() {
         player1.move.down = 0;
         rightPressed = false;
 
-        celuleArme.forEach((arms, index) => {
-            if (player1.width == arms.width && player1.height == arms.height && player1.gun == true) {
-                console.log('changeArme');
 
-            }
-            if (player1.width == arms.width && player1.height == arms.height && player1.gun == false) {
-                console.log('you have Armes');
-                player1.arme = arms
-                console.log(player1.arme);
-                celuleArme.splice(index, 1)
-                console.log(index);
-                player1.gun = true
-                console.log(player1.gun);
+        take()
 
 
-            }
-
-        });
 
         if (player1.move.right == 0) {
             player1.play = false;
@@ -262,6 +286,8 @@ function draw() {
         player2.move.down = 0;
         rightPressed = false;
 
+        take()
+
         if (player2.move.right == 0) {
             player2.play = false;
             player1.play = true;
@@ -277,6 +303,9 @@ function draw() {
         player1.move.right = 0;
         player1.move.down = 0;
         leftPressed = false;
+
+        take()
+
         if (player1.move.left == 0) {
             player1.play = false;
             player2.play = true;
@@ -292,6 +321,8 @@ function draw() {
         player2.move.right = 0;
         player2.move.down = 0;
         leftPressed = false;
+
+        take()
 
         if (player2.move.left == 0) {
             leftPressed = false;
@@ -310,7 +341,8 @@ function draw() {
         player1.move.right = 0;
         player1.move.left = 0;
         topPressed = false;
-        console.log(player1.height);
+
+        take()
 
         if (player1.move.top == 0) {
             player1.play = false;
@@ -326,7 +358,9 @@ function draw() {
         player2.move.down = 0;
         player2.move.right = 0;
         player2.move.left = 0;
-        topPressed = false;
+        topPressed = false
+
+        take()
 
         if (player2.move.top == 0) {
 
@@ -345,6 +379,9 @@ function draw() {
         player1.move.left = 0;
         player1.move.right = 0;
         downPressed = false;
+
+        take()
+
         if (player1.move.down == 0) {
             player1.play = false;
             player2.play = true;
@@ -360,6 +397,8 @@ function draw() {
         player2.move.left = 0;
         player2.move.right = 0;
         downPressed = false;
+
+        take()
 
         if (player2.move.down == 0) {
             player2.play = false;
@@ -401,3 +440,8 @@ console.log("-------  Array player   ------");
 console.log(fullPlayer);
 
 setInterval(draw, 10);
+
+const statutPlayer1 = document.querySelector('.player1_width')
+let player1Width = document.createElement("h3")
+player1Width.textContent = `player1 W :${player1.width}`
+statutPlayer1.appendChild(player1Width)
