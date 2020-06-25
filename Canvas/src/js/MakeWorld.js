@@ -71,6 +71,35 @@ class MakeWorld {
         });
         return celuleSafeAfterObstacle
     };
+    static makeDataArme(celuleWidthHeight, nbrArmes) {
+        let widthHeight = [];
+        let celuleArmes = []
+        for (let index = 0; index < nbrArmes; index++) {
+            widthHeight = celuleWidthHeight[
+                Math.floor(Math.random() * celuleWidthHeight.length)
+            ]
+            while (widthHeight.value == 'obastacle') {
+                console.log('Check for find new Celule for Player');
+
+                widthHeight = celuleWidthHeight[
+                    Math.floor(Math.random() * celuleWidthHeight.length)
+                ]
+            }
+
+            celuleArmes.forEach(checkSameOrNot => {
+                while (checkSameOrNot == widthHeight) {
+                    console.log('Check for find new Celule');
+
+                    widthHeight = celuleWidthHeight[
+                        Math.floor(Math.random() * celuleWidthHeight.length)
+                    ]
+                }
+
+            });
+            celuleArmes.push(widthHeight)
+        }
+        return celuleArmes
+    };
     static makeDataPlayer(celuleWidthHeight, nbrPlayer) {
         let widthHeight = [];
         let celulePlayer = []
