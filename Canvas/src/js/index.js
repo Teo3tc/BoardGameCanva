@@ -21,7 +21,7 @@ const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleObstacle
 );
-const celuleArme = MakeWorld.makeDataOfObstacle(4, celuleWidthHeight);
+const celuleArme = MakeWorld.makeDataArme(celuleWidthHeightUpdate, 4);
 const celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleArme
@@ -183,6 +183,7 @@ var leftPressed = false;
 var topPressed = false;
 var downPressed = false;
 var enterPressed = false;
+var spacePressed = false;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -197,6 +198,8 @@ function keyDownHandler(e) {
         downPressed = true;
     } else if (e.keyCode == 13) {
         enterPressed = true;
+    } else if (e.keyCode == 32) {
+        spacePressed = true;
     }
 }
 
@@ -211,34 +214,58 @@ function keyUpHandler(e) {
         downPressed = false;
     } else if (e.keyCode == 13) {
         enterPressed = false;
+    } else if (e.keyCode == 32) {
+        spacePressed = true;
     }
 }
 
 const fullPlayer = [player1, player2];
 
-function take() {
-    fullArmes.forEach((arms, index) => {
-        if (player1.width == arms.name.width && player1.height == arms.name.height) {
-            if (player1.gun == 0 && player1.arme == undefined) {
+
+function take(player, armes) {
+    armes.forEach((arms, index) => {
+        if (player.width == arms.name.width && player.height == arms.name.height) {
+            if (player.gun == 0 && player.arme == undefined) {
 
                 console.log('you have Armes');
-                player1.arme = arms
-                console.log(player1.arme);
-                fullArmes.splice(index, 1)
+                player.arme = arms
+                console.log(player.arme);
+                armes.splice(index, 1)
                 console.log(index);
-                player1.gun = 1
-                console.log(player1.gun);
-                rightPressed = false;
-            } else if (player1.gun == 1) {
+                player.gun = 1
+                console.log(player.gun);
+            } else if (player.gun == 1) {
                 console.log('CHANGE');
-                player1.arme.name.width = arms.name.width
-                player1.arme.name.height = arms.name.height
-                fullArmes.push(player1.arme)
-                player1.arme = arms
+                player.arme.name.width = player.width
+                player.arme.name.height = player.height
+                armes.push(player.arme)
+                player.arme = arms
+                armes.splice(index, 1)
+                player.gun = 2
+
             }
         }
     });
 
+}
+
+function specilaStopTurn(player, armes) {
+    armes.forEach(arme => {
+        if (player.width != arme.name.width && player.height != arme.name.height) {
+            if (player.gun != 0) {
+                player.gun == 2 ? player.gun = 1 : player.gun = 1
+                console.log(player.gun);
+            }
+        }
+
+    });
+}
+
+function donTakeArmes(player) {
+    if (player.gun != 0) {
+        player.gun == 2 ? player.gun = 1 : player.gun = 1
+        console.log(player.gun);
+    }
 }
 
 function draw() {
@@ -251,8 +278,7 @@ function draw() {
     Draw.drawPlayer(player2);
 
     drawMovement();
-
-
+    take(player1, fullArmes)
 
     // move right
     if (player1.play && rightPressed && player1.move.right != 0) {
@@ -263,16 +289,14 @@ function draw() {
         player1.move.top = 0;
         player1.move.left = 0;
         player1.move.down = 0;
+
         rightPressed = false;
-
-
-        take()
-
 
 
         if (player1.move.right == 0) {
             player1.play = false;
             player2.play = true;
+            donTakeArmes(player1)
             Move.makeDataMovePlayer(player2, celuleObstacle);
         }
     }
@@ -284,13 +308,14 @@ function draw() {
         player2.move.top = 0;
         player2.move.left = 0;
         player2.move.down = 0;
-        rightPressed = false;
+        take(player2, fullArmes)
 
-        take()
+        rightPressed = false;
 
         if (player2.move.right == 0) {
             player2.play = false;
             player1.play = true;
+            donTakeArmes(player2)
             Move.makeDataMovePlayer(player1, celuleObstacle);
         }
     } // move left
@@ -302,13 +327,15 @@ function draw() {
         player1.move.top = 0;
         player1.move.right = 0;
         player1.move.down = 0;
-        leftPressed = false;
+        donTakeArmes(player1)
 
-        take()
+        leftPressed = false;
 
         if (player1.move.left == 0) {
             player1.play = false;
             player2.play = true;
+            donTakeArmes(player2)
+
             Move.makeDataMovePlayer(player2, celuleObstacle);
         }
     }
@@ -320,15 +347,15 @@ function draw() {
         player2.move.top = 0;
         player2.move.right = 0;
         player2.move.down = 0;
+        take(player2, fullArmes)
+
         leftPressed = false;
 
-        take()
-
         if (player2.move.left == 0) {
-            leftPressed = false;
-
             player2.play = false;
             player1.play = true;
+            donTakeArmes(player2)
+
             Move.makeDataMovePlayer(player1, celuleObstacle);
         }
     } // move top
@@ -340,13 +367,14 @@ function draw() {
         player1.move.down = 0;
         player1.move.right = 0;
         player1.move.left = 0;
-        topPressed = false;
 
-        take()
+        topPressed = false;
 
         if (player1.move.top == 0) {
             player1.play = false;
             player2.play = true;
+            donTakeArmes(player1)
+
             Move.makeDataMovePlayer(player2, celuleObstacle);
         }
     }
@@ -358,14 +386,17 @@ function draw() {
         player2.move.down = 0;
         player2.move.right = 0;
         player2.move.left = 0;
-        topPressed = false
+        take(player2, fullArmes)
 
-        take()
+        topPressed = false
 
         if (player2.move.top == 0) {
 
             player2.play = false;
             player1.play = true;
+            player2.gun == 2 ? player2.gun = 1 : player2.gun = 0
+            donTakeArmes(player2)
+
             Move.makeDataMovePlayer(player1, celuleObstacle);
         }
     }
@@ -378,13 +409,14 @@ function draw() {
         player1.move.top = 0;
         player1.move.left = 0;
         player1.move.right = 0;
-        downPressed = false;
 
-        take()
+        downPressed = false;
 
         if (player1.move.down == 0) {
             player1.play = false;
             player2.play = true;
+            donTakeArmes(player1)
+
             Move.makeDataMovePlayer(player2, celuleObstacle);
         }
     }
@@ -396,13 +428,15 @@ function draw() {
         player2.move.top = 0;
         player2.move.left = 0;
         player2.move.right = 0;
-        downPressed = false;
+        take(player2, fullArmes)
 
-        take()
+        downPressed = false;
 
         if (player2.move.down == 0) {
             player2.play = false;
             player1.play = true;
+            donTakeArmes(player2)
+
             Move.makeDataMovePlayer(player1, celuleObstacle);
         }
     }
@@ -412,9 +446,11 @@ function draw() {
         player1.move.top = 0;
         player1.move.left = 0;
         player1.move.right = 0;
+
         if (player1.move.down == 0) {
             player1.play = false;
             player2.play = true;
+            specilaStopTurn(player1, fullArmes)
             Move.makeDataMovePlayer(player2, celuleObstacle);
             enterPressed = false;
 
@@ -428,11 +464,15 @@ function draw() {
         if (player2.move.down == 0) {
             player2.play = false;
             player1.play = true;
+            specilaStopTurn(player2, fullArmes)
+
             Move.makeDataMovePlayer(player1, celuleObstacle);
             enterPressed = false;
 
         }
     }
+    // Take armes
+
 }
 
 console.log("-------  Array player   ------");
@@ -440,8 +480,3 @@ console.log("-------  Array player   ------");
 console.log(fullPlayer);
 
 setInterval(draw, 10);
-
-const statutPlayer1 = document.querySelector('.player1_width')
-let player1Width = document.createElement("h3")
-player1Width.textContent = `player1 W :${player1.width}`
-statutPlayer1.appendChild(player1Width)
