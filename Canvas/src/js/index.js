@@ -23,7 +23,7 @@ const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(
     canvaWidth,
     canvaHeight
 );
-const celuleObstacle = MakeWorld.makeDataOfObstacle(10, celuleWidthHeight);
+const celuleObstacle = MakeWorld.makeDataOfObstacle(20, celuleWidthHeight);
 const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleObstacle
@@ -216,7 +216,7 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (player1.fight == false) {
 
-        Draw.drawGrid(ctx, celuleWidthHeightUpdate2);
+        //Draw.drawGrid(ctx, celuleWidthHeightUpdate2);
         Draw.drawObstacle(ctx, celuleObstacle);
         Draw.drawArms(ctx, fullArmes);
         Draw.drawPlayer(ctx, player1);
@@ -317,7 +317,7 @@ function draw() {
                     player1.fight = true
 
                 }
-                if (player1.move.down == 0) {
+                if (player1.move.down == 0 && move == 0) {
                     player1.play = false;
                     player2.play = true;
                     move = 3
@@ -360,7 +360,7 @@ function draw() {
 
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
 
-                if (player2.move.right == 0) {
+                if (player2.move.right == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
                     move = 3
@@ -377,7 +377,7 @@ function draw() {
                 leftPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
 
-                if (player2.move.left == 0) {
+                if (player2.move.left == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
                     move = 3
@@ -395,7 +395,7 @@ function draw() {
                 topPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
 
-                if (player2.move.top == 0) {
+                if (player2.move.top == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
                     move = 3
@@ -417,7 +417,7 @@ function draw() {
                 downPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
 
-                if (player2.move.down == 0) {
+                if (player2.move.down == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
                     move = 3
