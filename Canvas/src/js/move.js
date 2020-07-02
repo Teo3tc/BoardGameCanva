@@ -1,13 +1,16 @@
 class Move {
 
 
-    static makeDataMoveleft(player, celuleObstacle) {
+    static makeDataMoveleft(player, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width - 50;
         let height = player.height;
         let saveObstacle = [];
         let moveLeftAfterObstacle = 150
-        for (let index = 0; index < 3; index++) {
+        move == 2 ? moveLeftAfterObstacle = 100 : moveLeftAfterObstacle
+        move == 1 ? moveLeftAfterObstacle = 50 : moveLeftAfterObstacle
+        move == 0 ? moveLeftAfterObstacle = 0 : moveLeftAfterObstacle
+        for (let index = 0; index < move; index++) {
             moveLeft.push({
                 width,
                 height
@@ -44,13 +47,19 @@ class Move {
         }
         player.move.left = moveLeftAfterObstacle;
     };
-    static makeDataMoveTop(player, celuleObstacle) {
+    static makeDataMoveTop(player, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width;
         let height = player.height - 50;
         let saveObstacle = [];
         let moveTopAfterObstacle = 150
-        for (let index = 0; index < 3; index++) {
+
+        move == 2 ? moveTopAfterObstacle = 100 : moveTopAfterObstacle
+        move == 1 ? moveTopAfterObstacle = 50 : moveTopAfterObstacle
+        move == 0 ? moveTopAfterObstacle = 0 : moveTopAfterObstacle
+        console.log(moveTopAfterObstacle);
+
+        for (let index = 0; index < move; index++) {
             moveLeft.push({
                 width,
                 height
@@ -62,6 +71,8 @@ class Move {
                 }
             });
         }
+        console.log(moveLeft);
+
         for (let y = 0; y < saveObstacle.length; y++) {
             if (moveLeft[0].height == saveObstacle[0]) {
                 moveTopAfterObstacle = 0
@@ -82,13 +93,16 @@ class Move {
         }
         player.move.top = moveTopAfterObstacle
     };
-    static makeDataMoveBottom(player, celuleObstacle) {
+    static makeDataMoveBottom(player, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width;
         let height = player.height + 50;
         let saveObstacle = [];
         let moveBottomAfterObstacle = 150
-        for (let index = 0; index < 3; index++) {
+        move == 2 ? moveBottomAfterObstacle = 100 : moveBottomAfterObstacle
+        move == 1 ? moveBottomAfterObstacle = 50 : moveBottomAfterObstacle
+        move == 0 ? moveBottomAfterObstacle = 0 : moveBottomAfterObstacle
+        for (let index = 0; index < move; index++) {
             moveLeft.push({
                 width,
                 height
@@ -121,13 +135,18 @@ class Move {
         }
         player.move.down = moveBottomAfterObstacle
     };
-    static makeDataMoveRight(player, celuleObstacle) {
+    static makeDataMoveRight(player, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width + 50;
         let height = player.height;
         let saveObstacle = [];
         let moveRightAfterObstacle = 150
-        for (let index = 0; index < 3; index++) {
+
+        move == 2 ? moveRightAfterObstacle = 100 : moveRightAfterObstacle
+        move == 1 ? moveRightAfterObstacle = 50 : moveRightAfterObstacle
+        move == 0 ? moveRightAfterObstacle = 0 : moveRightAfterObstacle
+        console.log(moveRightAfterObstacle);
+        for (let index = 0; index < move; index++) {
             moveLeft.push({
                 width,
                 height
@@ -160,11 +179,11 @@ class Move {
         }
         player.move.right = moveRightAfterObstacle
     };
-    static makeDataMovePlayer(player, celuleObstacle) {
-        this.makeDataMoveleft(player, celuleObstacle)
-        this.makeDataMoveTop(player, celuleObstacle)
-        this.makeDataMoveBottom(player, celuleObstacle)
-        this.makeDataMoveRight(player, celuleObstacle)
+    static makeDataMovePlayer(player, celuleObstacle, move) {
+        this.makeDataMoveleft(player, celuleObstacle, move)
+        this.makeDataMoveTop(player, celuleObstacle, move)
+        this.makeDataMoveBottom(player, celuleObstacle, move)
+        this.makeDataMoveRight(player, celuleObstacle, move)
     }
 }
 

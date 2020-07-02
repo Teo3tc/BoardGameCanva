@@ -12,6 +12,8 @@ class Player {
         this.play = play
         this.arme = arme
         this.gun = 0
+        this.fight = false;
+
     }
 }
 

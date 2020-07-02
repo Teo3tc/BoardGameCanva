@@ -4,13 +4,24 @@
 }
 
 body {
-    display: flex;
+    //perspective: 1000px;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+
 }
 
 #canvas {
     width: 1000px;
     height: 500px;
     border: 1px solid black;
+    //transform: rotateX(34deg);
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+    align-self: center;
+    justify-self: center;
 }
 
 .bord {
