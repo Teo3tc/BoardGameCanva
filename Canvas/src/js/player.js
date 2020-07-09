@@ -13,6 +13,7 @@ class Player {
         this.arme = arme
         this.gun = 0
         this.fight = false;
+        this.healh = 100;
 
     }
 }

@@ -1,3 +1,7 @@
+import three from '../assets/img/New_Piskel.png';
+var img = new Image(); // Crée un nouvel élément img
+
+
 class Draw {
 
 
@@ -10,11 +14,19 @@ class Draw {
     }
     static drawObstacle(ctx, celules) {
         celules.forEach((celule) => {
-            ctx.beginPath();
+            var img = new Image(); // Crée un nouvel élément img
+
+            //  exécute les instructions drawImage ici 
+            ctx.drawImage(img, celule.width, celule.height);
+
+            img.src = three
+
+
+            /*ctx.beginPath();
             ctx.rect(celule.width, celule.height, 50, 50);
             ctx.fillStyle = '#FF0000';
             ctx.fill();
-            ctx.closePath();
+            ctx.closePath();*/
         });
     }
     static drawArms(ctx, armes) {

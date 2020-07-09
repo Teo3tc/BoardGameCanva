@@ -2,7 +2,7 @@ import MakeWorld from './MakeWorld';
 import Player from './player';
 import Move from './move';
 import Armes from './arme';
-import Draw from './draw'
+import Draw from './draw';
 
 let rightPressed = false;
 let leftPressed = false;
@@ -58,7 +58,6 @@ console.log(celuleWidthHeightUpdate2);
 console.log(' CELULE PLAYER');
 console.log(celulePlayer);
 
-
 const player1 = new Player(
     celulePlayer[0].width,
     celulePlayer[0].height,
@@ -80,13 +79,19 @@ const player2 = new Player(
     false
 );
 
+import arme1 from '../assets/img/1.png'
+import arme2 from '../assets/img/2.png'
+import arme3 from '../assets/img/3.png'
+import arme4 from '../assets/img/4.png'
+
 const fullArmes = [{
         name: new Armes(
             'arme1',
             celuleArme[0].width,
             celuleArme[0].height,
             '#8F6787',
-            50
+            50,
+            arme1
         ),
     },
     {
@@ -95,7 +100,8 @@ const fullArmes = [{
             celuleArme[1].width,
             celuleArme[1].height,
             '#27242C',
-            100
+            100,
+            arme2
         ),
     },
     {
@@ -104,7 +110,9 @@ const fullArmes = [{
             celuleArme[2].width,
             celuleArme[2].height,
             '#A3AD0B',
-            20
+            20,
+            arme3
+
         ),
     },
     {
@@ -113,7 +121,8 @@ const fullArmes = [{
             celuleArme[3].width,
             celuleArme[3].height,
             '#21DE7C',
-            70
+            70,
+            arme4
         ),
     },
 ];
@@ -125,8 +134,6 @@ console.log(player1);
 
 console.log('LOG PLAYER 2');
 console.log(player2.move);
-
-
 
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
@@ -205,51 +212,116 @@ function donTakeArmes(player) {
         console.log(player.gun);
     }
 }
-let move = 3
+let move = 3;
 
+import three from '../assets/img/New_Piskel.png';
+import grass from '../assets/img/grass.png';
+import player11 from '../assets/img/player1.png';
+import player22 from '../assets/img/player2.png';
+import back2 from '../assets/img/grass2.png';
+import heart from '../assets/img/heart.png'
+import defaultArme from '../assets/img/0.png'
 
+let img = new Image(); // Crée un nouvel élément img
+let imgBack = new Image();
+let imgBack2 = new Image();
+let imgPlayer1 = new Image();
+let imgPlayer2 = new Image();
+let imgHeartPlayer1 = new Image();
+let imgHeartPlayer2 = new Image();
+let imgdefaultArm = new Image();
 
+function drawback2(ctx, ) {
+    ctx.drawImage(imgBack2, 0, 0, 1000, 500);
 
+    imgBack2.src = back2;
+}
+
+function drawArmes(ctx, celules) {
+    celules.forEach((arme) => {
+        ctx.beginPath();
+        ctx.drawImage(arme.name.boxImage, arme.name.width, arme.name.height, 40, 40);
+
+        arme.name.boxImage.src = arme.name.image
+    });
+}
+
+function drawObstacle(ctx, celules) {
+    celules.forEach((celule) => {
+        //  exécute les instructions drawImage ici
+        ctx.drawImage(img, celule.width, celule.height);
+
+        img.src = three;
+    });
+}
+
+function drawBack(ctx) {
+    ctx.drawImage(imgBack, 0, 0, 1000, 500);
+
+    imgBack.src = grass;
+}
+
+function drawPlayer1(ctx, player) {
+    ctx.drawImage(imgPlayer1, player.width, player.height, 50, 50);
+
+    imgPlayer1.src = player11;
+}
+
+function drawPlayer2(ctx, player) {
+    ctx.drawImage(imgPlayer2, player.width, player.height, 50, 50);
+
+    imgPlayer2.src = player22;
+}
 Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     if (player1.fight == false) {
-
         //Draw.drawGrid(ctx, celuleWidthHeightUpdate2);
-        Draw.drawObstacle(ctx, celuleObstacle);
-        Draw.drawArms(ctx, fullArmes);
-        Draw.drawPlayer(ctx, player1);
-        Draw.drawPlayer(ctx, player2);
-        if (player1.play) {
-            Draw.drawMovement(ctx, player1)
+        //Draw.drawObstacle(ctx, celuleObstacle);
+        drawBack(ctx);
 
+        drawObstacle(ctx, celuleObstacle);
+        //Draw.drawArms(ctx, fullArmes);
+        // Draw.drawPlayer(ctx, player1);
+        drawArmes(ctx, fullArmes)
+
+        drawPlayer1(ctx, player1)
+        drawPlayer2(ctx, player2)
+        //Draw.drawPlayer(ctx, player2);
+        if (player1.play) {
+            Draw.drawMovement(ctx, player1);
 
             take(player1, fullArmes);
             // move right
 
-
             if (rightPressed && player1.move.right != 0) {
-
                 player1.width == canvaWidth - 50 ?
                     (player1.width = canvaWidth - 50) :
                     (player1.width += 50);
                 player1.move.right -= 50;
 
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
                 rightPressed = false;
                 Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
                 console.log(move);
-                if (player1.width == player2.width - 50 && player1.height == player2.height || player1.width == player2.width && (player1.height == player2.height + 50 || player1.height == player2.height - 50)) {
+                if (
+                    (player1.width == player2.width - 50 &&
+                        player1.height == player2.height) ||
+                    (player1.width == player2.width &&
+                        (player1.height == player2.height + 50 ||
+                            player1.height == player2.height - 50))
+                ) {
                     console.log('FUCKING FIGHT');
-                    player1.fight = true
+                    player1.fight = true;
                 }
 
                 if (player1.move.right == 0 && move == 0) {
                     player1.play = false;
                     player2.play = true;
-                    move = 3
+                    move = 3;
                     donTakeArmes(player1);
                     Move.makeDataMovePlayer(player2, celuleObstacle, move);
                 }
@@ -258,22 +330,27 @@ function draw() {
                 player1.width == 0 ? (player1.width = 0) : (player1.width -= 50);
                 player1.move.left -= 50;
 
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
 
                 donTakeArmes(player1);
 
                 leftPressed = false;
                 Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
-                if (player1.width == player2.width + 50 && player1.height == player2.height || player1.width == player2.width && (player1.height == player2.height + 50 || player1.height == player2.height - 50)) {
+                if (
+                    (player1.width == player2.width + 50 &&
+                        player1.height == player2.height) ||
+                    (player1.width == player2.width &&
+                        (player1.height == player2.height + 50 ||
+                            player1.height == player2.height - 50))
+                ) {
                     console.log('FUCKING FIGHT');
-                    player1.fight = true
-
+                    player1.fight = true;
                 }
                 if (player1.move.left == 0 && move == 0) {
                     player1.play = false;
                     player2.play = true;
-                    move = 3
+                    move = 3;
 
                     donTakeArmes(player2);
 
@@ -283,19 +360,24 @@ function draw() {
             if (player1.play && topPressed && player1.move.top != 0) {
                 player1.height == 0 ? (player1.height = 0) : (player1.height -= 50);
                 player1.move.top -= 50;
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
 
                 topPressed = false;
                 Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                if (player1.height == player2.height + 50 && player1.width == player2.width || player1.height == player2.height && (player1.width == player2.width + 50 || player1.width == player2.width - 50)) {
+                if (
+                    (player1.height == player2.height + 50 &&
+                        player1.width == player2.width) ||
+                    (player1.height == player2.height &&
+                        (player1.width == player2.width + 50 ||
+                            player1.width == player2.width - 50))
+                ) {
                     console.log('FUCKING FIGHT');
-                    player1.fight = true
-
+                    player1.fight = true;
                 }
                 if (player1.move.top == 0 && move == 0) {
                     player1.play = false;
                     player2.play = true;
-                    move = 3
+                    move = 3;
 
                     donTakeArmes(player1);
 
@@ -308,19 +390,24 @@ function draw() {
                     (player1.height += 50);
                 player1.move.down -= 50;
 
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
 
                 downPressed = false;
                 Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                if (player1.height == player2.height - 50 && player1.width == player2.width || player1.height == player2.height && (player1.width == player2.width + 50 || player1.width == player2.width - 50)) {
+                if (
+                    (player1.height == player2.height - 50 &&
+                        player1.width == player2.width) ||
+                    (player1.height == player2.height &&
+                        (player1.width == player2.width + 50 ||
+                            player1.width == player2.width - 50))
+                ) {
                     console.log('FUCKING FIGHT');
-                    player1.fight = true
-
+                    player1.fight = true;
                 }
                 if (player1.move.down == 0 && move == 0) {
                     player1.play = false;
                     player2.play = true;
-                    move = 3
+                    move = 3;
 
                     donTakeArmes(player1);
 
@@ -333,11 +420,10 @@ function draw() {
                 player1.move.left = 0;
                 player1.move.right = 0;
 
-
                 if (player1.move.down == 0) {
                     player1.play = false;
                     player2.play = true;
-                    move = 3
+                    move = 3;
                     specilaStopTurn(player1, fullArmes);
                     Move.makeDataMovePlayer(player2, celuleObstacle, move);
                     enterPressed = false;
@@ -345,7 +431,7 @@ function draw() {
             }
         }
         if (player2.play) {
-            Draw.drawMovement(ctx, player2)
+            Draw.drawMovement(ctx, player2);
 
             take(player2, fullArmes);
 
@@ -354,7 +440,7 @@ function draw() {
                     (player2.width = canvaWidth - 50) :
                     (player2.width += 50);
                 player2.move.right -= 50;
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
 
                 rightPressed = false;
 
@@ -363,7 +449,7 @@ function draw() {
                 if (player2.move.right == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
-                    move = 3
+                    move = 3;
 
                     donTakeArmes(player2);
                     Move.makeDataMovePlayer(player1, celuleObstacle, move);
@@ -373,14 +459,14 @@ function draw() {
             if (player2.play && leftPressed && player2.move.left != 0) {
                 player2.width == 0 ? (player2.width = 0) : (player2.width -= 50);
                 player2.move.left -= 50;
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
                 leftPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
 
                 if (player2.move.left == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
-                    move = 3
+                    move = 3;
 
                     donTakeArmes(player2);
 
@@ -391,14 +477,14 @@ function draw() {
             if (player2.play && topPressed && player2.move.top != 0) {
                 player2.height == 0 ? (player2.height = 0) : (player2.height -= 50);
                 player2.move.top -= 50;
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
                 topPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
 
                 if (player2.move.top == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
-                    move = 3
+                    move = 3;
                     player2.gun == 2 ? (player2.gun = 1) : (player2.gun = 0);
                     donTakeArmes(player2);
 
@@ -412,7 +498,7 @@ function draw() {
                     (player2.height = canvaHeight - 50) :
                     (player2.height += 50);
                 player2.move.down -= 50;
-                move <= 0 ? move = 0 : move -= 1;
+                move <= 0 ? (move = 0) : (move -= 1);
 
                 downPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
@@ -420,7 +506,7 @@ function draw() {
                 if (player2.move.down == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
-                    move = 3
+                    move = 3;
 
                     donTakeArmes(player2);
 
@@ -437,19 +523,90 @@ function draw() {
                 if (player2.move.down == 0) {
                     player2.play = false;
                     player1.play = true;
-                    move = 3
+                    move = 3;
 
                     specilaStopTurn(player2, fullArmes);
 
                     Move.makeDataMovePlayer(player1, celuleObstacle, move);
                     enterPressed = false;
-
                 }
             }
             // Take armes
         }
     } else {
-        Draw.drawGrid(ctx, celuleWidthHeightUpdate2);
+        drawback2(ctx);
+
+        ctx.drawImage(imgPlayer1, (canvaWidth / 2) / 2, canvaHeight / 2, );
+        imgPlayer1.src = player11;
+
+        ctx.drawImage(imgPlayer2, canvaWidth - ((canvaWidth / 2) / 2), canvaHeight / 2, );
+        imgPlayer2.src = player22;
+
+        ctx.beginPath();
+        ctx.strokeStyle = "green";
+        ctx.strokeRect(5, canvaHeight - 105, (canvaWidth / 2) - 10, 100);
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.strokeRect((canvaWidth / 2) + 9, canvaHeight - 105, (canvaWidth / 2) - 14, 100);
+        ctx.closePath();
+
+        ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
+        imgHeartPlayer1.src = heart;
+
+        ctx.drawImage(imgHeartPlayer2, (canvaWidth / 2) + 5, 5, 50, 50);
+        imgHeartPlayer2.src = heart;
+
+        ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.font = '20px serif';
+        ctx.fillText(`100 / ${player1.healh}`, 50, 35);
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.font = '20px serif';
+        ctx.fillText(`100 / ${player2.healh}`, (canvaWidth / 2) + 50, 35);
+        ctx.closePath();
+
+        ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
+        imgHeartPlayer1.src = heart;
+        if (player1.arme == undefined) {
+            ctx.drawImage(imgdefaultArm, 150, 10, 30, 30);
+            imgdefaultArm.src = defaultArme
+
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.font = '20px serif';
+            ctx.fillText(`10`, 190, 35);
+            ctx.closePath();
+
+        } else {
+            ctx.drawImage(player1.arme.name.boxImage, 150, 11, 30, 30);
+            player1.arme.name.boxImage.src = player1.arme.name.image
+
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.font = '20px serif';
+            ctx.fillText(`${player1.arme.name.power}`, 190, 35);
+            ctx.closePath();
+        }
+        if (player2.arme == undefined) {
+            ctx.drawImage(imgdefaultArm, (canvaWidth / 2) + 150, 10, 30, 30);
+            imgdefaultArm.src = defaultArme
+
+        } else {
+            ctx.drawImage(player2.arme.name.boxImage, (canvaWidth / 2) + 150, 11, 30, 30);
+            player2.arme.name.boxImage.src = player2.arme.name.image
+
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.font = '20px serif';
+            ctx.fillText(`10`, 190, 35);
+            ctx.closePath();
+        }
+
 
     }
 }
@@ -458,5 +615,16 @@ console.log('-------  Array player   ------');
 
 console.log(fullPlayer);
 
+//setInterval(draw, 60);
+function init() {
+    // Start the first frame request
+    window.requestAnimationFrame(gameLoop);
+}
 
-setInterval(draw, 10);
+function gameLoop() {
+    draw();
+
+    // Keep requesting new frames
+    window.requestAnimationFrame(gameLoop);
+}
+init();
