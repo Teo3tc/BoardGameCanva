@@ -555,7 +555,7 @@ function draw() {
         ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
         imgHeartPlayer1.src = heart;
 
-        ctx.drawImage(imgHeartPlayer2, (canvaWidth / 2) + 5, 5, 50, 50);
+        ctx.drawImage(imgHeartPlayer2, canvaWidth - 210, 5, 50, 50);
         imgHeartPlayer2.src = heart;
 
         ctx.beginPath();
@@ -567,7 +567,7 @@ function draw() {
         ctx.beginPath();
         ctx.fillStyle = 'red';
         ctx.font = '20px serif';
-        ctx.fillText(`100 / ${player2.healh}`, (canvaWidth / 2) + 50, 35);
+        ctx.fillText(`100 / ${player2.healh}`, canvaWidth - 170, 35);
         ctx.closePath();
 
         ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
@@ -593,8 +593,14 @@ function draw() {
             ctx.closePath();
         }
         if (player2.arme == undefined) {
-            ctx.drawImage(imgdefaultArm, (canvaWidth / 2) + 150, 10, 30, 30);
+            ctx.drawImage(imgdefaultArm, canvaWidth - 70, 10, 30, 30);
             imgdefaultArm.src = defaultArme
+
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.font = '20px serif';
+            ctx.fillText(`10`, canvaWidth - 40, 35);
+            ctx.closePath();
 
         } else {
             ctx.drawImage(player2.arme.name.boxImage, (canvaWidth / 2) + 150, 11, 30, 30);
@@ -603,7 +609,7 @@ function draw() {
             ctx.beginPath();
             ctx.fillStyle = 'green';
             ctx.font = '20px serif';
-            ctx.fillText(`10`, 190, 35);
+            ctx.fillText(`10`, (canvaWidth / 2) + 190, 35);
             ctx.closePath();
         }
 
