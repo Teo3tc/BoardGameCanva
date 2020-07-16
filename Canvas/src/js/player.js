@@ -14,6 +14,9 @@ class Player {
         this.gun = 0
         this.fight = false;
         this.healh = 100;
+        this.attack = true;
+        this.defense = false
+        this.armor = 0
 
     }
 }

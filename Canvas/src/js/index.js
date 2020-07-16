@@ -9,7 +9,8 @@ let leftPressed = false;
 let topPressed = false;
 let downPressed = false;
 let enterPressed = false;
-
+let spacePressed = false
+let gameover = false;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const canvaWidth = canvas.width;
@@ -23,18 +24,18 @@ const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(
     canvaWidth,
     canvaHeight
 );
-const celuleObstacle = MakeWorld.makeDataOfObstacle(20, celuleWidthHeight);
-const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
+let celuleObstacle = MakeWorld.makeDataOfObstacle(20, celuleWidthHeight);
+let celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleObstacle
 );
-const celuleArme = MakeWorld.makeDataArme(celuleWidthHeightUpdate, 4);
-const celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(
+let celuleArme = MakeWorld.makeDataArme(celuleWidthHeightUpdate, 4);
+let celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleArme
 );
 
-const celulePlayer = MakeWorld.makeDataPlayer(celuleWidthHeightUpdate2, 2);
+let celulePlayer = MakeWorld.makeDataPlayer(celuleWidthHeightUpdate2, 2);
 
 console.log('width TABLEAU');
 console.log(celuleWidth);
@@ -79,10 +80,10 @@ const player2 = new Player(
     false
 );
 
-import arme1 from '../assets/img/1.png'
-import arme2 from '../assets/img/2.png'
-import arme3 from '../assets/img/3.png'
-import arme4 from '../assets/img/4.png'
+import arme1 from '../assets/img/1.png';
+import arme2 from '../assets/img/2.png';
+import arme3 from '../assets/img/3.png';
+import arme4 from '../assets/img/4.png';
 
 const fullArmes = [{
         name: new Armes(
@@ -90,7 +91,7 @@ const fullArmes = [{
             celuleArme[0].width,
             celuleArme[0].height,
             '#8F6787',
-            50,
+            30,
             arme1
         ),
     },
@@ -100,7 +101,7 @@ const fullArmes = [{
             celuleArme[1].width,
             celuleArme[1].height,
             '#27242C',
-            100,
+            40,
             arme2
         ),
     },
@@ -112,7 +113,6 @@ const fullArmes = [{
             '#A3AD0B',
             20,
             arme3
-
         ),
     },
     {
@@ -121,7 +121,7 @@ const fullArmes = [{
             celuleArme[3].width,
             celuleArme[3].height,
             '#21DE7C',
-            70,
+            50,
             arme4
         ),
     },
@@ -219,30 +219,45 @@ import grass from '../assets/img/grass.png';
 import player11 from '../assets/img/player1.png';
 import player22 from '../assets/img/player2.png';
 import back2 from '../assets/img/grass2.png';
-import heart from '../assets/img/heart.png'
-import defaultArme from '../assets/img/0.png'
+import back3 from '../assets/img/grass3.png';
+import heart from '../assets/img/heart.png';
+import defaultArme from '../assets/img/0.png';
 
 let img = new Image(); // Crée un nouvel élément img
 let imgBack = new Image();
 let imgBack2 = new Image();
+let imgBack3 = new Image();
+
 let imgPlayer1 = new Image();
 let imgPlayer2 = new Image();
 let imgHeartPlayer1 = new Image();
 let imgHeartPlayer2 = new Image();
 let imgdefaultArm = new Image();
 
-function drawback2(ctx, ) {
+function drawback2(ctx) {
     ctx.drawImage(imgBack2, 0, 0, 1000, 500);
 
     imgBack2.src = back2;
 }
 
+function drawback3(ctx) {
+    ctx.drawImage(imgBack3, 0, 0, 1000, 500);
+
+    imgBack3.src = back3;
+}
+
 function drawArmes(ctx, celules) {
     celules.forEach((arme) => {
         ctx.beginPath();
-        ctx.drawImage(arme.name.boxImage, arme.name.width, arme.name.height, 40, 40);
+        ctx.drawImage(
+            arme.name.boxImage,
+            arme.name.width,
+            arme.name.height,
+            40,
+            40
+        );
 
-        arme.name.boxImage.src = arme.name.image
+        arme.name.boxImage.src = arme.name.image;
     });
 }
 
@@ -253,6 +268,64 @@ function drawObstacle(ctx, celules) {
 
         img.src = three;
     });
+}
+let attack = 'Attack'
+let seleteur = '>'
+
+
+let player1AttackfontsX = 150
+let player1AttackfontsY = canvaHeight - 50
+
+let player2AttackfontsX = canvaWidth / 2 + 150
+let player2AttackfontsY = canvaHeight - 50
+
+function drawFontAttack(ctx, el, x, y) {
+    ctx.beginPath();
+    ctx.fillStyle = 'white';
+    ctx.font = '25px serif';
+    ctx.fillText(el, x, y);
+    ctx.closePath();
+}
+
+let player1DefensefontsX = 300
+let player1DefensefontsY = canvaHeight - 50
+
+let player2DefensefontsX = canvaWidth / 2 + 300
+let player2DefensefontsY = canvaHeight - 50
+
+function drawFontDefesense(ctx, x, y) {
+    ctx.beginPath();
+    ctx.fillStyle = 'white';
+    ctx.font = '25px serif';
+    ctx.fillText(`Defense`, x, y);
+    ctx.closePath();
+}
+
+let player1SelecteurAttackX = 130
+let player1SelecteurAttackY = canvaHeight - 50
+
+let player2SelecteurAttackX = canvaWidth / 2 + 130
+let player2SelecteurAttackY = canvaHeight - 50
+
+function drawSelecteurAttack(ctx, el, x, y) {
+    ctx.beginPath();
+    ctx.fillStyle = 'white';
+    ctx.font = '25px serif';
+    ctx.fillText(el, x, y);
+    ctx.closePath();
+}
+let player1SelecteurDefenseX = 280
+let player1SelecteurDefenseY = canvaHeight - 50
+
+let player2SelecteurDefenseX = canvaWidth / 2 + 280
+let player2SelecteurDefenseY = canvaHeight - 50
+
+function drawSelecteurDefense(ctx, el, x, y) {
+    ctx.beginPath();
+    ctx.fillStyle = 'white';
+    ctx.font = '25px serif';
+    ctx.fillText(el, x, y);
+    ctx.closePath();
 }
 
 function drawBack(ctx) {
@@ -272,24 +345,35 @@ function drawPlayer2(ctx, player) {
 
     imgPlayer2.src = player22;
 }
+let player1FightX = canvaWidth / 2 / 2;
+let player1FightY = canvaHeight / 2;
+
+let player2FightX = canvaWidth - canvaWidth / 2 / 2;
+let player2FightY = canvaHeight / 2;
+
+function drawplayerFight(img, imgsrc, x, y) {
+    ctx.drawImage(img, x, y);
+    img.src = imgsrc;
+
+}
+
 Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (player1.fight == false) {
-        //Draw.drawGrid(ctx, celuleWidthHeightUpdate2);
-        //Draw.drawObstacle(ctx, celuleObstacle);
+    if (player1.fight == false && player2.fight == false) {
+
+
         drawBack(ctx);
 
         drawObstacle(ctx, celuleObstacle);
-        //Draw.drawArms(ctx, fullArmes);
-        // Draw.drawPlayer(ctx, player1);
-        drawArmes(ctx, fullArmes)
 
-        drawPlayer1(ctx, player1)
-        drawPlayer2(ctx, player2)
-        //Draw.drawPlayer(ctx, player2);
+        drawArmes(ctx, fullArmes);
+
+        drawPlayer1(ctx, player1);
+        drawPlayer2(ctx, player2);
+
         if (player1.play) {
             Draw.drawMovement(ctx, player1);
 
@@ -314,8 +398,10 @@ function draw() {
                         (player1.height == player2.height + 50 ||
                             player1.height == player2.height - 50))
                 ) {
-                    console.log('FUCKING FIGHT');
                     player1.fight = true;
+                    player2.fight = true;
+                    player2.play = false;
+                    player1.play = true;
                 }
 
                 if (player1.move.right == 0 && move == 0) {
@@ -346,6 +432,9 @@ function draw() {
                 ) {
                     console.log('FUCKING FIGHT');
                     player1.fight = true;
+                    player2.fight = true;
+                    player2.play = false;
+                    player1.play = true;
                 }
                 if (player1.move.left == 0 && move == 0) {
                     player1.play = false;
@@ -373,6 +462,9 @@ function draw() {
                 ) {
                     console.log('FUCKING FIGHT');
                     player1.fight = true;
+                    player2.fight = true;
+                    player2.play = false;
+                    player1.play = true;
                 }
                 if (player1.move.top == 0 && move == 0) {
                     player1.play = false;
@@ -401,8 +493,10 @@ function draw() {
                         (player1.width == player2.width + 50 ||
                             player1.width == player2.width - 50))
                 ) {
-                    console.log('FUCKING FIGHT');
                     player1.fight = true;
+                    player2.fight = true;
+                    player2.play = false;
+                    player1.play = true;
                 }
                 if (player1.move.down == 0 && move == 0) {
                     player1.play = false;
@@ -445,7 +539,19 @@ function draw() {
                 rightPressed = false;
 
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
+                if (
+                    (player2.width == player1.width - 50 &&
+                        player2.height == player1.height) ||
+                    (player2.width == player1.width &&
+                        (player2.height == player1.height + 50 ||
+                            player2.height == player1.height - 50))
+                ) {
+                    player2.play = true;
+                    player1.play = false;
+                    player1.fight = true;
+                    player2.fight = true;
 
+                }
                 if (player2.move.right == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
@@ -462,7 +568,19 @@ function draw() {
                 move <= 0 ? (move = 0) : (move -= 1);
                 leftPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
+                if (
+                    (player2.width == player1.width + 50 &&
+                        player2.height == player1.height) ||
+                    (player2.width == player1.width &&
+                        (player2.height == player1.height + 50 ||
+                            player2.height == player1.height - 50))
+                ) {
+                    player2.play = true;
+                    player1.play = false;
+                    player1.fight = true;
+                    player2.fight = true;
 
+                }
                 if (player2.move.left == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
@@ -480,7 +598,19 @@ function draw() {
                 move <= 0 ? (move = 0) : (move -= 1);
                 topPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
+                if (
+                    (player2.height == player1.height + 50 &&
+                        player2.width == player1.width) ||
+                    (player2.height == player1.height &&
+                        (player2.width == player1.width + 50 ||
+                            player2.width == player1.width - 50))
+                ) {
+                    player2.play = true;
+                    player1.play = false;
+                    player1.fight = true;
+                    player2.fight = true;
 
+                }
                 if (player2.move.top == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
@@ -502,7 +632,19 @@ function draw() {
 
                 downPressed = false;
                 Move.makeDataMovePlayer(player2, celuleObstacle, move);
+                if (
+                    (player2.height == player1.height - 50 &&
+                        player2.width == player1.width) ||
+                    (player2.height == player1.height &&
+                        (player2.width == player1.width + 50 ||
+                            player2.width == player1.width - 50))
+                ) {
+                    player2.play = true;
+                    player1.play = false;
+                    player1.fight = true;
+                    player2.fight = true;
 
+                }
                 if (player2.move.down == 0 && move == 0) {
                     player2.play = false;
                     player1.play = true;
@@ -533,23 +675,29 @@ function draw() {
             }
             // Take armes
         }
-    } else {
+    } else if (player1.fight && player2.fight) {
+        // draw the background phase combat
         drawback2(ctx);
 
-        ctx.drawImage(imgPlayer1, (canvaWidth / 2) / 2, canvaHeight / 2, );
-        imgPlayer1.src = player11;
-
-        ctx.drawImage(imgPlayer2, canvaWidth - ((canvaWidth / 2) / 2), canvaHeight / 2, );
-        imgPlayer2.src = player22;
+        // draw players phase combat
+        drawplayerFight(imgPlayer1, player11, player1FightX, player1FightY)
+        drawplayerFight(imgPlayer2, player22, player2FightX, player2FightY)
 
         ctx.beginPath();
-        ctx.strokeStyle = "green";
-        ctx.strokeRect(5, canvaHeight - 105, (canvaWidth / 2) - 10, 100);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'white';
+        ctx.strokeRect(10, canvaHeight - 110, canvaWidth / 2 - 20, 100);
         ctx.closePath();
 
         ctx.beginPath();
-        ctx.strokeStyle = "white";
-        ctx.strokeRect((canvaWidth / 2) + 9, canvaHeight - 105, (canvaWidth / 2) - 14, 100);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'white';
+        ctx.strokeRect(
+            canvaWidth / 2 + 10,
+            canvaHeight - 110,
+            canvaWidth / 2 - 25,
+            100
+        );
         ctx.closePath();
 
         ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
@@ -574,17 +722,16 @@ function draw() {
         imgHeartPlayer1.src = heart;
         if (player1.arme == undefined) {
             ctx.drawImage(imgdefaultArm, 150, 10, 30, 30);
-            imgdefaultArm.src = defaultArme
+            imgdefaultArm.src = defaultArme;
 
             ctx.beginPath();
             ctx.fillStyle = 'green';
             ctx.font = '20px serif';
             ctx.fillText(`10`, 190, 35);
             ctx.closePath();
-
         } else {
             ctx.drawImage(player1.arme.name.boxImage, 150, 11, 30, 30);
-            player1.arme.name.boxImage.src = player1.arme.name.image
+            player1.arme.name.boxImage.src = player1.arme.name.image;
 
             ctx.beginPath();
             ctx.fillStyle = 'green';
@@ -593,26 +740,217 @@ function draw() {
             ctx.closePath();
         }
         if (player2.arme == undefined) {
-            ctx.drawImage(imgdefaultArm, canvaWidth - 70, 10, 30, 30);
-            imgdefaultArm.src = defaultArme
+            ctx.drawImage(imgdefaultArm, canvaWidth - 80, 10, 30, 30);
+            imgdefaultArm.src = defaultArme;
 
             ctx.beginPath();
             ctx.fillStyle = 'green';
             ctx.font = '20px serif';
             ctx.fillText(`10`, canvaWidth - 40, 35);
             ctx.closePath();
-
         } else {
-            ctx.drawImage(player2.arme.name.boxImage, (canvaWidth / 2) + 150, 11, 30, 30);
-            player2.arme.name.boxImage.src = player2.arme.name.image
+            ctx.drawImage(player2.arme.name.boxImage, canvaWidth - 80, 11, 30, 30);
+            player2.arme.name.boxImage.src = player2.arme.name.image;
 
             ctx.beginPath();
             ctx.fillStyle = 'green';
             ctx.font = '20px serif';
-            ctx.fillText(`10`, (canvaWidth / 2) + 190, 35);
+            ctx.fillText(`${player2.arme.name.power}`, canvaWidth - 40, 35);
             ctx.closePath();
         }
 
+        drawFontAttack(ctx, attack, player1AttackfontsX, player1AttackfontsY)
+        drawFontDefesense(ctx, player1DefensefontsX, player1DefensefontsY)
+
+        drawFontAttack(ctx, attack, player2AttackfontsX, player2AttackfontsY)
+        drawFontDefesense(ctx, player2DefensefontsX, player2DefensefontsY)
+
+
+
+
+        if (player1.play) {
+
+            if (player1.attack && player1.play) {
+                drawSelecteurAttack(ctx, seleteur, player1SelecteurAttackX, player1SelecteurAttackY)
+
+            } else if (player1.defense) {
+                drawSelecteurAttack(ctx, seleteur, player1SelecteurDefenseX, player1SelecteurDefenseY)
+            }
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'rgb(255,215,0)';
+            ctx.strokeRect(0 + 2, 0, canvaWidth / 2, canvaHeight);
+
+            ctx.closePath();
+            if (rightPressed) {
+                player1.attack = false
+                player1.defense = true
+                rightPressed = false
+            } else if (leftPressed) {
+                player1.attack = true
+                player1.defense = false
+                leftPressed = false
+
+            } else if (enterPressed) {
+                if (player1.attack) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 5;
+                    ctx.fillStyle = 'rgb(255,215,0)';
+                    ctx.fillRect(canvaWidth / 2, 0, canvaWidth / 2, canvaHeight);
+                    ctx.closePath();
+
+                    if (player1.arme == undefined) {
+                        player2.healh = (player2.healh + player2.armor) - 10
+                    } else {
+
+                        player2.healh = (player2.healh + player2.armor) - player1.arme.name.power
+                    }
+
+                    player2.play = true
+                    player1.play = false
+                    enterPressed = false
+                }
+                if (player1.defense) {
+                    if (player2.arme == undefined) {
+                        player1.armor = 5
+
+                    } else {
+                        player1.armor = player2.arme.name.power / 2
+                    }
+                    ctx.beginPath();
+                    ctx.fillStyle = 'rgba(0, 0, 255, 1)';
+                    ctx.fillRect(0, 0, canvaWidth / 2, canvaHeight);
+                    ctx.closePath();
+                    player2.play = true
+                    player1.play = false
+                    enterPressed = false
+
+                }
+
+            }
+            if (player2.healh <= 0) {
+                player1.fight = false
+                gameover = true
+            }
+
+
+        }
+        if (player2.play) {
+            if (player2.attack && player2.play) {
+                drawSelecteurAttack(ctx, seleteur, player2SelecteurAttackX, player2SelecteurAttackY)
+
+            } else if (player2.defense) {
+                drawSelecteurAttack(ctx, seleteur, player2SelecteurDefenseX, player2SelecteurDefenseY)
+            }
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+
+            ctx.strokeStyle = 'rgb(255,215,0)';
+            ctx.strokeRect(
+                canvaWidth / 2,
+                0,
+                canvaWidth / 2,
+                canvaHeight
+            );
+            ctx.closePath();
+
+            ctx.closePath();
+            if (rightPressed) {
+                player2.attack = false
+                player2.defense = true
+                rightPressed = false
+
+            } else if (leftPressed) {
+                player2.attack = true
+                player2.defense = false
+                leftPressed = false
+
+            } else if (enterPressed) {
+                if (player2.attack) {
+                    ctx.beginPath();
+                    ctx.fillStyle = 'rgb(255,215,0)';
+                    ctx.fillRect(0, 0, canvaWidth / 2, canvaHeight);
+                    ctx.closePath();
+
+                    if (player2.arme == undefined) {
+                        player1.healh = (player1.healh + player1.armor) - 10
+                    } else {
+
+                        player1.healh = (player1.healh + player1.armor) - player2.arme.name.power
+                    }
+
+                    player1.play = true
+                    player2.play = false
+                    enterPressed = false
+                }
+                if (player2.defense) {
+                    if (player1.arme == undefined) {
+                        player2.armor = 10 / 2
+
+                    } else {
+                        player2.armor = player1.arme.name.power / 2
+                    }
+
+                    ctx.beginPath();
+                    ctx.fillStyle = 'rgba(0, 0, 255, 1)';
+                    ctx.fillRect(canvaWidth / 2, 0, canvaWidth / 2, canvaHeight);
+                    ctx.closePath();
+                    player1.play = true
+                    player2.play = false
+                    enterPressed = false
+                }
+            }
+            if (player1.healh <= 0) {
+                player2.fight = false
+                gameover = true
+            }
+
+        }
+    } else if (gameover = true) {
+        drawback3(ctx);
+
+        ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.font = '50px serif';
+        ctx.fillText(`GAME OVER`, canvaWidth / 2, canvaHeight / 2);
+        ctx.textAlign = 'center';
+        ctx.closePath();
+        if (player1.fight == false) {
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.font = '20px serif';
+            ctx.fillText(`Player 1 win`, canvaWidth / 2, canvaHeight / 2 + 50);
+            ctx.textAlign = 'center';
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = 'white';
+            ctx.font = '25px serif';
+            ctx.fillText(`> Restart`, canvaWidth / 2, canvaHeight / 2 + 90);
+            ctx.textAlign = 'center';
+            ctx.closePath();
+
+        }
+        if (player2.fight == false) {
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.font = '20px serif';
+            ctx.fillText(`Player 2 win`, canvaWidth / 2, canvaHeight / 2 + 50);
+            ctx.textAlign = 'center';
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = 'white';
+            ctx.font = '25px serif';
+            ctx.fillText(`> Restart`, canvaWidth / 2, canvaHeight / 2 + 90);
+            ctx.textAlign = 'center';
+            ctx.closePath();
+
+        }
+
+        if (spacePressed) {
+
+            spacePressed = false
+
+        }
 
     }
 }
