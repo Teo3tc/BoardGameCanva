@@ -779,7 +779,7 @@ function draw() {
             ctx.beginPath();
             ctx.lineWidth = 5;
             ctx.strokeStyle = 'rgb(255,215,0)';
-            ctx.strokeRect(0 + 2, 0, canvaWidth / 2, canvaHeight);
+            ctx.strokeRect(10, canvaHeight - 110, canvaWidth / 2 - 20, 100);
 
             ctx.closePath();
             if (rightPressed) {
@@ -793,6 +793,8 @@ function draw() {
 
             } else if (enterPressed) {
                 if (player1.attack) {
+                    player1.armor = 0
+
                     ctx.beginPath();
                     ctx.lineWidth = 5;
                     ctx.fillStyle = 'rgb(255,215,0)';
@@ -805,7 +807,7 @@ function draw() {
 
                         player2.healh = (player2.healh + player2.armor) - player1.arme.name.power
                     }
-
+                    player2.armor = 0
                     player2.play = true
                     player1.play = false
                     enterPressed = false
@@ -847,10 +849,10 @@ function draw() {
 
             ctx.strokeStyle = 'rgb(255,215,0)';
             ctx.strokeRect(
-                canvaWidth / 2,
-                0,
-                canvaWidth / 2,
-                canvaHeight
+                canvaWidth / 2 + 10,
+                canvaHeight - 110,
+                canvaWidth / 2 - 25,
+                100
             );
             ctx.closePath();
 
@@ -867,6 +869,7 @@ function draw() {
 
             } else if (enterPressed) {
                 if (player2.attack) {
+                    player2.armor = 0
                     ctx.beginPath();
                     ctx.fillStyle = 'rgb(255,215,0)';
                     ctx.fillRect(0, 0, canvaWidth / 2, canvaHeight);
@@ -878,6 +881,7 @@ function draw() {
 
                         player1.healh = (player1.healh + player1.armor) - player2.arme.name.power
                     }
+                    player2.armor = 0
 
                     player1.play = true
                     player2.play = false
