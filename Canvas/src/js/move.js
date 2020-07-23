@@ -1,7 +1,7 @@
 class Move {
 
 
-    static makeDataMoveleft(player, celuleObstacle, move) {
+    static makeDataMoveleft(player, playerWait, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width - 50;
         let height = player.height;
@@ -24,20 +24,20 @@ class Move {
 
         }
         for (let y = 0; y < saveObstacle.length; y++) {
-            if (moveLeft[0].width == saveObstacle[0]) {
+            if (moveLeft[0].width == saveObstacle[0] || moveLeft[0].width == playerWait.width + 50) {
 
                 moveLeftAfterObstacle = 0
-            } else if (moveLeft[0].width != saveObstacle[0]) {
-                if (moveLeft[1].width == saveObstacle[1] || moveLeft[1].width == saveObstacle[0]) {
+            } else if (moveLeft[0].width != saveObstacle[0] || moveLeft[0].width != playerWait.width + 50) {
+                if (moveLeft[1].width == saveObstacle[1] || moveLeft[1].width == saveObstacle[0] || moveLeft[1].width == playerWait.width + 50) {
 
                     moveLeftAfterObstacle = 50
                 } else if (moveLeft[1].width != saveObstacle[y]) {
-                    if (moveLeft[2].width == saveObstacle[y]) {
+                    if (moveLeft[2].width == saveObstacle[y] || moveLeft[2].width == playerWait.width + 50) {
 
                         moveLeftAfterObstacle = 100
                     } else if (
                         moveLeft[2].width != saveObstacle[y] &&
-                        moveLeft[1].width != saveObstacle[y]
+                        moveLeft[1].width != saveObstacle[y] || moveLeft[2].width != playerWait.width + 50 && moveLeft[1].width != playerWait.width + 50
                     ) {
 
                         moveLeftAfterObstacle = 150
@@ -47,7 +47,7 @@ class Move {
         }
         player.move.left = moveLeftAfterObstacle;
     };
-    static makeDataMoveTop(player, celuleObstacle, move) {
+    static makeDataMoveTop(player, playerWait, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width;
         let height = player.height - 50;
@@ -74,17 +74,17 @@ class Move {
         console.log(moveLeft);
 
         for (let y = 0; y < saveObstacle.length; y++) {
-            if (moveLeft[0].height == saveObstacle[0]) {
+            if (moveLeft[0].height == saveObstacle[0] || moveLeft[0].height == playerWait.height + 50) {
                 moveTopAfterObstacle = 0
-            } else if (moveLeft[0].height != saveObstacle[0]) {
-                if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0]) {
+            } else if (moveLeft[0].height != saveObstacle[0] || moveLeft[0].height != playerWait.height + 50) {
+                if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0] || moveLeft[1].height == playerWait.height + 50) {
                     moveTopAfterObstacle = 50
                 } else if (moveLeft[1].height != saveObstacle[y]) {
-                    if (moveLeft[2].height == saveObstacle[y]) {
+                    if (moveLeft[2].height == saveObstacle[y] || moveLeft[2].height == playerWait.height + 50) {
                         moveTopAfterObstacle = 100
                     } else if (
                         moveLeft[2].height != saveObstacle[y] &&
-                        moveLeft[1].height != saveObstacle[y]
+                        moveLeft[1].height != saveObstacle[y] || moveLeft[2].height != playerWait.height + 50 && moveLeft[1].height != playerWait.height + 50
                     ) {
                         moveTopAfterObstacle = 150
                     }
@@ -93,7 +93,7 @@ class Move {
         }
         player.move.top = moveTopAfterObstacle
     };
-    static makeDataMoveBottom(player, celuleObstacle, move) {
+    static makeDataMoveBottom(player, playerWait, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width;
         let height = player.height + 50;
@@ -116,17 +116,17 @@ class Move {
 
         }
         for (let y = 0; y < saveObstacle.length; y++) {
-            if (moveLeft[0].height == saveObstacle[0]) {
+            if (moveLeft[0].height == saveObstacle[0] || moveLeft[0].height == playerWait.height + 50) {
                 moveBottomAfterObstacle = 0
-            } else if (moveLeft[0].height != saveObstacle[0]) {
-                if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0]) {
+            } else if (moveLeft[0].height != saveObstacle[0] || moveLeft[0].height != playerWait.height + 50) {
+                if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0] || moveLeft[1].height == playerWait.height + 50) {
                     moveBottomAfterObstacle = 50
                 } else if (moveLeft[1].height != saveObstacle[y]) {
-                    if (moveLeft[2].height == saveObstacle[y]) {
+                    if (moveLeft[2].height == saveObstacle[y] || moveLeft[2].height == playerWait.height + 50) {
                         moveBottomAfterObstacle = 100
                     } else if (
                         moveLeft[2].height != saveObstacle[y] &&
-                        moveLeft[1].height != saveObstacle[y]
+                        moveLeft[1].height != saveObstacle[y] || moveLeft[2].height != playerWait.height + 50 && moveLeft[1].height != playerWait.height + 50
                     ) {
                         moveBottomAfterObstacle = 150
                     }
@@ -135,7 +135,7 @@ class Move {
         }
         player.move.down = moveBottomAfterObstacle
     };
-    static makeDataMoveRight(player, celuleObstacle, move) {
+    static makeDataMoveRight(player, playerWait, celuleObstacle, move) {
         let moveLeft = [];
         let width = player.width + 50;
         let height = player.height;
@@ -160,17 +160,17 @@ class Move {
 
         }
         for (let y = 0; y < saveObstacle.length; y++) {
-            if (moveLeft[0].width == saveObstacle[0]) {
+            if (moveLeft[0].width == saveObstacle[0] || moveLeft[0].width == playerWait.width) {
                 moveRightAfterObstacle = 0
-            } else if (moveLeft[0].width != saveObstacle[0]) {
-                if (moveLeft[1].width == saveObstacle[1] || moveLeft[1].width == saveObstacle[0]) {
+            } else if (moveLeft[0].width != saveObstacle[0] || moveLeft[0].width != playerWait.width) {
+                if (moveLeft[1].width == saveObstacle[1] || moveLeft[1].width == saveObstacle[0] || moveLeft[1].width == playerWait.width) {
                     moveRightAfterObstacle = 50
                 } else if (moveLeft[1].width != saveObstacle[y]) {
-                    if (moveLeft[2].width == saveObstacle[y]) {
+                    if (moveLeft[2].width == saveObstacle[y] || moveLeft[2].width == playerWait.width) {
                         moveRightAfterObstacle = 100
                     } else if (
                         moveLeft[2].width != saveObstacle[y] &&
-                        moveLeft[1].width != saveObstacle[y]
+                        moveLeft[1].width != saveObstacle[y] || moveLeft[2].width != playerWait.width && moveLeft[1].width != playerWait.width
                     ) {
                         moveRightAfterObstacle = 150
                     }
@@ -179,11 +179,11 @@ class Move {
         }
         player.move.right = moveRightAfterObstacle
     };
-    static makeDataMovePlayer(player, celuleObstacle, move) {
-        this.makeDataMoveleft(player, celuleObstacle, move)
-        this.makeDataMoveTop(player, celuleObstacle, move)
-        this.makeDataMoveBottom(player, celuleObstacle, move)
-        this.makeDataMoveRight(player, celuleObstacle, move)
+    static makeDataMovePlayer(player, playerWait, celuleObstacle, move) {
+        this.makeDataMoveleft(player, playerWait, celuleObstacle, move)
+        this.makeDataMoveTop(player, playerWait, celuleObstacle, move)
+        this.makeDataMoveBottom(player, playerWait, celuleObstacle, move)
+        this.makeDataMoveRight(player, playerWait, celuleObstacle, move)
     }
 }
 
