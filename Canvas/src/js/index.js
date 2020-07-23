@@ -236,7 +236,7 @@ function clickRight(e, playerMove, playerWait) {
                 (playerMove.width += 50);
             playerMove.move.right -= 50;
             move <= 0 ? (move = 0) : (move -= 1);
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
             console.log(move);
             // check if playerMove is in area of playerWait for change to phase fight 
@@ -263,7 +263,7 @@ function clickRight(e, playerMove, playerWait) {
                 move = 3;
                 Armes.donTakeArmes(playerMove);
                 // make the data  of movement playerWait 
-                Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
         } else if (playerMove.move.right != 0 && e.offsetX >= playerMove.width + 100 && e.offsetX <= playerMove.width + 150) {
 
@@ -272,7 +272,7 @@ function clickRight(e, playerMove, playerWait) {
                 (playerMove.width += 100);
             playerMove.move.right -= 100;
             move <= 0 ? (move = 0) : (move -= 2);
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
             console.log(move);
             // check if playerMove is in area of playerWait for change to phase fight 
@@ -299,7 +299,7 @@ function clickRight(e, playerMove, playerWait) {
                 move = 3;
                 Armes.donTakeArmes(playerMove);
                 // make the data  of movement playerWait 
-                Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
         } else if (playerMove.move.right != 0 && e.offsetX >= playerMove.width + 150 && e.offsetX <= playerMove.width + 200) {
 
@@ -308,7 +308,7 @@ function clickRight(e, playerMove, playerWait) {
                 (playerMove.width += 150);
             playerMove.move.right -= 150;
             move <= 0 ? (move = 0) : (move -= 3);
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
             console.log(move);
             // check if playerMove is in area of playerWait for change to phase fight 
@@ -334,7 +334,7 @@ function clickRight(e, playerMove, playerWait) {
             move = 3;
             Armes.donTakeArmes(playerMove);
             // make the data  of movement playerWait 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
 
         }
     }
@@ -352,7 +352,7 @@ function clickLeft(e, playerMove, playerWait) {
             move <= 0 ? (move = 0) : (move -= 1);
 
 
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
             if (
                 (playerMove.width == playerWait.width + 50 &&
@@ -373,7 +373,7 @@ function clickLeft(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
         } else if (playerMove.move.left != 0 && e.offsetX <= playerMove.width - 50 && e.offsetX >= playerMove.width - 100) {
 
@@ -383,7 +383,7 @@ function clickLeft(e, playerMove, playerWait) {
             move <= 0 ? (move = 0) : (move -= 2);
 
 
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
             if (
                 (playerMove.width == playerWait.width + 50 &&
@@ -404,7 +404,7 @@ function clickLeft(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
         } else if (playerMove.move.left != 0 && e.offsetX <= playerMove.width - 100 && e.offsetX >= playerMove.width - 150) {
 
@@ -414,7 +414,7 @@ function clickLeft(e, playerMove, playerWait) {
             move <= 0 ? (move = 0) : (move -= 3);
 
 
-            Move.makeDataMovePlayer(playerMove, playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
             if (
                 (playerMove.width == playerWait.width + 50 &&
@@ -434,7 +434,7 @@ function clickLeft(e, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
 
         }
     }
@@ -452,7 +452,7 @@ function clickDown(e, playerMove, playerWait) {
 
             move <= 0 ? (move = 0) : (move -= 1);
 
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
             if (
                 (playerMove.height == playerWait.height - 50 &&
                     playerMove.width == playerWait.width) ||
@@ -472,7 +472,7 @@ function clickDown(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
         } else if (playerMove.move.down != 0 && e.offsetY >= playerMove.height + 100 && e.offsetY <= playerMove.height + 150) {
 
@@ -483,7 +483,7 @@ function clickDown(e, playerMove, playerWait) {
 
             move <= 0 ? (move = 0) : (move -= 2);
 
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
             if (
                 (playerMove.height == playerWait.height - 50 &&
                     playerMove.width == playerWait.width) ||
@@ -503,7 +503,7 @@ function clickDown(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
         } else if (playerMove.move.down != 0 && e.offsetY >= playerMove.height + 150 && e.offsetY <= playerMove.height + 200) {
 
@@ -514,7 +514,7 @@ function clickDown(e, playerMove, playerWait) {
 
             move <= 0 ? (move = 0) : (move -= 3);
 
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
             if (
                 (playerMove.height == playerWait.height - 50 &&
                     playerMove.width == playerWait.width) ||
@@ -533,7 +533,7 @@ function clickDown(e, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
 
         }
     }
@@ -606,7 +606,7 @@ function clickTop(e, playerMove, playerWait) {
             playerMove.move.top -= 150;
             move <= 0 ? (move = 0) : (move -= 3);
 
-            Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
             if (
                 (playerMove.height == playerWait.height + 50 &&
                     playerMove.width == playerWait.width) ||
@@ -626,12 +626,15 @@ function clickTop(e, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
 
         }
     }
 }
 
+function clickPhaseFight(e) {
+
+}
 
 canvas.addEventListener('click', (e) => {
     if (player1.fight == false && player2.fight == false) {
@@ -685,7 +688,7 @@ canvas.addEventListener('click', (e) => {
 });
 
 
-Move.makeDataMovePlayer(player1, player2, celuleObstacle, move);
+Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
 function movePlayerPressRight(side, playerMove, playerWait) {
     // check if possibility to move right 
@@ -696,7 +699,7 @@ function movePlayerPressRight(side, playerMove, playerWait) {
         playerMove.move.right -= 50;
 
         move <= 0 ? (move = 0) : (move -= 1);
-        Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
         console.log(move);
         // check if playerMove is in area of playerWait for change to phase fight 
@@ -723,7 +726,7 @@ function movePlayerPressRight(side, playerMove, playerWait) {
             move = 3;
             Armes.donTakeArmes(playerMove);
             // make the data  of movement playerWait 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
         }
     }
 }
@@ -737,7 +740,7 @@ function movePlayerPressLeft(side, playerMove, playerWait) {
         move <= 0 ? (move = 0) : (move -= 1);
 
 
-        Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
         if (
             (playerMove.width == playerWait.width + 50 &&
@@ -759,7 +762,7 @@ function movePlayerPressLeft(side, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
         }
     }
 }
@@ -771,7 +774,7 @@ function movePlayerPressTop(side, playerMove, playerWait) {
         playerMove.move.top -= 50;
         move <= 0 ? (move = 0) : (move -= 1);
 
-        Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
         if (
             (playerMove.height == playerWait.height + 50 &&
                 playerMove.width == playerWait.width) ||
@@ -792,7 +795,7 @@ function movePlayerPressTop(side, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
         }
     }
 }
@@ -807,7 +810,7 @@ function movePlayerPressDown(side, playerMove, playerWait) {
 
         move <= 0 ? (move = 0) : (move -= 1);
 
-        Move.makeDataMovePlayer(playerMove, playerWait, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
         if (
             (playerMove.height == playerWait.height - 50 &&
                 playerMove.width == playerWait.width) ||
@@ -827,7 +830,7 @@ function movePlayerPressDown(side, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
         }
     }
 }
@@ -845,7 +848,7 @@ function movePlayerPressEnter(side, playerMove, playerWait) {
             playerWait.play = true;
             move = 3;
             Armes.specilaStopTurn(playerMove, fullArmes);
-            Move.makeDataMovePlayer(playerWait, playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
         }
     }
 }
