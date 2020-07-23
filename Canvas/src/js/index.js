@@ -359,321 +359,213 @@ function drawplayerFight(img, imgsrc, x, y) {
 
 Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
+function movePlayerPressRight(side, playerMove, playerWait) {
+    // check if possibility to move right 
+    if (side && playerMove.move.right != 0) {
+        playerMove.width == canvaWidth - 50 ?
+            (playerMove.width = canvaWidth - 50) :
+            (playerMove.width += 50);
+        playerMove.move.right -= 50;
+
+        move <= 0 ? (move = 0) : (move -= 1);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+
+        console.log(move);
+        // check if playerMove is in area of playerWait for change to phase fight 
+        if (
+            (playerMove.width == playerWait.width - 50 &&
+                playerMove.height == playerWait.height) ||
+            (playerMove.width == playerWait.width &&
+                (playerMove.height == playerWait.height + 50 ||
+                    playerMove.height == playerWait.height - 50))
+        ) {
+            // change to phase Fight 
+            playerMove.fight = true;
+            playerWait.fight = true;
+            playerWait.play = false;
+            playerMove.play = true;
+        }
+        // check if move finish
+        if (playerMove.move.right == 0 && move == 0) {
+            // playerMove end of turn 
+            playerMove.play = false;
+            // playerWait Start of turn 
+            playerWait.play = true;
+            // reset move 
+            move = 3;
+            donTakeArmes(playerMove);
+            // make the data  of movement playerWait 
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+        }
+    }
+}
+
+function movePlayerPressLeft(side, playerMove, playerWait) {
+    // check if possibility to move Left 
+    if (playerMove.play && side && playerMove.move.left != 0) {
+        playerMove.width == 0 ? (playerMove.width = 0) : (playerMove.width -= 50);
+        playerMove.move.left -= 50;
+
+        move <= 0 ? (move = 0) : (move -= 1);
+
+        donTakeArmes(playerMove);
+
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+
+        if (
+            (playerMove.width == playerWait.width + 50 &&
+                playerMove.height == playerWait.height) ||
+            (playerMove.width == playerWait.width &&
+                (playerMove.height == playerWait.height + 50 ||
+                    playerMove.height == playerWait.height - 50))
+        ) {
+            console.log('FUCKING FIGHT');
+            playerMove.fight = true;
+            playerWait.fight = true;
+            playerWait.play = false;
+            playerMove.play = true;
+        }
+        if (playerMove.move.left == 0 && move == 0) {
+            playerMove.play = false;
+            playerWait.play = true;
+            move = 3;
+
+            donTakeArmes(playerWait);
+
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+        }
+    }
+}
+
+function movePlayerPressTop(side, playerMove, playerWait) {
+    // check if possibility to move TOP 
+    if (playerMove.play && side && playerMove.move.top != 0) {
+        playerMove.height == 0 ? (playerMove.height = 0) : (playerMove.height -= 50);
+        playerMove.move.top -= 50;
+        move <= 0 ? (move = 0) : (move -= 1);
+
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+        if (
+            (playerMove.height == playerWait.height + 50 &&
+                playerMove.width == playerWait.width) ||
+            (playerMove.height == playerWait.height &&
+                (playerMove.width == playerWait.width + 50 ||
+                    playerMove.width == playerWait.width - 50))
+        ) {
+            console.log('FUCKING FIGHT');
+            playerMove.fight = true;
+            playerWait.fight = true;
+            playerWait.play = false;
+            playerMove.play = true;
+        }
+        if (playerMove.move.top == 0 && move == 0) {
+            playerMove.play = false;
+            playerWait.play = true;
+            move = 3;
+
+            donTakeArmes(playerMove);
+
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+        }
+    }
+}
+
+function movePlayerPressDown(side, playerMove, playerWait) {
+    // check if possibility to move TOP 
+    if (playerMove.play && side && playerMove.move.down != 0) {
+        playerMove.height == canvaHeight - 50 ?
+            (playerMove.height = canvaHeight - 50) :
+            (playerMove.height += 50);
+        playerMove.move.down -= 50;
+
+        move <= 0 ? (move = 0) : (move -= 1);
+
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+        if (
+            (playerMove.height == playerWait.height - 50 &&
+                playerMove.width == playerWait.width) ||
+            (playerMove.height == playerWait.height &&
+                (playerMove.width == playerWait.width + 50 ||
+                    playerMove.width == playerWait.width - 50))
+        ) {
+            playerMove.fight = true;
+            playerWait.fight = true;
+            playerWait.play = false;
+            playerMove.play = true;
+        }
+        if (playerMove.move.down == 0 && move == 0) {
+            playerMove.play = false;
+            playerWait.play = true;
+            move = 3;
+
+            donTakeArmes(playerMove);
+
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+        }
+    }
+}
+
+function movePlayerPressEnter(side, playerMove, playerWait) {
+    // check if possibility to move TOP 
+    if (playerMove.play && side) {
+        playerMove.move.down = 0;
+        playerMove.move.top = 0;
+        playerMove.move.left = 0;
+        playerMove.move.right = 0;
+
+        if (playerMove.move.down == 0) {
+            playerMove.play = false;
+            playerWait.play = true;
+            move = 3;
+            specilaStopTurn(playerMove, fullArmes);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+        }
+    }
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (player1.fight == false && player2.fight == false) {
 
-
+        // Draw the word phase Exploration 
         drawBack(ctx);
-
         drawObstacle(ctx, celuleObstacle);
-
         drawArmes(ctx, fullArmes);
-
         drawPlayer1(ctx, player1);
         drawPlayer2(ctx, player2);
 
+        // Turn to player 1
         if (player1.play) {
+            // draw movement 
             Draw.drawMovement(ctx, player1);
-
             take(player1, fullArmes);
             // move right
-
-            if (rightPressed && player1.move.right != 0) {
-                player1.width == canvaWidth - 50 ?
-                    (player1.width = canvaWidth - 50) :
-                    (player1.width += 50);
-                player1.move.right -= 50;
-
-                move <= 0 ? (move = 0) : (move -= 1);
-                rightPressed = false;
-                Move.makeDataMovePlayer(player1, celuleObstacle, move);
-
-                console.log(move);
-                if (
-                    (player1.width == player2.width - 50 &&
-                        player1.height == player2.height) ||
-                    (player1.width == player2.width &&
-                        (player1.height == player2.height + 50 ||
-                            player1.height == player2.height - 50))
-                ) {
-                    player1.fight = true;
-                    player2.fight = true;
-                    player2.play = false;
-                    player1.play = true;
-                }
-
-                if (player1.move.right == 0 && move == 0) {
-                    player1.play = false;
-                    player2.play = true;
-                    move = 3;
-                    donTakeArmes(player1);
-                    Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                }
-            }
-            if (player1.play && leftPressed && player1.move.left != 0) {
-                player1.width == 0 ? (player1.width = 0) : (player1.width -= 50);
-                player1.move.left -= 50;
-
-                move <= 0 ? (move = 0) : (move -= 1);
-
-                donTakeArmes(player1);
-
-                leftPressed = false;
-                Move.makeDataMovePlayer(player1, celuleObstacle, move);
-
-                if (
-                    (player1.width == player2.width + 50 &&
-                        player1.height == player2.height) ||
-                    (player1.width == player2.width &&
-                        (player1.height == player2.height + 50 ||
-                            player1.height == player2.height - 50))
-                ) {
-                    console.log('FUCKING FIGHT');
-                    player1.fight = true;
-                    player2.fight = true;
-                    player2.play = false;
-                    player1.play = true;
-                }
-                if (player1.move.left == 0 && move == 0) {
-                    player1.play = false;
-                    player2.play = true;
-                    move = 3;
-
-                    donTakeArmes(player2);
-
-                    Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                }
-            }
-            if (player1.play && topPressed && player1.move.top != 0) {
-                player1.height == 0 ? (player1.height = 0) : (player1.height -= 50);
-                player1.move.top -= 50;
-                move <= 0 ? (move = 0) : (move -= 1);
-
-                topPressed = false;
-                Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                if (
-                    (player1.height == player2.height + 50 &&
-                        player1.width == player2.width) ||
-                    (player1.height == player2.height &&
-                        (player1.width == player2.width + 50 ||
-                            player1.width == player2.width - 50))
-                ) {
-                    console.log('FUCKING FIGHT');
-                    player1.fight = true;
-                    player2.fight = true;
-                    player2.play = false;
-                    player1.play = true;
-                }
-                if (player1.move.top == 0 && move == 0) {
-                    player1.play = false;
-                    player2.play = true;
-                    move = 3;
-
-                    donTakeArmes(player1);
-
-                    Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                }
-            }
-            if (player1.play && downPressed && player1.move.down != 0) {
-                player1.height == canvaHeight - 50 ?
-                    (player1.height = canvaHeight - 50) :
-                    (player1.height += 50);
-                player1.move.down -= 50;
-
-                move <= 0 ? (move = 0) : (move -= 1);
-
-                downPressed = false;
-                Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                if (
-                    (player1.height == player2.height - 50 &&
-                        player1.width == player2.width) ||
-                    (player1.height == player2.height &&
-                        (player1.width == player2.width + 50 ||
-                            player1.width == player2.width - 50))
-                ) {
-                    player1.fight = true;
-                    player2.fight = true;
-                    player2.play = false;
-                    player1.play = true;
-                }
-                if (player1.move.down == 0 && move == 0) {
-                    player1.play = false;
-                    player2.play = true;
-                    move = 3;
-
-                    donTakeArmes(player1);
-
-                    Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                }
-            }
-            if (player1.play && enterPressed) {
-                player1.move.down = 0;
-                player1.move.top = 0;
-                player1.move.left = 0;
-                player1.move.right = 0;
-
-                if (player1.move.down == 0) {
-                    player1.play = false;
-                    player2.play = true;
-                    move = 3;
-                    specilaStopTurn(player1, fullArmes);
-                    Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                    enterPressed = false;
-                }
-            }
+            movePlayerPressRight(rightPressed, player1, player2)
+            rightPressed = false
+            movePlayerPressLeft(leftPressed, player1, player2)
+            leftPressed = false
+            movePlayerPressTop(topPressed, player1, player2)
+            topPressed = false
+            movePlayerPressDown(downPressed, player1, player2)
+            downPressed = false
+            movePlayerPressEnter(enterPressed, player1, player2)
+            enterPressed = false
         }
         if (player2.play) {
             Draw.drawMovement(ctx, player2);
-
             take(player2, fullArmes);
 
-            if (player2.play && rightPressed && player2.move.right != 0) {
-                player2.width == canvaWidth - 50 ?
-                    (player2.width = canvaWidth - 50) :
-                    (player2.width += 50);
-                player2.move.right -= 50;
-                move <= 0 ? (move = 0) : (move -= 1);
-
-                rightPressed = false;
-
-                Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                if (
-                    (player2.width == player1.width - 50 &&
-                        player2.height == player1.height) ||
-                    (player2.width == player1.width &&
-                        (player2.height == player1.height + 50 ||
-                            player2.height == player1.height - 50))
-                ) {
-                    player2.play = true;
-                    player1.play = false;
-                    player1.fight = true;
-                    player2.fight = true;
-
-                }
-                if (player2.move.right == 0 && move == 0) {
-                    player2.play = false;
-                    player1.play = true;
-                    move = 3;
-
-                    donTakeArmes(player2);
-                    Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                }
-            } // move left
-
-            if (player2.play && leftPressed && player2.move.left != 0) {
-                player2.width == 0 ? (player2.width = 0) : (player2.width -= 50);
-                player2.move.left -= 50;
-                move <= 0 ? (move = 0) : (move -= 1);
-                leftPressed = false;
-                Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                if (
-                    (player2.width == player1.width + 50 &&
-                        player2.height == player1.height) ||
-                    (player2.width == player1.width &&
-                        (player2.height == player1.height + 50 ||
-                            player2.height == player1.height - 50))
-                ) {
-                    player2.play = true;
-                    player1.play = false;
-                    player1.fight = true;
-                    player2.fight = true;
-
-                }
-                if (player2.move.left == 0 && move == 0) {
-                    player2.play = false;
-                    player1.play = true;
-                    move = 3;
-
-                    donTakeArmes(player2);
-
-                    Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                }
-            } // move top
-
-            if (player2.play && topPressed && player2.move.top != 0) {
-                player2.height == 0 ? (player2.height = 0) : (player2.height -= 50);
-                player2.move.top -= 50;
-                move <= 0 ? (move = 0) : (move -= 1);
-                topPressed = false;
-                Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                if (
-                    (player2.height == player1.height + 50 &&
-                        player2.width == player1.width) ||
-                    (player2.height == player1.height &&
-                        (player2.width == player1.width + 50 ||
-                            player2.width == player1.width - 50))
-                ) {
-                    player2.play = true;
-                    player1.play = false;
-                    player1.fight = true;
-                    player2.fight = true;
-
-                }
-                if (player2.move.top == 0 && move == 0) {
-                    player2.play = false;
-                    player1.play = true;
-                    move = 3;
-                    player2.gun == 2 ? (player2.gun = 1) : (player2.gun = 0);
-                    donTakeArmes(player2);
-
-                    Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                }
-            }
-            // move down
-
-            if (player2.play && downPressed && player2.move.down != 0) {
-                player2.height == canvaHeight - 50 ?
-                    (player2.height = canvaHeight - 50) :
-                    (player2.height += 50);
-                player2.move.down -= 50;
-                move <= 0 ? (move = 0) : (move -= 1);
-
-                downPressed = false;
-                Move.makeDataMovePlayer(player2, celuleObstacle, move);
-                if (
-                    (player2.height == player1.height - 50 &&
-                        player2.width == player1.width) ||
-                    (player2.height == player1.height &&
-                        (player2.width == player1.width + 50 ||
-                            player2.width == player1.width - 50))
-                ) {
-                    player2.play = true;
-                    player1.play = false;
-                    player1.fight = true;
-                    player2.fight = true;
-
-                }
-                if (player2.move.down == 0 && move == 0) {
-                    player2.play = false;
-                    player1.play = true;
-                    move = 3;
-
-                    donTakeArmes(player2);
-
-                    Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                }
-            }
-            // stop turn
-
-            if (player2.play && enterPressed) {
-                player2.move.down = 0;
-                player2.move.top = 0;
-                player2.move.left = 0;
-                player2.move.right = 0;
-                if (player2.move.down == 0) {
-                    player2.play = false;
-                    player1.play = true;
-                    move = 3;
-
-                    specilaStopTurn(player2, fullArmes);
-
-                    Move.makeDataMovePlayer(player1, celuleObstacle, move);
-                    enterPressed = false;
-                }
-            }
-            // Take armes
+            movePlayerPressRight(rightPressed, player2, player1)
+            rightPressed = false
+            movePlayerPressLeft(leftPressed, player2, player1)
+            leftPressed = false
+            movePlayerPressTop(topPressed, player2, player1)
+            topPressed = false
+            movePlayerPressDown(downPressed, player2, player1)
+            downPressed = false
+            movePlayerPressEnter(enterPressed, player2, player1)
+            enterPressed = false
         }
     } else if (player1.fight && player2.fight) {
         // draw the background phase combat
