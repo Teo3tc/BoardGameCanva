@@ -3,7 +3,7 @@ class Draw {
     static drawGrid(ctx, celule) {
         celule.forEach((gridDraw) => {
             ctx.beginPath();
-            ctx.strokeStyle = 'rgba(250, 250, 250, 0.2)';
+            ctx.strokeStyle = 'rgba(250, 250, 250, 0.1)';
             ctx.strokeRect(gridDraw.width, gridDraw.height, 50, 50);
             ctx.closePath();
         });

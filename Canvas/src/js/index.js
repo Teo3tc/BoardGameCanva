@@ -1,23 +1,25 @@
+// Import class
 import MakeWorld from './MakeWorld';
 import Player from './player';
 import Move from './move';
 import Armes from './arme';
 import Draw from './draw';
 
+// déclaration variable
 let rightPressed = false;
 let leftPressed = false;
 let topPressed = false;
 let downPressed = false;
 let enterPressed = false;
-let spacePressed = false
+let spacePressed = false;
 let gameover = false;
 let move = 3;
 
+// Import image
 import arme1 from '../assets/img/1.png';
 import arme2 from '../assets/img/2.png';
 import arme3 from '../assets/img/3.png';
 import arme4 from '../assets/img/4.png';
-
 import three from '../assets/img/New_Piskel.png';
 import back1 from '../assets/img/grass.png';
 import player11 from '../assets/img/player1.png';
@@ -27,16 +29,14 @@ import back3 from '../assets/img/grass3.png';
 import heart from '../assets/img/heart.png';
 import defaultArme from '../assets/img/0.png';
 
+// Creation Object image
 const imgObastacle = new Image();
 const imgBack = new Image();
-
-
 const imgPlayer1 = new Image();
 const imgPlayer2 = new Image();
 const imgHeartPlayer1 = new Image();
 const imgHeartPlayer2 = new Image();
 const imgdefaultArm = new Image();
-
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -64,6 +64,8 @@ const celuleWidthHeightUpdate2 = MakeWorld.makeCeluleSafeAfterObstacle(
 const celulePlayer = MakeWorld.makeDataPlayer(celuleWidthHeightUpdate2, 2);
 
 
+console.log('HELLO CELYULE');
+/*console.log(celuleObstacleAndPlayer);*/
 const player1 = new Player(
     celulePlayer[0].width,
     celulePlayer[0].height,
@@ -129,6 +131,65 @@ const fullArmes = [{
 
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
+canvas.addEventListener('click', (e) => {
+    if (player1.fight == false && player2.fight == false) {
+        if (player1.play) {
+            clickRight(e, player1, player2);
+            clickLeft(e, player1, player2);
+            clickDown(e, player1, player2);
+            clickTop(e, player1, player2);
+        } else {
+            clickRight(e, player2, player1);
+            clickLeft(e, player2, player1);
+            clickDown(e, player2, player1);
+            clickTop(e, player2, player1);
+        }
+    } else if (player1.fight && player2.fight) {
+
+        if (player1.play) {
+            if (
+                e.offsetY >= player1SelecteurAttackY - 20 &&
+                e.offsetY <= player1SelecteurAttackY + 20
+            ) {
+                if (
+                    e.offsetX >= player1SelecteurAttackX &&
+                    e.offsetX <= player1SelecteurAttackX + 80
+                ) {
+                    leftPressed = true;
+                    enterPressed = true;
+                    console.log('ATTACK');
+                } else if (
+                    e.offsetX >= player1SelecteurDefenseX &&
+                    e.offsetX <= player1SelecteurDefenseX + 80
+                ) {
+                    rightPressed = true;
+                    enterPressed = true;
+                }
+            }
+        } else {
+            if (
+                e.offsetY >= player2SelecteurAttackY - 20 &&
+                e.offsetY <= player2SelecteurAttackY + 20
+            ) {
+                if (
+                    e.offsetX >= player2SelecteurAttackX &&
+                    e.offsetX <= player2SelecteurAttackX + 80
+                ) {
+                    leftPressed = true;
+                    enterPressed = true;
+                } else if (
+                    e.offsetX >= player2SelecteurDefenseX &&
+                    e.offsetX <= player2SelecteurDefenseX + 80
+                ) {
+                    rightPressed = true;
+                    enterPressed = true;
+                }
+            }
+        }
+    } else if ((gameover = true)) {
+        window.location.reload();
+    }
+});
 
 function keyDownHandler(e) {
     if (e.keyCode == 39) {
@@ -162,16 +223,14 @@ function keyUpHandler(e) {
     }
 }
 
+let attack = 'Attack';
+let seleteur = '>';
 
-let attack = 'Attack'
-let seleteur = '>'
+let player1AttackfontsX = 150;
+let player1AttackfontsY = canvaHeight - 50;
 
-
-let player1AttackfontsX = 150
-let player1AttackfontsY = canvaHeight - 50
-
-let player2AttackfontsX = canvaWidth / 2 + 150
-let player2AttackfontsY = canvaHeight - 50
+let player2AttackfontsX = canvaWidth / 2 + 150;
+let player2AttackfontsY = canvaHeight - 50;
 
 function drawFontAttack(ctx, el, x, y) {
     ctx.beginPath();
@@ -181,11 +240,11 @@ function drawFontAttack(ctx, el, x, y) {
     ctx.closePath();
 }
 
-let player1DefensefontsX = 300
-let player1DefensefontsY = canvaHeight - 50
+let player1DefensefontsX = 300;
+let player1DefensefontsY = canvaHeight - 50;
 
-let player2DefensefontsX = canvaWidth / 2 + 300
-let player2DefensefontsY = canvaHeight - 50
+let player2DefensefontsX = canvaWidth / 2 + 300;
+let player2DefensefontsY = canvaHeight - 50;
 
 function drawFontDefesense(ctx, x, y) {
     ctx.beginPath();
@@ -195,10 +254,10 @@ function drawFontDefesense(ctx, x, y) {
     ctx.closePath();
 }
 
-let player1SelecteurAttackX = 130
-let player1SelecteurAttackY = canvaHeight - 50
-let player2SelecteurAttackX = canvaWidth / 2 + 130
-let player2SelecteurAttackY = canvaHeight - 50
+let player1SelecteurAttackX = 130;
+let player1SelecteurAttackY = canvaHeight - 50;
+let player2SelecteurAttackX = canvaWidth / 2 + 130;
+let player2SelecteurAttackY = canvaHeight - 50;
 
 function drawSelecteur(ctx, el, x, y) {
     ctx.beginPath();
@@ -207,12 +266,11 @@ function drawSelecteur(ctx, el, x, y) {
     ctx.fillText(el, x, y);
     ctx.closePath();
 }
-let player1SelecteurDefenseX = 280
-let player1SelecteurDefenseY = canvaHeight - 50
+let player1SelecteurDefenseX = 280;
+let player1SelecteurDefenseY = canvaHeight - 50;
 
-let player2SelecteurDefenseX = canvaWidth / 2 + 280
-let player2SelecteurDefenseY = canvaHeight - 50
-
+let player2SelecteurDefenseX = canvaWidth / 2 + 280;
+let player2SelecteurDefenseY = canvaHeight - 50;
 
 let player1FightX = canvaWidth / 2 / 2;
 let player1FightY = canvaHeight / 2;
@@ -223,150 +281,251 @@ let player2FightY = canvaHeight / 2;
 function drawplayerFight(img, imgsrc, x, y) {
     ctx.drawImage(img, x, y);
     img.src = imgsrc;
-
 }
 
 function clickRight(e, playerMove, playerWait) {
     if (e.offsetY >= playerMove.height && e.offsetY <= playerMove.height + 50) {
+        if (
+            e.offsetX >= playerMove.width + 50 &&
+            e.offsetX <= playerMove.width + 100
+        ) {
+            if (playerMove.move.right != 0) {
 
-        if (playerMove.move.right != 0 && e.offsetX >= playerMove.width + 50 && e.offsetX <= playerMove.width + 100) {
+                playerMove.width == canvaWidth - 50 ?
+                    (playerMove.width = canvaWidth - 50) :
+                    (playerMove.width += 50);
+                playerMove.move.right -= 50;
+                move <= 0 ? (move = 0) : (move -= 1);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
-            playerMove.width == canvaWidth - 50 ?
-                (playerMove.width = canvaWidth - 50) :
-                (playerMove.width += 50);
-            playerMove.move.right -= 50;
-            move <= 0 ? (move = 0) : (move -= 1);
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-
-            console.log(move);
-            // check if playerMove is in area of playerWait for change to phase fight 
-            if (
-                (playerMove.width == playerWait.width - 50 &&
-                    playerMove.height == playerWait.height) ||
-                (playerMove.width == playerWait.width &&
-                    (playerMove.height == playerWait.height + 50 ||
-                        playerMove.height == playerWait.height - 50))
-            ) {
-                // change to phase Fight 
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
+                // check if playerMove is in area of playerWait for change to phase fight
+                if (
+                    (playerMove.width == playerWait.width - 50 &&
+                        playerMove.height == playerWait.height) ||
+                    (playerMove.width == playerWait.width &&
+                        (playerMove.height == playerWait.height + 50 ||
+                            playerMove.height == playerWait.height - 50))
+                ) {
+                    // change to phase Fight
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                // check if move finish
+                if (playerMove.move.right == 0 && move == 0) {
+                    // playerMove end of turn
+                    playerMove.play = false;
+                    // playerWait Start of turn
+                    playerWait.play = true;
+                    // reset move
+                    move = 3;
+                    Armes.donTakeArmes(playerMove);
+                    // make the data  of movement playerWait
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                }
             }
-            // check if move finish
-            if (playerMove.move.right == 0 && move == 0) {
-                // playerMove end of turn 
+        } else if (
+            e.offsetX >= playerMove.width + 100 &&
+            e.offsetX <= playerMove.width + 150
+        ) {
+            if (playerMove.move.right != 0 && playerMove.move.right >= 100) {
+                console.log('HELLO RIGHT 2');
+                for (let index = 0; index < 2; index++) {
+
+                    playerMove.width == canvaWidth - 50 ?
+                        (playerMove.width = canvaWidth - 50) :
+                        (playerMove.width += 50);
+                    playerMove.move.right -= 50;
+                    Armes.take(playerMove, fullArmes)
+                }
+                move <= 0 ? (move = 0) : (move -= 2);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+
+                console.log(move);
+                // check if playerMove is in area of playerWait for change to phase fight
+                if (
+                    (playerMove.width == playerWait.width - 50 &&
+                        playerMove.height == playerWait.height) ||
+                    (playerMove.width == playerWait.width &&
+                        (playerMove.height == playerWait.height + 50 ||
+                            playerMove.height == playerWait.height - 50))
+                ) {
+                    // change to phase Fight
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                // check if move finish
+                if (playerMove.move.right == 0 && move == 0) {
+                    // playerMove end of turn
+                    playerMove.play = false;
+                    // playerWait Start of turn
+                    playerWait.play = true;
+                    // reset move
+                    move = 3;
+                    Armes.donTakeArmes(playerMove);
+                    // make the data  of movement playerWait
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                }
+            }
+        } else if (
+            e.offsetX >= playerMove.width + 150 &&
+            e.offsetX <= playerMove.width + 200
+        ) {
+            if (playerMove.move.right != 0 && playerMove.move.right == 150) {
+                for (let index = 0; index < 3; index++) {
+
+                    playerMove.width == canvaWidth - 50 ?
+                        (playerMove.width = canvaWidth - 50) :
+                        (playerMove.width += 50);
+                    playerMove.move.right -= 50;
+                    Armes.take(playerMove, fullArmes)
+
+                }
+
+                move <= 0 ? (move = 0) : (move -= 3);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+
+                console.log(move);
+                // check if playerMove is in area of playerWait for change to phase fight
+                if (
+                    (playerMove.width == playerWait.width - 50 &&
+                        playerMove.height == playerWait.height) ||
+                    (playerMove.width == playerWait.width &&
+                        (playerMove.height == playerWait.height + 50 ||
+                            playerMove.height == playerWait.height - 50))
+                ) {
+                    // change to phase Fight
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                // check if move finish
+                // playerMove end of turn
                 playerMove.play = false;
-                // playerWait Start of turn 
+                // playerWait Start of turn
                 playerWait.play = true;
-                // reset move 
+                // reset move
                 move = 3;
                 Armes.donTakeArmes(playerMove);
-                // make the data  of movement playerWait 
+                // make the data  of movement playerWait
                 Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
-        } else if (playerMove.move.right != 0 && e.offsetX >= playerMove.width + 100 && e.offsetX <= playerMove.width + 150) {
-
-            playerMove.width == canvaWidth - 50 ?
-                (playerMove.width = canvaWidth - 50) :
-                (playerMove.width += 100);
-            playerMove.move.right -= 100;
-            move <= 0 ? (move = 0) : (move -= 2);
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-
-            console.log(move);
-            // check if playerMove is in area of playerWait for change to phase fight 
-            if (
-                (playerMove.width == playerWait.width - 50 &&
-                    playerMove.height == playerWait.height) ||
-                (playerMove.width == playerWait.width &&
-                    (playerMove.height == playerWait.height + 50 ||
-                        playerMove.height == playerWait.height - 50))
-            ) {
-                // change to phase Fight 
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
-            }
-            // check if move finish
-            if (playerMove.move.right == 0 && move == 0) {
-                // playerMove end of turn 
-                playerMove.play = false;
-                // playerWait Start of turn 
-                playerWait.play = true;
-                // reset move 
-                move = 3;
-                Armes.donTakeArmes(playerMove);
-                // make the data  of movement playerWait 
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
-            }
-        } else if (playerMove.move.right != 0 && e.offsetX >= playerMove.width + 150 && e.offsetX <= playerMove.width + 200) {
-
-            playerMove.width == canvaWidth - 50 ?
-                (playerMove.width = canvaWidth - 50) :
-                (playerMove.width += 150);
-            playerMove.move.right -= 150;
-            move <= 0 ? (move = 0) : (move -= 3);
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-
-            console.log(move);
-            // check if playerMove is in area of playerWait for change to phase fight 
-            if (
-                (playerMove.width == playerWait.width - 50 &&
-                    playerMove.height == playerWait.height) ||
-                (playerMove.width == playerWait.width &&
-                    (playerMove.height == playerWait.height + 50 ||
-                        playerMove.height == playerWait.height - 50))
-            ) {
-                // change to phase Fight 
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
-            }
-            // check if move finish
-            // playerMove end of turn 
-            playerMove.play = false;
-            // playerWait Start of turn 
-            playerWait.play = true;
-            // reset move 
-            move = 3;
-            Armes.donTakeArmes(playerMove);
-            // make the data  of movement playerWait 
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
-
         }
     }
 }
 
 function clickLeft(e, playerMove, playerWait) {
     if (e.offsetY >= playerMove.height && e.offsetY <= playerMove.height + 50) {
+        if (
 
+            e.offsetX <= playerMove.width &&
+            e.offsetX >= playerMove.width - 50
+        ) {
+            if (playerMove.move.left != 0) {
+                playerMove.width == 0 ? (playerMove.width = 0) : (playerMove.width -= 50);
+                playerMove.move.left -= 50;
 
-        if (playerMove.move.left != 0 && e.offsetX <= playerMove.width && e.offsetX >= playerMove.width - 50) {
+                move <= 0 ? (move = 0) : (move -= 1);
 
-            playerMove.width == 0 ? (playerMove.width = 0) : (playerMove.width -= 50);
-            playerMove.move.left -= 50;
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
-            move <= 0 ? (move = 0) : (move -= 1);
+                if (
+                    (playerMove.width == playerWait.width + 50 &&
+                        playerMove.height == playerWait.height) ||
+                    (playerMove.width == playerWait.width &&
+                        (playerMove.height == playerWait.height + 50 ||
+                            playerMove.height == playerWait.height - 50))
+                ) {
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                if (playerMove.move.left == 0 && move == 0) {
+                    playerMove.play = false;
+                    playerWait.play = true;
+                    move = 3;
 
+                    Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-
-            if (
-                (playerMove.width == playerWait.width + 50 &&
-                    playerMove.height == playerWait.height) ||
-                (playerMove.width == playerWait.width &&
-                    (playerMove.height == playerWait.height + 50 ||
-                        playerMove.height == playerWait.height - 50))
-            ) {
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                }
             }
-            if (playerMove.move.left == 0 && move == 0) {
+        } else if (
+            e.offsetX <= playerMove.width - 50 &&
+            e.offsetX >= playerMove.width - 100
+        ) {
+            if (playerMove.move.left != 0 && playerMove.move.left >= 100) {
+                for (let index = 0; index < 2; index++) {
+
+                    playerMove.width == 0 ?
+                        (playerMove.width = 0) :
+                        (playerMove.width -= 50);
+                    playerMove.move.left -= 50;
+                    Armes.take(playerMove, fullArmes)
+
+                }
+                move <= 0 ? (move = 0) : (move -= 2);
+
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+
+                if (
+                    (playerMove.width == playerWait.width + 50 &&
+                        playerMove.height == playerWait.height) ||
+                    (playerMove.width == playerWait.width &&
+                        (playerMove.height == playerWait.height + 50 ||
+                            playerMove.height == playerWait.height - 50))
+                ) {
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                if (playerMove.move.left == 0 && move == 0) {
+                    playerMove.play = false;
+                    playerWait.play = true;
+                    move = 3;
+
+                    Armes.donTakeArmes(playerMove);
+
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                }
+            }
+        } else if (
+
+            e.offsetX <= playerMove.width - 100 &&
+            e.offsetX >= playerMove.width - 150
+        ) {
+            if (playerMove.move.left != 0 && playerMove.move.left == 150) {
+                for (let index = 0; index < 3; index++) {
+
+                    playerMove.width == 0 ?
+                        (playerMove.width = 0) :
+                        (playerMove.width -= 50);
+                    playerMove.move.left -= 50;
+                    Armes.take(playerMove, fullArmes)
+
+                }
+                move <= 0 ? (move = 0) : (move -= 3);
+
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+
+                if (
+                    (playerMove.width == playerWait.width + 50 &&
+                        playerMove.height == playerWait.height) ||
+                    (playerMove.width == playerWait.width &&
+                        (playerMove.height == playerWait.height + 50 ||
+                            playerMove.height == playerWait.height - 50))
+                ) {
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
                 playerMove.play = false;
                 playerWait.play = true;
                 move = 3;
@@ -375,76 +534,18 @@ function clickLeft(e, playerMove, playerWait) {
 
                 Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
-        } else if (playerMove.move.left != 0 && e.offsetX <= playerMove.width - 50 && e.offsetX >= playerMove.width - 100) {
-
-            playerMove.width == 0 ? (playerMove.width = 0) : (playerMove.width -= 100);
-            playerMove.move.left -= 100;
-
-            move <= 0 ? (move = 0) : (move -= 2);
-
-
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-
-            if (
-                (playerMove.width == playerWait.width + 50 &&
-                    playerMove.height == playerWait.height) ||
-                (playerMove.width == playerWait.width &&
-                    (playerMove.height == playerWait.height + 50 ||
-                        playerMove.height == playerWait.height - 50))
-            ) {
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
-            }
-            if (playerMove.move.left == 0 && move == 0) {
-                playerMove.play = false;
-                playerWait.play = true;
-                move = 3;
-
-                Armes.donTakeArmes(playerMove);
-
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
-            }
-        } else if (playerMove.move.left != 0 && e.offsetX <= playerMove.width - 100 && e.offsetX >= playerMove.width - 150) {
-
-            playerMove.width == 0 ? (playerMove.width = 0) : (playerMove.width -= 150);
-            playerMove.move.left -= 150;
-
-            move <= 0 ? (move = 0) : (move -= 3);
-
-
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-
-            if (
-                (playerMove.width == playerWait.width + 50 &&
-                    playerMove.height == playerWait.height) ||
-                (playerMove.width == playerWait.width &&
-                    (playerMove.height == playerWait.height + 50 ||
-                        playerMove.height == playerWait.height - 50))
-            ) {
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
-            }
-            playerMove.play = false;
-            playerWait.play = true;
-            move = 3;
-
-            Armes.donTakeArmes(playerMove);
-
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
-
         }
     }
 }
 
 function clickDown(e, playerMove, playerWait) {
+
     if (e.offsetX >= playerMove.width && e.offsetX <= playerMove.width + 50) {
-
-        if (playerMove.move.down != 0 && e.offsetY >= playerMove.height + 50 && e.offsetY <= playerMove.height + 100) {
-
+        if (
+            playerMove.move.down != 0 &&
+            e.offsetY >= playerMove.height + 50 &&
+            e.offsetY <= playerMove.height + 100
+        ) {
             playerMove.height == canvaHeight - 50 ?
                 (playerMove.height = canvaHeight - 50) :
                 (playerMove.height += 50);
@@ -464,22 +565,26 @@ function clickDown(e, playerMove, playerWait) {
                 playerWait.fight = true;
                 playerWait.play = false;
                 playerMove.play = true;
-            }
-            if (playerMove.move.down == 0 && move == 0) {
+            } else if (playerMove.move.down == 0 && move == 0) {
                 playerMove.play = false;
                 playerWait.play = true;
                 move = 3;
 
                 Armes.donTakeArmes(playerMove);
-
                 Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
-        } else if (playerMove.move.down != 0 && e.offsetY >= playerMove.height + 100 && e.offsetY <= playerMove.height + 150) {
-
-            playerMove.height == canvaHeight - 50 ?
-                (playerMove.height = canvaHeight - 50) :
-                (playerMove.height += 100);
-            playerMove.move.down -= 100;
+        } else if (
+            playerMove.move.down != 0 &&
+            e.offsetY >= playerMove.height + 100 &&
+            e.offsetY <= playerMove.height + 150 && playerMove.move.down >= 100
+        ) {
+            for (let index = 0; index < 2; index++) {
+                playerMove.height == canvaHeight - 50 ?
+                    (playerMove.height = canvaHeight - 50) :
+                    (playerMove.height += 50);
+                playerMove.move.down -= 50;
+                Armes.take(playerMove, fullArmes);
+            }
 
             move <= 0 ? (move = 0) : (move -= 2);
 
@@ -505,46 +610,62 @@ function clickDown(e, playerMove, playerWait) {
 
                 Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
-        } else if (playerMove.move.down != 0 && e.offsetY >= playerMove.height + 150 && e.offsetY <= playerMove.height + 200) {
+        } else if (
+            playerMove.move.down != 0 && playerMove.move.down == 150
+        ) {
+            if (e.offsetY >= playerMove.height + 150 &&
+                e.offsetY <= playerMove.height + 200) {
 
-            playerMove.height == canvaHeight - 50 ?
-                (playerMove.height = canvaHeight - 50) :
-                (playerMove.height += 150);
-            playerMove.move.down -= 150;
+                for (let index = 0; index < 3; index++) {
+                    playerMove.height == canvaHeight - 50 ?
+                        (playerMove.height = canvaHeight - 50) :
+                        (playerMove.height += 50);
+                    playerMove.move.down -= 50;
+                    Armes.take(playerMove, fullArmes);
+                }
+                move <= 0 ? (move = 0) : (move -= 3);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
-            move <= 0 ? (move = 0) : (move -= 3);
+                if (
+                    (playerMove.height == playerWait.height - 50 &&
+                        playerMove.width == playerWait.width) ||
+                    (playerMove.height == playerWait.height &&
+                        (playerMove.width == playerWait.width + 50 ||
+                            playerMove.width == playerWait.width - 50))
+                ) {
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                playerMove.play = false;
+                playerWait.play = true;
+                move = 3;
 
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-            if (
-                (playerMove.height == playerWait.height - 50 &&
-                    playerMove.width == playerWait.width) ||
-                (playerMove.height == playerWait.height &&
-                    (playerMove.width == playerWait.width + 50 ||
-                        playerMove.width == playerWait.width - 50))
-            ) {
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
+                Armes.donTakeArmes(playerMove);
+
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
             }
-            playerMove.play = false;
-            playerWait.play = true;
-            move = 3;
-
-            Armes.donTakeArmes(playerMove);
-
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
 
         }
     }
 }
 
 function clickTop(e, playerMove, playerWait) {
+    console.log('---PLAYER MOVE TOP');
+    console.log(playerMove.move.top);
+    console.log(e.offsetY);
     if (e.offsetX >= playerMove.width && e.offsetX <= playerMove.width + 50) {
+        if (
+            playerMove.move.top != 0 &&
+            e.offsetY <= playerMove.height &&
+            e.offsetY >= playerMove.height - 50
 
-        if (playerMove.move.top != 0 && e.offsetY <= playerMove.height && e.offsetY >= playerMove.height - 50) {
+        ) {
 
-            playerMove.height == 0 ? (playerMove.height = 0) : (playerMove.height -= 50);
+            playerMove.height == 0 ?
+                (playerMove.height = 0) :
+                (playerMove.height -= 50);
             playerMove.move.top -= 50;
             move <= 0 ? (move = 0) : (move -= 1);
 
@@ -556,7 +677,6 @@ function clickTop(e, playerMove, playerWait) {
                     (playerMove.width == playerWait.width + 50 ||
                         playerMove.width == playerWait.width - 50))
             ) {
-                console.log('FUCKING FIGHT');
                 playerMove.fight = true;
                 playerWait.fight = true;
                 playerWait.play = false;
@@ -570,128 +690,100 @@ function clickTop(e, playerMove, playerWait) {
                 Armes.donTakeArmes(playerMove);
 
                 Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+
             }
-        } else if (playerMove.move.top != 0 && e.offsetY <= playerMove.height - 50 && e.offsetY >= playerMove.height - 100) {
+        } else if (
+            e.offsetY <= playerMove.height - 50 &&
+            e.offsetY >= playerMove.height - 100
 
-            playerMove.height == 0 ? (playerMove.height = 0) : (playerMove.height -= 100);
-            playerMove.move.top -= 100;
-            move <= 0 ? (move = 0) : (move -= 2);
 
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-            if (
-                (playerMove.height == playerWait.height + 50 &&
-                    playerMove.width == playerWait.width) ||
-                (playerMove.height == playerWait.height &&
-                    (playerMove.width == playerWait.width + 50 ||
-                        playerMove.width == playerWait.width - 50))
-            ) {
-                console.log('FUCKING FIGHT');
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
+        ) {
+
+            if (playerMove.move.top != 0 &&
+                playerMove.move.top >= 100) {
+                for (let index = 0; index < 2; index++) {
+                    playerMove.height == 0 ?
+                        (playerMove.height = 0) :
+                        (playerMove.height -= 50);
+                    playerMove.move.top -= 50;
+                    Armes.take(playerMove, fullArmes);
+                }
+
+                move <= 0 ? (move = 0) : (move -= 2);
+
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                if (
+                    (playerMove.height == playerWait.height + 50 &&
+                        playerMove.width == playerWait.width) ||
+                    (playerMove.height == playerWait.height &&
+                        (playerMove.width == playerWait.width + 50 ||
+                            playerMove.width == playerWait.width - 50))
+                ) {
+                    console.log('FUCKING FIGHT');
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                if (playerMove.move.top == 0 && move == 0) {
+                    playerMove.play = false;
+                    playerWait.play = true;
+                    move = 3;
+
+                    Armes.donTakeArmes(playerMove);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+
+                }
             }
-            if (playerMove.move.top == 0 && move == 0) {
-                playerMove.play = false;
-                playerWait.play = true;
-                move = 3;
+        } else if (
+            e.offsetY <= playerMove.height - 100 &&
+            e.offsetY >= playerMove.height - 150
 
-                Armes.donTakeArmes(playerMove);
+        ) {
 
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+            if (playerMove.move.top != 0 && playerMove.move.top == 150) {
+                for (let index = 0; index < 3; index++) {
+                    playerMove.height == 0 ?
+                        (playerMove.height = 0) :
+                        (playerMove.height -= 50);
+                    playerMove.move.top -= 50;
+                    Armes.take(playerMove, fullArmes);
+                }
+
+                move <= 0 ? (move = 0) : (move -= 3);
+
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                if (
+                    (playerMove.height == playerWait.height + 50 &&
+                        playerMove.width == playerWait.width) ||
+                    (playerMove.height == playerWait.height &&
+                        (playerMove.width == playerWait.width + 50 ||
+                            playerMove.width == playerWait.width - 50))
+                ) {
+                    playerMove.fight = true;
+                    playerWait.fight = true;
+                    playerWait.play = false;
+                    playerMove.play = true;
+                }
+                if (playerMove.move.top == 0 && move == 0) {
+                    playerMove.play = false;
+                    playerWait.play = true;
+                    move = 3;
+
+                    Armes.donTakeArmes(playerMove);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                }
             }
-        } else if (playerMove.move.top != 0 && e.offsetY <= playerMove.height - 100 && e.offsetY >= playerMove.height - 150) {
-
-            playerMove.height == 0 ? (playerMove.height = 0) : (playerMove.height -= 150);
-            playerMove.move.top -= 150;
-            move <= 0 ? (move = 0) : (move -= 3);
-
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
-            if (
-                (playerMove.height == playerWait.height + 50 &&
-                    playerMove.width == playerWait.width) ||
-                (playerMove.height == playerWait.height &&
-                    (playerMove.width == playerWait.width + 50 ||
-                        playerMove.width == playerWait.width - 50))
-            ) {
-                console.log('FUCKING FIGHT');
-                playerMove.fight = true;
-                playerWait.fight = true;
-                playerWait.play = false;
-                playerMove.play = true;
-            }
-            playerMove.play = false;
-            playerWait.play = true;
-            move = 3;
-
-            Armes.donTakeArmes(playerMove);
-
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
 
         }
     }
 }
 
-function clickPhaseFight(e) {
-
-}
-
-canvas.addEventListener('click', (e) => {
-    if (player1.fight == false && player2.fight == false) {
-
-        if (player1.play) {
-
-            clickRight(e, player1, player2)
-            clickLeft(e, player1, player2)
-            clickDown(e, player1, player2)
-            clickTop(e, player1, player2)
-        } else {
-
-            clickRight(e, player2, player1)
-            clickLeft(e, player2, player1)
-            clickDown(e, player2, player1)
-            clickTop(e, player2, player1)
 
 
-        }
-    } else if (player1.fight && player2.fight) {
-        console.log(e.offsetX);
-        console.log(e.offsetY);
-        if (player1.play) {
-            if (e.offsetY >= player1SelecteurAttackY - 20 && e.offsetY <= player1SelecteurAttackY + 20) {
-
-                if (e.offsetX >= player1SelecteurAttackX && e.offsetX <= player1SelecteurAttackX + 80) {
-                    leftPressed = true
-                    enterPressed = true
-                    console.log('ATTACK');
-                } else if (e.offsetX >= player1SelecteurDefenseX && e.offsetX <= player1SelecteurDefenseX + 80) {
-                    rightPressed = true
-                    enterPressed = true
-                }
-            }
-        } else {
-            if (e.offsetY >= player2SelecteurAttackY - 20 && e.offsetY <= player2SelecteurAttackY + 20) {
-
-                if (e.offsetX >= player2SelecteurAttackX && e.offsetX <= player2SelecteurAttackX + 80) {
-                    leftPressed = true
-                    enterPressed = true
-                    console.log('ATTACK');
-                } else if (e.offsetX >= player2SelecteurDefenseX && e.offsetX <= player2SelecteurDefenseX + 80) {
-                    rightPressed = true
-                    enterPressed = true
-                }
-            }
-        }
-    } else if (gameover = true) {
-        window.location.reload();
-    }
-});
-
-
-Move.makeDataMovePlayer(player1, celuleObstacle, move);
 
 function movePlayerPressRight(side, playerMove, playerWait) {
-    // check if possibility to move right 
+    // check if possibility to move right
     if (side && playerMove.move.right != 0) {
         playerMove.width == canvaWidth - 50 ?
             (playerMove.width = canvaWidth - 50) :
@@ -702,7 +794,7 @@ function movePlayerPressRight(side, playerMove, playerWait) {
         Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
         console.log(move);
-        // check if playerMove is in area of playerWait for change to phase fight 
+        // check if playerMove is in area of playerWait for change to phase fight
         if (
             (playerMove.width == playerWait.width - 50 &&
                 playerMove.height == playerWait.height) ||
@@ -710,7 +802,7 @@ function movePlayerPressRight(side, playerMove, playerWait) {
                 (playerMove.height == playerWait.height + 50 ||
                     playerMove.height == playerWait.height - 50))
         ) {
-            // change to phase Fight 
+            // change to phase Fight
             playerMove.fight = true;
             playerWait.fight = true;
             playerWait.play = false;
@@ -718,27 +810,26 @@ function movePlayerPressRight(side, playerMove, playerWait) {
         }
         // check if move finish
         if (playerMove.move.right == 0 && move == 0) {
-            // playerMove end of turn 
+            // playerMove end of turn
             playerMove.play = false;
-            // playerWait Start of turn 
+            // playerWait Start of turn
             playerWait.play = true;
-            // reset move 
+            // reset move
             move = 3;
             Armes.donTakeArmes(playerMove);
-            // make the data  of movement playerWait 
+            // make the data  of movement playerWait
             Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
         }
     }
 }
 
 function movePlayerPressLeft(side, playerMove, playerWait) {
-    // check if possibility to move Left 
+    // check if possibility to move Left
     if (playerMove.play && side && playerMove.move.left != 0) {
         playerMove.width == 0 ? (playerMove.width = 0) : (playerMove.width -= 50);
         playerMove.move.left -= 50;
 
         move <= 0 ? (move = 0) : (move -= 1);
-
 
         Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
 
@@ -749,7 +840,6 @@ function movePlayerPressLeft(side, playerMove, playerWait) {
                 (playerMove.height == playerWait.height + 50 ||
                     playerMove.height == playerWait.height - 50))
         ) {
-            console.log('FUCKING FIGHT');
             playerMove.fight = true;
             playerWait.fight = true;
             playerWait.play = false;
@@ -768,9 +858,11 @@ function movePlayerPressLeft(side, playerMove, playerWait) {
 }
 
 function movePlayerPressTop(side, playerMove, playerWait) {
-    // check if possibility to move TOP 
+    // check if possibility to move TOP
     if (playerMove.play && side && playerMove.move.top != 0) {
-        playerMove.height == 0 ? (playerMove.height = 0) : (playerMove.height -= 50);
+        playerMove.height == 0 ?
+            (playerMove.height = 0) :
+            (playerMove.height -= 50);
         playerMove.move.top -= 50;
         move <= 0 ? (move = 0) : (move -= 1);
 
@@ -801,7 +893,7 @@ function movePlayerPressTop(side, playerMove, playerWait) {
 }
 
 function movePlayerPressDown(side, playerMove, playerWait) {
-    // check if possibility to move TOP 
+    // check if possibility to move TOP
     if (playerMove.play && side && playerMove.move.down != 0) {
         playerMove.height == canvaHeight - 50 ?
             (playerMove.height = canvaHeight - 50) :
@@ -836,7 +928,7 @@ function movePlayerPressDown(side, playerMove, playerWait) {
 }
 
 function movePlayerPressEnter(side, playerMove, playerWait) {
-    // check if possibility to move TOP 
+    // check if possibility to move TOP
     if (playerMove.play && side) {
         playerMove.move.down = 0;
         playerMove.move.top = 0;
@@ -853,14 +945,16 @@ function movePlayerPressEnter(side, playerMove, playerWait) {
     }
 }
 
+
+Move.makeDataMovePlayer(player1, celuleObstacle, move);
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (player1.fight == false && player2.fight == false) {
-
-        // Draw the word phase Exploration 
+        // Draw the word phase Exploration
         Draw.drawBack(ctx, back1, imgBack);
-        Draw.drawGrid(ctx, celuleWidthHeight)
+        Draw.drawGrid(ctx, celuleWidthHeight);
 
         Draw.drawObstacle(ctx, celuleObstacle, three, imgObastacle);
         Draw.drawArms(ctx, fullArmes);
@@ -869,47 +963,44 @@ function draw() {
 
         // Turn to player 1
         if (player1.play) {
-            // draw movement 
+            // draw movement
             Draw.drawMovement(ctx, player1);
             Armes.take(player1, fullArmes);
 
-
             // move right
-            movePlayerPressRight(rightPressed, player1, player2)
-            rightPressed = false
-            movePlayerPressLeft(leftPressed, player1, player2)
-            leftPressed = false
-            movePlayerPressTop(topPressed, player1, player2)
-            topPressed = false
-            movePlayerPressDown(downPressed, player1, player2)
-            downPressed = false
-            movePlayerPressEnter(enterPressed, player1, player2)
-            enterPressed = false
+            movePlayerPressRight(rightPressed, player1, player2);
+            rightPressed = false;
+            movePlayerPressLeft(leftPressed, player1, player2);
+            leftPressed = false;
+            movePlayerPressTop(topPressed, player1, player2);
+            topPressed = false;
+            movePlayerPressDown(downPressed, player1, player2);
+            downPressed = false;
+            movePlayerPressEnter(enterPressed, player1, player2);
+            enterPressed = false;
         }
         if (player2.play) {
-
             Draw.drawMovement(ctx, player2);
             Armes.take(player2, fullArmes);
 
-
-            movePlayerPressRight(rightPressed, player2, player1)
-            rightPressed = false
-            movePlayerPressLeft(leftPressed, player2, player1)
-            leftPressed = false
-            movePlayerPressTop(topPressed, player2, player1)
-            topPressed = false
-            movePlayerPressDown(downPressed, player2, player1)
-            downPressed = false
-            movePlayerPressEnter(enterPressed, player2, player1)
-            enterPressed = false
+            movePlayerPressRight(rightPressed, player2, player1);
+            rightPressed = false;
+            movePlayerPressLeft(leftPressed, player2, player1);
+            leftPressed = false;
+            movePlayerPressTop(topPressed, player2, player1);
+            topPressed = false;
+            movePlayerPressDown(downPressed, player2, player1);
+            downPressed = false;
+            movePlayerPressEnter(enterPressed, player2, player1);
+            enterPressed = false;
         }
     } else if (player1.fight && player2.fight) {
         // draw the background phase combat
         Draw.drawBack(ctx, back2, imgBack);
 
         // draw players phase combat
-        drawplayerFight(imgPlayer1, player11, player1FightX, player1FightY)
-        drawplayerFight(imgPlayer2, player22, player2FightX, player2FightY)
+        drawplayerFight(imgPlayer1, player11, player1FightX, player1FightY);
+        drawplayerFight(imgPlayer2, player22, player2FightX, player2FightY);
 
         ctx.beginPath();
         ctx.lineWidth = 1;
@@ -987,22 +1078,27 @@ function draw() {
             ctx.closePath();
         }
 
-        drawFontAttack(ctx, attack, player1AttackfontsX, player1AttackfontsY)
-        drawFontDefesense(ctx, player1DefensefontsX, player1DefensefontsY)
+        drawFontAttack(ctx, attack, player1AttackfontsX, player1AttackfontsY);
+        drawFontDefesense(ctx, player1DefensefontsX, player1DefensefontsY);
 
-        drawFontAttack(ctx, attack, player2AttackfontsX, player2AttackfontsY)
-        drawFontDefesense(ctx, player2DefensefontsX, player2DefensefontsY)
-
-
-
+        drawFontAttack(ctx, attack, player2AttackfontsX, player2AttackfontsY);
+        drawFontDefesense(ctx, player2DefensefontsX, player2DefensefontsY);
 
         if (player1.play) {
-
             if (player1.attack && player1.play) {
-                drawSelecteur(ctx, seleteur, player1SelecteurAttackX, player1SelecteurAttackY)
-
+                drawSelecteur(
+                    ctx,
+                    seleteur,
+                    player1SelecteurAttackX,
+                    player1SelecteurAttackY
+                );
             } else if (player1.defense) {
-                drawSelecteur(ctx, seleteur, player1SelecteurDefenseX, player1SelecteurDefenseY)
+                drawSelecteur(
+                    ctx,
+                    seleteur,
+                    player1SelecteurDefenseX,
+                    player1SelecteurDefenseY
+                );
             }
             ctx.beginPath();
             ctx.lineWidth = 5;
@@ -1011,17 +1107,16 @@ function draw() {
 
             ctx.closePath();
             if (rightPressed) {
-                player1.attack = false
-                player1.defense = true
-                rightPressed = false
+                player1.attack = false;
+                player1.defense = true;
+                rightPressed = false;
             } else if (leftPressed) {
-                player1.attack = true
-                player1.defense = false
-                leftPressed = false
-
+                player1.attack = true;
+                player1.defense = false;
+                leftPressed = false;
             } else if (enterPressed) {
                 if (player1.attack) {
-                    player1.armor = 0
+                    player1.armor = 0;
 
                     ctx.beginPath();
                     ctx.lineWidth = 5;
@@ -1030,47 +1125,51 @@ function draw() {
                     ctx.closePath();
 
                     if (player1.arme == undefined) {
-                        player2.healh = (player2.healh + player2.armor) - 10
+                        player2.healh = player2.healh + player2.armor - 10;
                     } else {
-
-                        player2.healh = (player2.healh + player2.armor) - player1.arme.name.power
+                        player2.healh =
+                            player2.healh + player2.armor - player1.arme.name.power;
                     }
-                    player2.armor = 0
-                    player2.play = true
-                    player1.play = false
-                    enterPressed = false
+                    player2.armor = 0;
+                    player2.play = true;
+                    player1.play = false;
+                    enterPressed = false;
                 }
                 if (player1.defense) {
                     if (player2.arme == undefined) {
-                        player1.armor = 5
-
+                        player1.armor = 5;
                     } else {
-                        player1.armor = player2.arme.name.power / 2
+                        player1.armor = player2.arme.name.power / 2;
                     }
                     ctx.beginPath();
                     ctx.fillStyle = 'rgba(0, 0, 255, 1)';
                     ctx.fillRect(0, 0, canvaWidth / 2, canvaHeight);
                     ctx.closePath();
-                    player2.play = true
-                    player1.play = false
-                    enterPressed = false
-
+                    player2.play = true;
+                    player1.play = false;
+                    enterPressed = false;
                 }
-
             }
             if (player2.healh <= 0) {
-                player1.fight = false
-                gameover = true
+                player1.fight = false;
+                gameover = true;
             }
-
-
         }
         if (player2.play) {
             if (player2.attack && player2.play) {
-                drawSelecteur(ctx, seleteur, player2SelecteurAttackX, player2SelecteurAttackY)
-
+                drawSelecteur(
+                    ctx,
+                    seleteur,
+                    player2SelecteurAttackX,
+                    player2SelecteurAttackY
+                );
             } else if (player2.defense) {
-                drawSelecteur(ctx, seleteur, player2SelecteurDefenseX, player2SelecteurDefenseY)
+                drawSelecteur(
+                    ctx,
+                    seleteur,
+                    player2SelecteurDefenseX,
+                    player2SelecteurDefenseY
+                );
             }
             ctx.beginPath();
             ctx.lineWidth = 5;
@@ -1086,59 +1185,55 @@ function draw() {
 
             ctx.closePath();
             if (rightPressed) {
-                player2.attack = false
-                player2.defense = true
-                rightPressed = false
-
+                player2.attack = false;
+                player2.defense = true;
+                rightPressed = false;
             } else if (leftPressed) {
-                player2.attack = true
-                player2.defense = false
-                leftPressed = false
-
+                player2.attack = true;
+                player2.defense = false;
+                leftPressed = false;
             } else if (enterPressed) {
                 if (player2.attack) {
-                    player2.armor = 0
+                    player2.armor = 0;
                     ctx.beginPath();
                     ctx.fillStyle = 'rgb(255,215,0)';
                     ctx.fillRect(0, 0, canvaWidth / 2, canvaHeight);
                     ctx.closePath();
 
                     if (player2.arme == undefined) {
-                        player1.healh = (player1.healh + player1.armor) - 10
+                        player1.healh = player1.healh + player1.armor - 10;
                     } else {
-
-                        player1.healh = (player1.healh + player1.armor) - player2.arme.name.power
+                        player1.healh =
+                            player1.healh + player1.armor - player2.arme.name.power;
                     }
-                    player2.armor = 0
+                    player2.armor = 0;
 
-                    player1.play = true
-                    player2.play = false
-                    enterPressed = false
+                    player1.play = true;
+                    player2.play = false;
+                    enterPressed = false;
                 }
                 if (player2.defense) {
                     if (player1.arme == undefined) {
-                        player2.armor = 10 / 2
-
+                        player2.armor = 10 / 2;
                     } else {
-                        player2.armor = player1.arme.name.power / 2
+                        player2.armor = player1.arme.name.power / 2;
                     }
 
                     ctx.beginPath();
                     ctx.fillStyle = 'rgba(0, 0, 255, 1)';
                     ctx.fillRect(canvaWidth / 2, 0, canvaWidth / 2, canvaHeight);
                     ctx.closePath();
-                    player1.play = true
-                    player2.play = false
-                    enterPressed = false
+                    player1.play = true;
+                    player2.play = false;
+                    enterPressed = false;
                 }
             }
             if (player1.healh <= 0) {
-                player2.fight = false
-                gameover = true
+                player2.fight = false;
+                gameover = true;
             }
-
         }
-    } else if (gameover = true) {
+    } else if ((gameover = true)) {
         Draw.drawBack(ctx, back3, imgBack);
 
         ctx.beginPath();
@@ -1160,7 +1255,6 @@ function draw() {
             ctx.fillText(`> Restart`, canvaWidth / 2, canvaHeight / 2 + 90);
             ctx.textAlign = 'center';
             ctx.closePath();
-
         }
         if (player2.fight == false) {
             ctx.beginPath();
@@ -1175,20 +1269,14 @@ function draw() {
             ctx.fillText(`> Restart`, canvaWidth / 2, canvaHeight / 2 + 90);
             ctx.textAlign = 'center';
             ctx.closePath();
-
         }
 
         if (spacePressed) {
-
-            spacePressed = false
-
+            spacePressed = false;
         }
-
     }
 }
 
-
-//setInterval(draw, 60);
 function init() {
     // Start the first frame request
     window.requestAnimationFrame(gameLoop);
@@ -1199,5 +1287,4 @@ function gameLoop() {
     // Keep requesting new frames
     window.requestAnimationFrame(gameLoop);
 }
-
 init();
