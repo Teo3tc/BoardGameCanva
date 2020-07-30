@@ -8,16 +8,13 @@ class Draw {
             ctx.closePath();
         });
     }
-    static drawBack(ctx, img, imgObject) {
+    static drawBack(ctx, imgObject) {
         ctx.drawImage(imgObject, 0, 0, 1000, 500);
 
-        imgObject.src = img;
     }
-    static drawObstacle(ctx, celules, img, imgObject) {
+    static drawObstacle(ctx, celules, imgObject) {
         celules.forEach((celule) => {
             ctx.drawImage(imgObject, celule.width, celule.height);
-
-            imgObject.src = img;
         });
     }
     static drawArms(ctx, celules) {
@@ -31,12 +28,11 @@ class Draw {
                 40
             );
 
-            arme.name.boxImage.src = arme.name.image;
         });
     }
-    static drawPlayer(ctx, player, img, imgObject) {
+    static drawPlayer(ctx, player, imgObject) {
         ctx.drawImage(imgObject, player.width, player.height, 50, 50);
-        imgObject.src = img;
+
 
     }
     static drawMoveLeft(ctx, player) {

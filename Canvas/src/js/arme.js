@@ -5,8 +5,7 @@ class Armes {
         this.height = height
         this.color = color
         this.power = power
-        this.image = image
-        this.boxImage = new Image()
+        this.boxImage = image
     }
     static take(player, armes) {
         armes.forEach((arms, index) => {
