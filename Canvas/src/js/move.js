@@ -31,16 +31,21 @@ class Move {
                 if (moveLeft[1].width == saveObstacle[1] || moveLeft[1].width == saveObstacle[0]) {
 
                     moveLeftAfterObstacle = 50
+                    move = 50
+
                 } else if (moveLeft[1].width != saveObstacle[y]) {
                     if (moveLeft[2].width == saveObstacle[y]) {
 
                         moveLeftAfterObstacle = 100
+                        move = 100
                     } else if (
                         moveLeft[2].width != saveObstacle[y] &&
                         moveLeft[1].width != saveObstacle[y]
                     ) {
 
                         moveLeftAfterObstacle = 150
+                        move = 150
+
                     }
                 }
             }
@@ -53,7 +58,7 @@ class Move {
         let height = player.height - 50;
         let saveObstacle = [];
         let moveTopAfterObstacle = 150
-
+        move == 3 ? moveTopAfterObstacle = 150 : moveTopAfterObstacle
         move == 2 ? moveTopAfterObstacle = 100 : moveTopAfterObstacle
         move == 1 ? moveTopAfterObstacle = 50 : moveTopAfterObstacle
         move == 0 ? moveTopAfterObstacle = 0 : moveTopAfterObstacle
@@ -79,14 +84,19 @@ class Move {
             } else if (moveLeft[0].height != saveObstacle[0]) {
                 if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0]) {
                     moveTopAfterObstacle = 50
+                    move = 1
                 } else if (moveLeft[1].height != saveObstacle[y]) {
                     if (moveLeft[2].height == saveObstacle[y]) {
                         moveTopAfterObstacle = 100
+                        move = 2
+
                     } else if (
                         moveLeft[2].height != saveObstacle[y] &&
                         moveLeft[1].height != saveObstacle[y]
                     ) {
                         moveTopAfterObstacle = 150
+                        move = 3
+
                     }
                 }
             }
@@ -99,6 +109,7 @@ class Move {
         let height = player.height + 50;
         let saveObstacle = [];
         let moveBottomAfterObstacle = 150
+        move == 3 ? moveBottomAfterObstacle = 150 : moveBottomAfterObstacle
         move == 2 ? moveBottomAfterObstacle = 100 : moveBottomAfterObstacle
         move == 1 ? moveBottomAfterObstacle = 50 : moveBottomAfterObstacle
         move == 0 ? moveBottomAfterObstacle = 0 : moveBottomAfterObstacle
@@ -107,6 +118,9 @@ class Move {
                 width,
                 height
             })
+            console.log('MOVE LEFT just what i want ');
+
+            console.log(moveLeft);
             height = height + 50
             celuleObstacle.forEach(obstacle => {
                 if (obstacle.height == moveLeft[index].height && obstacle.width == moveLeft[index].width) {
@@ -121,14 +135,19 @@ class Move {
             } else if (moveLeft[0].height != saveObstacle[0]) {
                 if (moveLeft[1].height == saveObstacle[1] || moveLeft[1].height == saveObstacle[0]) {
                     moveBottomAfterObstacle = 50
+                    move = 1
+
                 } else if (moveLeft[1].height != saveObstacle[y]) {
                     if (moveLeft[2].height == saveObstacle[y]) {
                         moveBottomAfterObstacle = 100
+                        move = 2
                     } else if (
                         moveLeft[2].height != saveObstacle[y] &&
                         moveLeft[1].height != saveObstacle[y]
                     ) {
                         moveBottomAfterObstacle = 150
+                        move = 3
+
                     }
                 }
             }
@@ -185,6 +204,7 @@ class Move {
         this.makeDataMoveBottom(player, celuleObstacle, move)
         this.makeDataMoveRight(player, celuleObstacle, move)
     }
+
 }
 
 export default Move

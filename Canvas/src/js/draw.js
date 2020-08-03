@@ -1,49 +1,39 @@
-import three from '../assets/img/New_Piskel.png';
-var img = new Image(); // Crée un nouvel élément img
-
-
 class Draw {
-
 
     static drawGrid(ctx, celule) {
         celule.forEach((gridDraw) => {
             ctx.beginPath();
+            ctx.strokeStyle = 'rgba(250, 250, 250, 0.1)';
             ctx.strokeRect(gridDraw.width, gridDraw.height, 50, 50);
             ctx.closePath();
         });
     }
-    static drawObstacle(ctx, celules) {
+    static drawBack(ctx, imgObject) {
+        ctx.drawImage(imgObject, 0, 0, 1000, 500);
+
+    }
+    static drawObstacle(ctx, celules, imgObject) {
         celules.forEach((celule) => {
-            var img = new Image(); // Crée un nouvel élément img
-
-            //  exécute les instructions drawImage ici 
-            ctx.drawImage(img, celule.width, celule.height);
-
-            img.src = three
-
-
-            /*ctx.beginPath();
-            ctx.rect(celule.width, celule.height, 50, 50);
-            ctx.fillStyle = '#FF0000';
-            ctx.fill();
-            ctx.closePath();*/
+            ctx.drawImage(imgObject, celule.width, celule.height);
         });
     }
-    static drawArms(ctx, armes) {
-        armes.forEach((arme) => {
+    static drawArms(ctx, celules) {
+        celules.forEach((arme) => {
             ctx.beginPath();
-            ctx.rect(arme.name.width, arme.name.height, 50, 50);
-            ctx.fillStyle = arme.name.color;
-            ctx.fill();
-            ctx.closePath();
+            ctx.drawImage(
+                arme.name.boxImage,
+                arme.name.width,
+                arme.name.height,
+                40,
+                40
+            );
+
         });
     }
-    static drawPlayer(ctx, player) {
-        ctx.beginPath();
-        ctx.rect(player.width, player.height, 50, 50);
-        ctx.fillStyle = '#F9C5C6';
-        ctx.fill();
-        ctx.closePath();
+    static drawPlayer(ctx, player, imgObject) {
+        ctx.drawImage(imgObject, player.width, player.height, 50, 50);
+
+
     }
     static drawMoveLeft(ctx, player) {
         ctx.beginPath();
