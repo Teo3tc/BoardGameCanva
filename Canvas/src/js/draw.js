@@ -14,7 +14,10 @@ class Draw {
     }
     static drawObstacle(ctx, celules, imgObject) {
         celules.forEach((celule) => {
-            ctx.drawImage(imgObject, celule.width, celule.height);
+            if (celule.value == 'obastacle') {
+
+                ctx.drawImage(imgObject, celule.width, celule.height);
+            }
         });
     }
     static drawArms(ctx, celules) {
@@ -32,8 +35,6 @@ class Draw {
     }
     static drawPlayer(ctx, player, imgObject) {
         ctx.drawImage(imgObject, player.width, player.height, 50, 50);
-
-
     }
     static drawMoveLeft(ctx, player) {
         ctx.beginPath();
