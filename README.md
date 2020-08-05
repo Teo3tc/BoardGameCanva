@@ -5,13 +5,13 @@ Board Game make with canva
 ## Install
 
 ```
-    npm install
+npm install
 
 ```
 
-## run Dev
+## Run dev
 
 ```
-    npm run dev
+npm run dev
 
 ```
