@@ -75,7 +75,7 @@ const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(
     canvaWidth,
     canvaHeight
 );
-const celuleObstacle = MakeWorld.makeDataOfObstacle(40, celuleWidthHeight);
+const celuleObstacle = MakeWorld.makeDataOfObstacle(20, celuleWidthHeight);
 const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleObstacle
