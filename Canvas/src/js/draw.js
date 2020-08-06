@@ -76,6 +76,52 @@ class Draw {
         this.drawMoveBottom(ctx, player);
         this.drawMoveRight(ctx, player);
     }
+    /*---------PHASE COMBAT ---------------*/
+
+    static drawSelecteur(ctx, el, x, y) {
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.font = '25px serif';
+        ctx.fillText(el, x, y);
+        ctx.closePath();
+    };
+    static drawSelecteur(ctx, x, y) {
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.font = '25px serif';
+        ctx.fillText(`>`, x, y);
+        ctx.closePath();
+    };
+    static drawFontDefesense(ctx, x, y) {
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.font = '25px serif';
+        ctx.fillText(`Defense`, x, y);
+        ctx.closePath();
+    }
+    static drawFontAttack(ctx, x, y) {
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.font = '25px serif';
+        ctx.fillText(`Attack`, x, y);
+        ctx.closePath();
+    }
+    static drawplayerFight(ctx, img, x, y) {
+        ctx.drawImage(img, x, y);
+
+    };
+    static drawplayerHeart(ctx, img, x) {
+        ctx.drawImage(img, x, 5, 50, 50);
+
+    };
+    static drawplayerHealh(ctx, player, x) {
+        ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.font = '20px serif';
+        ctx.fillText(`100 / ${player.healh}`, x, 35);
+        ctx.closePath();
+
+    }
 }
 
 export default Draw

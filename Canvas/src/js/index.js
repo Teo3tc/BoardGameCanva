@@ -57,6 +57,9 @@ arme11.src = arme1
 arme22.src = arme2
 arme33.src = arme3
 arme44.src = arme4
+imgHeartPlayer1.src = heart;
+imgHeartPlayer2.src = heart;
+imgdefaultArm.src = defaultArme;
 
 // Basic recovery
 const canvas = document.getElementById('canvas');
@@ -75,7 +78,7 @@ const celuleWidthHeight = MakeWorld.makeCeluleWidthHeightGrid(
     canvaWidth,
     canvaHeight
 );
-const celuleObstacle = MakeWorld.makeDataOfObstacle(40, celuleWidthHeight);
+const celuleObstacle = MakeWorld.makeDataOfObstacle(20, celuleWidthHeight);
 const celuleWidthHeightUpdate = MakeWorld.makeCeluleSafeAfterObstacle(
     celuleWidthHeight,
     celuleObstacle
@@ -110,11 +113,7 @@ const player2 = new Player(
     'rgba(175, 122, 197,0.5)',
     false
 );
-celuleObstacle.push(celulePlayer[0])
 
-
-celuleObstacle.push(celulePlayer[1])
-console.log(celuleObstacle);
 
 // Create Armes
 const fullArmes = [{
@@ -161,6 +160,48 @@ const fullArmes = [{
     },
 ];
 
+
+/* ------------------ Data Font Attack phase fight ------------------ */
+const player1AttackfontsX = 150;
+const player1AttackfontsY = canvaHeight - 50;
+
+const player2AttackfontsX = canvaWidth / 2 + 150;
+const player2AttackfontsY = canvaHeight - 50;
+
+/* ------------------ Data Font Defense phase fight ------------------ */
+const player1DefensefontsX = 300;
+const player1DefensefontsY = canvaHeight - 50;
+
+const player2DefensefontsX = canvaWidth / 2 + 300;
+const player2DefensefontsY = canvaHeight - 50;
+
+/* ------------------ Data Selecteur Attack phase fight ------------------ */
+const player1SelecteurAttackX = 130;
+const player1SelecteurAttackY = canvaHeight - 50;
+const player2SelecteurAttackX = canvaWidth / 2 + 130;
+const player2SelecteurAttackY = canvaHeight - 50;
+
+/* ------------------ Data Selecteur Defense phase fight ------------------ */
+const player1SelecteurDefenseX = 280;
+const player1SelecteurDefenseY = canvaHeight - 50;
+
+const player2SelecteurDefenseX = canvaWidth / 2 + 280;
+const player2SelecteurDefenseY = canvaHeight - 50;
+
+/* ------------------ Data player phase fight ------------------ */
+const player1FightX = canvaWidth / 2 / 2;
+const player1FightY = canvaHeight / 2;
+
+const player2FightX = canvaWidth - canvaWidth / 2 / 2;
+const player2FightY = canvaHeight / 2;
+
+/* ------------------ Data Heart phase fight ------------------ */
+const player1HeartX = 5;
+const player2HeartX = canvaWidth - 210;
+/* ------------------ Data Healh phase fight ------------------ */
+const player1HelthX = 50;
+const player2HelthX = canvaWidth - 170;
+
 /* ----------- Movement Keybord ----------- */
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
@@ -196,7 +237,8 @@ function keyUpHandler(e) {
         spacePressed = true;
     }
 }
-/* ----------- Movement Keybord ----------- */
+
+
 function movePlayerPressRight(side, playerMove, playerWait) {
     // check if possibility to move right
     if (side && playerMove.move.right != 0) {
@@ -206,7 +248,7 @@ function movePlayerPressRight(side, playerMove, playerWait) {
         playerMove.move.right -= 50;
 
         move <= 0 ? (move = 0) : (move -= 1);
-        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
         console.log(move);
         // check if playerMove is in area of playerWait for change to phase fight
@@ -233,7 +275,7 @@ function movePlayerPressRight(side, playerMove, playerWait) {
             move = 3;
             Armes.donTakeArmes(playerMove);
             // make the data  of movement playerWait
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
         }
     }
 }
@@ -246,7 +288,7 @@ function movePlayerPressLeft(side, playerMove, playerWait) {
 
         move <= 0 ? (move = 0) : (move -= 1);
 
-        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
         if (
             (playerMove.width == playerWait.width + 50 &&
@@ -267,7 +309,7 @@ function movePlayerPressLeft(side, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
         }
     }
 }
@@ -281,7 +323,7 @@ function movePlayerPressTop(side, playerMove, playerWait) {
         playerMove.move.top -= 50;
         move <= 0 ? (move = 0) : (move -= 1);
 
-        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
         if (
             (playerMove.height == playerWait.height + 50 &&
                 playerMove.width == playerWait.width) ||
@@ -289,6 +331,7 @@ function movePlayerPressTop(side, playerMove, playerWait) {
                 (playerMove.width == playerWait.width + 50 ||
                     playerMove.width == playerWait.width - 50))
         ) {
+            console.log('FUCKING FIGHT');
             playerMove.fight = true;
             playerWait.fight = true;
             playerWait.play = false;
@@ -300,7 +343,8 @@ function movePlayerPressTop(side, playerMove, playerWait) {
             move = 3;
 
             Armes.donTakeArmes(playerMove);
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
         }
     }
 }
@@ -315,7 +359,7 @@ function movePlayerPressDown(side, playerMove, playerWait) {
 
         move <= 0 ? (move = 0) : (move -= 1);
 
-        Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+        Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
         if (
             (playerMove.height == playerWait.height - 50 &&
                 playerMove.width == playerWait.width) ||
@@ -335,7 +379,7 @@ function movePlayerPressDown(side, playerMove, playerWait) {
 
             Armes.donTakeArmes(playerMove);
 
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
         }
     }
 }
@@ -353,11 +397,10 @@ function movePlayerPressEnter(side, playerMove, playerWait) {
             playerWait.play = true;
             move = 3;
             Armes.specilaStopTurn(playerMove, fullArmes);
-            Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
         }
     }
 }
-
 
 /* ----------- Movement mouse ----------- */
 canvas.addEventListener('click', (e) => {
@@ -424,6 +467,7 @@ canvas.addEventListener('click', (e) => {
     }
 });
 
+/* ----------- Movement Keybord ----------- */
 function clickRight(e, playerMove, playerWait) {
     if (e.offsetY >= playerMove.height && e.offsetY <= playerMove.height + 50) {
         if (
@@ -436,7 +480,7 @@ function clickRight(e, playerMove, playerWait) {
                     (playerMove.width += 50);
                 playerMove.move.right -= 50;
                 move <= 0 ? (move = 0) : (move -= 1);
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
                 // check if playerMove is in area of playerWait for change to phase fight
                 if (
@@ -462,7 +506,7 @@ function clickRight(e, playerMove, playerWait) {
                     move = 3;
                     Armes.donTakeArmes(playerMove);
                     // make the data  of movement playerWait
-                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
                 }
             }
         } else if (
@@ -470,7 +514,6 @@ function clickRight(e, playerMove, playerWait) {
             e.offsetX <= playerMove.width + 150
         ) {
             if (playerMove.move.right != 0 && playerMove.move.right >= 100) {
-                console.log('HELLO RIGHT 2');
                 for (let index = 0; index < 2; index++) {
                     playerMove.width == canvaWidth - 50 ?
                         (playerMove.width = canvaWidth - 50) :
@@ -479,9 +522,8 @@ function clickRight(e, playerMove, playerWait) {
                     Armes.take(playerMove, fullArmes);
                 }
                 move <= 0 ? (move = 0) : (move -= 2);
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
-                console.log(move);
                 // check if playerMove is in area of playerWait for change to phase fight
                 if (
                     (playerMove.width == playerWait.width - 50 &&
@@ -506,7 +548,7 @@ function clickRight(e, playerMove, playerWait) {
                     move = 3;
                     Armes.donTakeArmes(playerMove);
                     // make the data  of movement playerWait
-                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
                 }
             }
         } else if (
@@ -523,7 +565,7 @@ function clickRight(e, playerMove, playerWait) {
                 }
 
                 move <= 0 ? (move = 0) : (move -= 3);
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
                 console.log(move);
                 // check if playerMove is in area of playerWait for change to phase fight
@@ -549,7 +591,7 @@ function clickRight(e, playerMove, playerWait) {
                 move = 3;
                 Armes.donTakeArmes(playerMove);
                 // make the data  of movement playerWait
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
         }
     }
@@ -566,7 +608,7 @@ function clickLeft(e, playerMove, playerWait) {
 
                 move <= 0 ? (move = 0) : (move -= 1);
 
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
                 if (
                     (playerMove.width == playerWait.width + 50 &&
@@ -587,7 +629,7 @@ function clickLeft(e, playerMove, playerWait) {
 
                     Armes.donTakeArmes(playerMove);
 
-                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
                 }
             }
         } else if (
@@ -604,7 +646,7 @@ function clickLeft(e, playerMove, playerWait) {
                 }
                 move <= 0 ? (move = 0) : (move -= 2);
 
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
                 if (
                     (playerMove.width == playerWait.width + 50 &&
@@ -625,7 +667,7 @@ function clickLeft(e, playerMove, playerWait) {
 
                     Armes.donTakeArmes(playerMove);
 
-                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
                 }
             }
         } else if (
@@ -642,7 +684,7 @@ function clickLeft(e, playerMove, playerWait) {
                 }
                 move <= 0 ? (move = 0) : (move -= 3);
 
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
 
                 if (
                     (playerMove.width == playerWait.width + 50 &&
@@ -662,7 +704,7 @@ function clickLeft(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
         }
     }
@@ -682,7 +724,7 @@ function clickDown(e, playerMove, playerWait) {
 
             move <= 0 ? (move = 0) : (move -= 1);
 
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
             if (
                 (playerMove.height == playerWait.height - 50 &&
                     playerMove.width == playerWait.width) ||
@@ -700,7 +742,7 @@ function clickDown(e, playerMove, playerWait) {
                 move = 3;
 
                 Armes.donTakeArmes(playerMove);
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
         } else if (
             playerMove.move.down != 0 &&
@@ -718,7 +760,7 @@ function clickDown(e, playerMove, playerWait) {
 
             move <= 0 ? (move = 0) : (move -= 2);
 
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
             if (
                 (playerMove.height == playerWait.height - 50 &&
                     playerMove.width == playerWait.width) ||
@@ -738,7 +780,7 @@ function clickDown(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
         } else if (playerMove.move.down != 0 && playerMove.move.down == 150) {
             if (
@@ -753,7 +795,8 @@ function clickDown(e, playerMove, playerWait) {
                     Armes.take(playerMove, fullArmes);
                 }
                 move <= 0 ? (move = 0) : (move -= 3);
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
+
 
                 if (
                     (playerMove.height == playerWait.height - 50 &&
@@ -773,7 +816,7 @@ function clickDown(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
         }
     }
@@ -795,7 +838,8 @@ function clickTop(e, playerMove, playerWait) {
             playerMove.move.top -= 50;
             move <= 0 ? (move = 0) : (move -= 1);
 
-            Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+            Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
+
             if (
                 (playerMove.height == playerWait.height + 50 &&
                     playerMove.width == playerWait.width) ||
@@ -815,7 +859,7 @@ function clickTop(e, playerMove, playerWait) {
 
                 Armes.donTakeArmes(playerMove);
 
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
         } else if (
             e.offsetY <= playerMove.height - 50 &&
@@ -832,7 +876,8 @@ function clickTop(e, playerMove, playerWait) {
 
                 move <= 0 ? (move = 0) : (move -= 2);
 
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
+
                 if (
                     (playerMove.height == playerWait.height + 50 &&
                         playerMove.width == playerWait.width) ||
@@ -852,7 +897,7 @@ function clickTop(e, playerMove, playerWait) {
                     move = 3;
 
                     Armes.donTakeArmes(playerMove);
-                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
                 }
             }
         } else if (
@@ -870,7 +915,8 @@ function clickTop(e, playerMove, playerWait) {
 
                 move <= 0 ? (move = 0) : (move -= 3);
 
-                Move.makeDataMovePlayer(playerMove, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerMove, celuleObstacle, move, playerWait);
+
                 if (
                     (playerMove.height == playerWait.height + 50 &&
                         playerMove.width == playerWait.width) ||
@@ -889,7 +935,7 @@ function clickTop(e, playerMove, playerWait) {
                     move = 3;
 
                     Armes.donTakeArmes(playerMove);
-                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                    Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
                 }
             }
         }
@@ -911,7 +957,7 @@ function clickPlayer(e, playerMove, playerWait) {
                 playerWait.play = true;
                 move = 3;
                 Armes.specilaStopTurn(playerMove, fullArmes);
-                Move.makeDataMovePlayer(playerWait, celuleObstacle, move);
+                Move.makeDataMovePlayer(playerWait, celuleObstacle, move, playerMove);
             }
 
         }
@@ -922,69 +968,6 @@ function clickPlayer(e, playerMove, playerWait) {
 
 
 
-let attack = 'Attack';
-let seleteur = '>';
-
-/* ------------------ Data Font Attack phase fight ------------------ */
-const player1AttackfontsX = 150;
-const player1AttackfontsY = canvaHeight - 50;
-
-const player2AttackfontsX = canvaWidth / 2 + 150;
-const player2AttackfontsY = canvaHeight - 50;
-
-function drawFontAttack(ctx, el, x, y) {
-    ctx.beginPath();
-    ctx.fillStyle = 'white';
-    ctx.font = '25px serif';
-    ctx.fillText(el, x, y);
-    ctx.closePath();
-}
-/* ------------------ Data Font Defense phase fight ------------------ */
-const player1DefensefontsX = 300;
-const player1DefensefontsY = canvaHeight - 50;
-
-const player2DefensefontsX = canvaWidth / 2 + 300;
-const player2DefensefontsY = canvaHeight - 50;
-
-function drawFontDefesense(ctx, x, y) {
-    ctx.beginPath();
-    ctx.fillStyle = 'white';
-    ctx.font = '25px serif';
-    ctx.fillText(`Defense`, x, y);
-    ctx.closePath();
-}
-
-/* ------------------ Data Selecteur Attack phase fight ------------------ */
-const player1SelecteurAttackX = 130;
-const player1SelecteurAttackY = canvaHeight - 50;
-const player2SelecteurAttackX = canvaWidth / 2 + 130;
-const player2SelecteurAttackY = canvaHeight - 50;
-
-function drawSelecteur(ctx, el, x, y) {
-    ctx.beginPath();
-    ctx.fillStyle = 'white';
-    ctx.font = '25px serif';
-    ctx.fillText(el, x, y);
-    ctx.closePath();
-}
-/* ------------------ Data Selecteur Defense phase fight ------------------ */
-const player1SelecteurDefenseX = 280;
-const player1SelecteurDefenseY = canvaHeight - 50;
-
-const player2SelecteurDefenseX = canvaWidth / 2 + 280;
-const player2SelecteurDefenseY = canvaHeight - 50;
-
-/* ------------------ Data player phase fight ------------------ */
-const player1FightX = canvaWidth / 2 / 2;
-const player1FightY = canvaHeight / 2;
-
-const player2FightX = canvaWidth - canvaWidth / 2 / 2;
-const player2FightY = canvaHeight / 2;
-
-function drawplayerFight(img, x, y) {
-    ctx.drawImage(img, x, y);
-
-}
 
 
 function drawExplore() {
@@ -1002,24 +985,34 @@ function drawExplore() {
     // Turn to player 1
     if (player1.play) {
         // draw movement
+
         Draw.drawMovement(ctx, player1);
+
         Armes.take(player1, fullArmes);
+
 
         // move right
         movePlayerPressRight(rightPressed, player1, player2);
         rightPressed = false;
+
         movePlayerPressLeft(leftPressed, player1, player2);
         leftPressed = false;
+
         movePlayerPressTop(topPressed, player1, player2);
         topPressed = false;
+
         movePlayerPressDown(downPressed, player1, player2);
         downPressed = false;
+
         movePlayerPressEnter(enterPressed, player1, player2);
         enterPressed = false;
+
     }
     if (player2.play) {
         Draw.drawMovement(ctx, player2);
         Armes.take(player2, fullArmes);
+
+        Move.makeDataMovePlayer(player2, celuleObstacle, move, player1);
 
         movePlayerPressRight(rightPressed, player2, player1);
         rightPressed = false;
@@ -1041,9 +1034,11 @@ function drawFight() {
     Draw.drawBack(ctx, imgBack2);
 
     // draw players phase combat
-    drawplayerFight(imgPlayer1, player1FightX, player1FightY);
-    drawplayerFight(imgPlayer2, player2FightX, player2FightY);
+    Draw.drawplayerFight(ctx, imgPlayer1, player1FightX, player1FightY);
+    Draw.drawplayerFight(ctx, imgPlayer2, player2FightX, player2FightY);
 
+
+    // Draw box
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'white';
@@ -1061,29 +1056,18 @@ function drawFight() {
     );
     ctx.closePath();
 
-    ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
-    imgHeartPlayer1.src = heart;
 
-    ctx.drawImage(imgHeartPlayer2, canvaWidth - 210, 5, 50, 50);
-    imgHeartPlayer2.src = heart;
+    Draw.drawplayerHeart(ctx, imgHeartPlayer1, player1HeartX)
+    Draw.drawplayerHeart(ctx, imgHeartPlayer2, player2HeartX)
 
-    ctx.beginPath();
-    ctx.fillStyle = 'red';
-    ctx.font = '20px serif';
-    ctx.fillText(`100 / ${player1.healh}`, 50, 35);
-    ctx.closePath();
+    Draw.drawplayerHealh(ctx, player1, player1HelthX)
+    Draw.drawplayerHealh(ctx, player2, player2HelthX)
 
-    ctx.beginPath();
-    ctx.fillStyle = 'red';
-    ctx.font = '20px serif';
-    ctx.fillText(`100 / ${player2.healh}`, canvaWidth - 170, 35);
-    ctx.closePath();
 
-    ctx.drawImage(imgHeartPlayer1, 5, 5, 50, 50);
-    imgHeartPlayer1.src = heart;
+    // check if armes
     if (player1.arme == undefined) {
         ctx.drawImage(imgdefaultArm, 150, 10, 30, 30);
-        imgdefaultArm.src = defaultArme;
+
 
         ctx.beginPath();
         ctx.fillStyle = 'green';
@@ -1102,7 +1086,6 @@ function drawFight() {
     }
     if (player2.arme == undefined) {
         ctx.drawImage(imgdefaultArm, canvaWidth - 80, 10, 30, 30);
-        imgdefaultArm.src = defaultArme;
 
         ctx.beginPath();
         ctx.fillStyle = 'green';
@@ -1120,24 +1103,22 @@ function drawFight() {
         ctx.closePath();
     }
 
-    drawFontAttack(ctx, attack, player1AttackfontsX, player1AttackfontsY);
-    drawFontDefesense(ctx, player1DefensefontsX, player1DefensefontsY);
+    Draw.drawFontAttack(ctx, player1AttackfontsX, player1AttackfontsY);
+    Draw.drawFontDefesense(ctx, player1DefensefontsX, player1DefensefontsY);
 
-    drawFontAttack(ctx, attack, player2AttackfontsX, player2AttackfontsY);
-    drawFontDefesense(ctx, player2DefensefontsX, player2DefensefontsY);
+    Draw.drawFontAttack(ctx, player2AttackfontsX, player2AttackfontsY);
+    Draw.drawFontDefesense(ctx, player2DefensefontsX, player2DefensefontsY);
 
     if (player1.play) {
         if (player1.attack && player1.play) {
-            drawSelecteur(
+            Draw.drawSelecteur(
                 ctx,
-                seleteur,
                 player1SelecteurAttackX,
                 player1SelecteurAttackY
             );
         } else if (player1.defense) {
-            drawSelecteur(
+            Draw.drawSelecteur(
                 ctx,
-                seleteur,
                 player1SelecteurDefenseX,
                 player1SelecteurDefenseY
             );
@@ -1199,16 +1180,16 @@ function drawFight() {
     }
     if (player2.play) {
         if (player2.attack && player2.play) {
-            drawSelecteur(
+            Draw.drawSelecteur(
                 ctx,
-                seleteur,
+
                 player2SelecteurAttackX,
                 player2SelecteurAttackY
             );
         } else if (player2.defense) {
-            drawSelecteur(
+            Draw.drawSelecteur(
                 ctx,
-                seleteur,
+
                 player2SelecteurDefenseX,
                 player2SelecteurDefenseY
             );
@@ -1324,7 +1305,7 @@ function drawGameOver() {
 
 function init() {
     // Start the first frame request
-    Move.makeDataMovePlayer(player1, celuleObstacle, move);
+    Move.makeDataMovePlayer(player1, celuleObstacle, move, player2);
 
     window.requestAnimationFrame(gameLoop);
 }

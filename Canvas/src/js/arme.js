@@ -8,18 +8,18 @@ class Armes {
         this.boxImage = image
     }
     static take(player, armes) {
+
+
         armes.forEach((arms, index) => {
+
             if (player.width == arms.name.width && player.height == arms.name.height) {
                 if (player.gun == 0 && player.arme == undefined) {
-                    console.log('you have Armes');
                     player.arme = arms;
-                    console.log(player.arme);
                     armes.splice(index, 1);
-                    console.log(index);
                     player.gun = 1;
                     console.log(player.gun);
                 } else if (player.gun == 1) {
-                    console.log('CHANGE');
+
                     player.arme.name.width = player.width;
                     player.arme.name.height = player.height;
                     armes.push(player.arme);
